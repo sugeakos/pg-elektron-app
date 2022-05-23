@@ -1,0 +1,137 @@
+<div style="margin-top: 5%; margin-bottom: 1%;" class="container">
+  <div class="row">
+    <div class="col-md-6 offset-3">
+      <div class="card text-dark bg-info">
+        <div class="card-body">
+          <h4 class="card-title">Regisztráció/Registration</h4>
+          <div class="card-text">
+            <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm.value)">
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <input type="text" name="firstName" placeholder="First name" required ngModel
+                           #firstNameInput="ngModel"
+                           class="form-control">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <input type="text" name="lastName" placeholder="Last name" required ngModel #lastNameInput="ngModel"
+                           class="form-control">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <input type="text" name="username" placeholder="Username" required ngModel #usernameInput="ngModel"
+                           class="form-control">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fa-solid fa-map"></i></span>
+                    <input type="text" name="address" placeholder="Address" required ngModel #addressInput="ngModel"
+                           class="form-control">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fa-solid fa-at"></i></span>
+                    <input type="email" name="email" placeholder="Email" required ngModel #emailInput="ngModel"
+                           class="form-control">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fa-solid fa-fingerprint"></i></span>
+                    <input type="password" name="password" placeholder="Password" required ngModel
+                           #passwordInput="ngModel"
+                           class="form-control">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fa-solid fa-fingerprint"></i></span>
+                    <input type="password" name="passwordCheck"
+                           (change)="checkPasswords(passwordInput.value,passwordCheckInput.value)"
+                           placeholder="Confirm password" required ngModel #passwordCheckInput="ngModel"
+                           class="form-control">
+
+                  </div>
+                  <span
+                    *ngIf="!validPass && ((passwordInput.touched && passwordInput.invalid) || (passwordCheckInput.touched && passwordCheckInput.invalid)) "
+                    style="color: red" class="help-block">
+                    {{passErrorString}}
+                  </span>
+                  <span *ngIf="validPass" style="color: red" class="help-block">
+                  </span>
+
+                </div>
+
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
+                    <input type="number" name="phoneFix" placeholder="Phone number" [maxLength]="12" required ngModel
+                           #phoneFixInput="ngModel"
+                           class="form-control">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fa-solid fa-mobile"></i></span>
+                    <input type="number" name="phoneMobile" placeholder="Mobile number" required ngModel
+                           [maxLength]="12"
+                           #mobileInput="ngModel"
+                           class="form-control">
+                  </div>
+                  <span class="help-block"></span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col d-flex justify-content-center">
+                  <button type="submit" class="btn btn-primary" name="button" [disabled]="registerForm.invalid ||
+                  showLoading || checkPasswords(passwordInput.value,passwordCheckInput.value)">
+                    <i *ngIf="showLoading" class="fas fa-spinner fa-spin"></i> &nbsp;&nbsp;
+                    <span *ngIf="showLoading"> Loading...</span>
+                    <span *ngIf="!showLoading">Register</span>
+                  </button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+          <div class="mt-4">
+            <div class="d-flex justify-content-center links">
+              Already have an account?  <a routerLink="/login" class="ml-2" style="color: black; margin-left: 1%;"> Log In</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+

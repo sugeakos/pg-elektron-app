@@ -1,0 +1,45 @@
+<div style="margin-top: 1%; margin-bottom: 1%;" class="container">
+  <div class="row">
+    <div class="col-md-6 offset-3">
+      <div class="card text-white bg-primary">
+        <div class="card-body">
+          <h4 class="card-header">{{loggedInUser.firstName}} TV-i</h4>
+          <div class="card-text">
+            <table class="table table-hover">
+              <thead class="table-borderless">
+              <tr class="text-center">
+                <th>Márka</th>
+                <th>{{loggedInUser.firstName}} által észlelt hiba</th>
+                <th>Lefoglalt időpont</th>
+                <th>Javított hiba</th>
+                <th>Javítás dátuma</th>
+                <th [hidden]="!isStillInProgress">Javítás ára</th>
+                <th>Javítás állapota</th>
+              </tr>
+              </thead>
+              <tbody *ngFor="let tv of loggedInUsersTvs">
+              <tr class="text-center" style="color:white;">
+                <td >{{tv?.tvCategoryDescription}}</td>
+                <td >{{tv?.errorSeenByCustomer}}</td>
+                <td >{{tv?.reservedDateToRepair}}</td>
+                <td >{{tv?.dateOfCorrection}}</td>
+                <td >{{tv?.price}}</td>
+                <td>
+                  <span [hidden]="!tv?.isItStillInProgress" class="badge badge-success">Active</span>
+                  <span [hidden]="tv?.isItStillInProgress" class="badge badge-danger">Inactive</span>
+                </td>
+                <td class="">
+<!--                  <div class="btn-group">-->
+<!--                    <button class="btn btn-outline-info" (click)="onEditUser(appUser)"><i class="fas fa-edit"></i></button>-->
+<!--                    <button [hidden]="!isAdmin" class="btn btn-outline-danger" (click)="onDeleteUser(appUser?.username)"><i class="fas fa-trash"></i></button>-->
+<!--                  </div>-->
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

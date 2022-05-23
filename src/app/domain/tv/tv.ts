@@ -3,8 +3,8 @@ import {TvCategory} from "../tv-category/tv-category";
 
 export class Tv {
   public externalId: string;
-  public person: Person;
-  public tvCategory: TvCategory;
+  public personEmail: string;
+  public tvCategoryDescription: string;
   public errorSeenByCustomer: string;
   public reservedDateToRepair: Date;
   public repairedError: string;
@@ -14,8 +14,8 @@ export class Tv {
 
   constructor() {
     this.externalId = '';
-    this.person = null;
-    this.tvCategory = null;
+    this.personEmail = '';
+    this.tvCategoryDescription = '';
     this.errorSeenByCustomer = '';
     this.reservedDateToRepair = null;
     this.repairedError = '';

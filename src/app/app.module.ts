@@ -17,12 +17,18 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MaterialModule } from './modules/material.module';
+import { LoginComponent } from './login/login.component';
+import { UserIndexComponent } from './user-index/user-index.component';
+import { AdminIndexComponent } from './admin-index/admin-index.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     IndexComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    LoginComponent,
+    UserIndexComponent,
+    AdminIndexComponent
   ],
   imports: [
     BrowserModule,
