@@ -42,20 +42,19 @@ export class PersonService {
     }
   }
 
-  // public createPersonUpdateFormData(loggedInUsername: string, user: Person): FormData {
-  //   const formData = new FormData();
-  //   formData.append('currentUsername', loggedInUsername);
-  //   formData.append('firstName', user.firstName);
-  //   formData.append('lastName', user.lastName);
-  //   formData.append('username', user.username);
-  //   formData.append('email', user.email);
-  //   formData.append('firstName', user.firstName);
-  //   formData.append('firstName', user.firstName);
-  //   formData.append('firstName', user.firstName);
-  //   formData.append('firstName', user.firstName);
-  //   formData.append('firstName', user.firstName);
-  //   formData.append('firstName', user.firstName);
-  //   formData.append('firstName', user.firstName);
-  //
-  // }
+  public createPersonFormData(loggedInUsername: string, user: Person): FormData {
+    const formData = new FormData();
+    formData.append('currentUsername', loggedInUsername);
+    formData.append('firstName', user.firstName);
+    formData.append('lastName', user.lastName);
+    formData.append('username', user.username);
+    formData.append('email', user.email);
+    formData.append('phoneFix', user.phoneFix);
+    formData.append('phoneMobile', user.phoneMobile);
+    formData.append('address', user.address);
+    formData.append('isActive', JSON.stringify(user.isActive));
+    formData.append('isNotLocked', JSON.stringify(user.isNotLocked));
+    formData.append('role', user.role);
+    return formData;
+  }
 }

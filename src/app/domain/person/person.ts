@@ -4,7 +4,6 @@ export class Person{
   public  lastName: string;
   public  email: string;
   public  username: string;
-  public  password: string;
   public  address: string;
   public  phoneFix: string;
   public  phoneMobile: string;
@@ -30,7 +29,6 @@ export class Person{
     this.isNotLocked = false;
     this.role = '';
     this.authorities = [];
-
   }
 
 }
