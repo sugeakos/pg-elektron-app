@@ -23,7 +23,6 @@ export class UserIndexComponent implements OnInit, OnDestroy {
   public titleAction$ = this.titleSubject.asObservable();
   public loggedInUser: Person; //logged in user
   public loggedInUsersTvs: Tv[];
-  public users: Person[];
   public tvCategory: string;
   public selectedTv: Tv;
   public editUser = new Person();
@@ -39,7 +38,6 @@ export class UserIndexComponent implements OnInit, OnDestroy {
     this.loggedInUser = this.authService.getUserFromLocalCache();
 
     this.getUserTvs();
-    this.getAllUsers();
   }
 
   private getUserRole(): string {
@@ -64,8 +62,8 @@ export class UserIndexComponent implements OnInit, OnDestroy {
         (response: Tv[]) => {
           this.tvService.addTvsToLocalCache(response);
           this.loggedInUsersTvs = response;
-          
-          console.log(response);
+
+          //console.log(response);
         },
         (error: HttpErrorResponse) => {
           console.log(error.error.message);
@@ -75,24 +73,12 @@ export class UserIndexComponent implements OnInit, OnDestroy {
 
   }
 
-  public getAllUsers(): void {
-    this.subs.add(
-      this.personServie.getUsers().subscribe(
-        (response: Person[]) => {
-          this.personServie.addUsersToLocalCache(response);
-          this.users = response;
-        },
-        (error: HttpErrorResponse) => {
-          console.log(error.error.message);
-        }
-      )
-    );
-  }
+  
 
   public isItInProgress(inProgress: boolean): boolean{
     return this.isStillInProgress = inProgress;
   }
-  
+
   public onLogOut(): void {
     this.authService.logout();
     this.router.navigate(['/index']);

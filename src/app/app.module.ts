@@ -20,6 +20,8 @@ import { MaterialModule } from './modules/material.module';
 import { LoginComponent } from './login/login.component';
 import { UserIndexComponent } from './user-index/user-index.component';
 import { AdminIndexComponent } from './admin-index/admin-index.component';
+import { AdminGuard } from './guard/admin.guard';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { AdminIndexComponent } from './admin-index/admin-index.component';
     RegistrationComponent,
     LoginComponent,
     UserIndexComponent,
-    AdminIndexComponent
+    AdminIndexComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,7 @@ import { AdminIndexComponent } from './admin-index/admin-index.component';
     MatNativeDateModule,
     MaterialModule
   ],
-  providers: [AuthenticationService, PersonService, AuthenticationGuard,
+  providers: [AuthenticationService, PersonService, AuthenticationGuard,AdminGuard,
     {provide: HTTP_INTERCEPTORS,
     useClass: AuthenticationInterceptor,
     multi: true},

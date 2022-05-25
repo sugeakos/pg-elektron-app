@@ -42,6 +42,8 @@ export class PersonService {
     }
   }
 
+
+
   public createPersonFormData(loggedInUsername: string, user: Person): FormData {
     const formData = new FormData();
     formData.append('currentUsername', loggedInUsername);
@@ -49,6 +51,7 @@ export class PersonService {
     formData.append('lastName', user.lastName);
     formData.append('username', user.username);
     formData.append('email', user.email);
+    formData.append('password',user.password);
     formData.append('phoneFix', user.phoneFix);
     formData.append('phoneMobile', user.phoneMobile);
     formData.append('address', user.address);

@@ -4,6 +4,7 @@ import {JwtHelperService} from "@auth0/angular-jwt";
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Person} from '../../domain/person/person';
 import {Observable} from 'rxjs';
+import { Role } from 'src/app/enumeration/role.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +46,7 @@ export class AuthenticationService {
   public addUserToLocalCache(user: Person): void {
     localStorage.setItem('user', JSON.stringify(user));
   }
-  
+
 
   public getUserFromLocalCache(): Person {
     return JSON.parse(localStorage.getItem('user'));
@@ -68,6 +69,32 @@ export class AuthenticationService {
       return true;
     } else {
       this.logout();
+      return false;
+    }
+
+  }
+
+  private getUserRole(): string {
+    return this.getUserFromLocalCache().role;
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isManager(): boolean {
+    return this.isAdmin || this.getUserRole() === Role.MANAGER;
+  }
+
+  public get isAdminOrManager(): boolean {
+    return this.isAdmin || this.isManager;
+  }
+
+
+  public isAdminLoggedIn(): boolean {
+    if (this.isLoggedIn() && this.isAdmin) {
+      return true
+    } else {
       return false;
     }
 

@@ -1,18 +1,71 @@
+<!--Navbar-->
+<div style="margin-bottom: 1%; margin-top: 1%;" class="container bootstrap snippets bootdey">
+
+  <ul class="nav nav-pills nav-with-alerts">
+    <li class="col-lg-4" >
+      <a  routerLink="/user/index" data-toggle="tab">
+        <div class="alert alert-info">
+          <i class="fa-solid fa-globe"></i>
+          Kezdőlap/Index page
+        </div>
+      </a>
+    </li>
+    <li class="col-lg-4">
+      <a routerLink="/user/profile" data-toggle="tab">
+        <div class="alert alert-info">
+          <i class="fa-solid fa-id-card"></i>
+          Profil/Profile
+
+        </div>
+      </a>
+    </li>
+    <li class="col-lg-4">
+      <a href="#" (click)="onLogOut()" data-toggle="tab">
+        <div class="alert alert-info">
+          <i class="fa-solid fa-terminal"></i>
+          Kijelentkezés/Logout
+
+        </div>
+      </a>
+    </li>
+
+
+  </ul>
+  <ul class="nav nav-pills nav-with-alerts">
+    <li class="col-lg-3">
+      <a href="/admin/index"  [hidden]="!isAdminOrManager"  data-toggle="tab">
+        <div class="alert alert-info">
+          <i class="fa-solid fa-terminal"></i>
+          Admin menü
+
+        </div>
+      </a>
+    </li>
+  </ul>
+
+</div>
+<!--Navbar end-->
+
 <div style="margin-top: 1%; margin-bottom: 1%;" class="container">
   <div class="row">
     <div class="col-md-6 offset-3">
-      <div class="card text-white bg-primary">
+      <div [hidden]="loggedInUsersTvs.length !== 0" class="card text-white bg-warning">
+        <div class="card-body">
+          <h4 class="card-header">Még nincs TV hozzárendelve {{loggedInUser.lastName}} {{loggedInUser.firstName}} felhasználóhoz. </h4>
+        </div>
+      </div>
+      <div [hidden]="loggedInUsersTvs.length === 0" class="card text-white bg-info">
         <div class="card-body">
           <h4 class="card-header">{{loggedInUser.firstName}} TV-i</h4>
-          <div class="card-text">
-            <table class="table table-hover">
+          <div class="card-text table-responsive" >
+            <table  class="table table-hover">
               <thead class="table-borderless">
               <tr class="text-center">
-                <th>Márka</th>
+                <th >Márka</th>
                 <th>{{loggedInUser.firstName}} által észlelt hiba</th>
                 <th>Lefoglalt időpont</th>
                 <th>Javított hiba</th>
-                <th>Javítás dátuma</th>
+                <th >Javítás dátuma</th>
                 <th [hidden]="!isStillInProgress">Javítás ára</th>
                 <th>Javítás állapota</th>
               </tr>
@@ -25,14 +78,8 @@
                 <td >{{tv?.dateOfCorrection}}</td>
                 <td >{{tv?.price}}</td>
                 <td>
-                  <span [hidden]="!tv?.isItStillInProgress" class="badge badge-success">Active</span>
-                  <span [hidden]="tv?.isItStillInProgress" class="badge badge-danger">Inactive</span>
-                </td>
-                <td class="">
-<!--                  <div class="btn-group">-->
-<!--                    <button class="btn btn-outline-info" (click)="onEditUser(appUser)"><i class="fas fa-edit"></i></button>-->
-<!--                    <button [hidden]="!isAdmin" class="btn btn-outline-danger" (click)="onDeleteUser(appUser?.username)"><i class="fas fa-trash"></i></button>-->
-<!--                  </div>-->
+                  <span [hidden]="!tv?.isItStillInProgress" style="color: lawngreen;" class="badge badge-success">Kész</span>
+                  <span [hidden]="tv?.isItStillInProgress" style="color: red;" class="badge badge-danger">Javítás alatt áll</span>
                 </td>
               </tr>
               </tbody>

@@ -15,7 +15,7 @@ import { PersonService } from '../service/person/person.service';
 export class LoginComponent implements OnInit, OnDestroy {
   public showLoading: boolean;
   private subs = new SubSink();
-  constructor(private router: Router, private authService: AuthenticationService,) {
+  constructor(private router: Router, private authService: AuthenticationService) {
   }
 
 

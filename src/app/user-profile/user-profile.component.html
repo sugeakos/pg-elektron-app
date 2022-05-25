@@ -1,0 +1,191 @@
+<!--Navbar-->
+<div style="margin-bottom: 1%; margin-top: 1%;" class="container bootstrap snippets bootdey">
+
+  <ul class="nav nav-pills nav-with-alerts">
+    <li class="col-lg-3 offset-3">
+      <a routerLink="/user/index" data-toggle="tab">
+        <div class="alert alert-info">
+          <i class="fa-solid fa-globe"></i>
+          Kezdőlap/Index page
+        </div>
+      </a>
+    </li>
+    <li class="col-lg-3">
+      <a routerLink="/user/profile" data-toggle="tab">
+        <div class="alert alert-info">
+          <i class="fa-solid fa-id-card"></i>
+          Profil/Profile
+
+        </div>
+      </a>
+    </li>
+  </ul>
+</div>
+<!--Navbar end-->
+
+<div class="tab-pane" style="color: black" id="profile">
+  <div class="container">
+    <div class="row flex-lg-nowrap">
+      <div class="col">
+        <div class="row">
+          <div class="col mb-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="e-profile">
+                  <div class="row">
+                    <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                      <div class="text-center text-sm-left mb-2 mb-sm-0">
+                        <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{user?.lastName}} {{user?.firstName}}</h4>
+                        <p class="mb-0">{{user?.username}}</p>
+                        <div *ngIf="user?.lastLoginDateDisplay !== null" class="text-muted"><small>Legutóbbi bejelentkezés:
+                          {{user?.lastLoginDateDisplay | date:'medium':'CET':'en-UK'}}</small></div>
+                      </div>
+                      <div class="text-center text-sm-right">
+                        <div class="text-muted"><small>Csatlakozott: {{user?.joinDate | date:'fullDate'}}</small></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-content pt-3">
+                    <div class="tab-pane active">
+                      <form #profileUserForm="ngForm" (ngSubmit)="onUpdateCurrentUser(profileUserForm.value)"
+                            class="form"
+                            novalidate>
+                        <div class="row">
+                          <div class="col">
+                            <div class="row">
+                              <div class="col">
+                                <div class="form-group">
+                                  <label>Vezetéknév</label>
+
+                                  <input type="text" name="lastName" [(ngModel)]="user.lastName"
+                                         class="form-control">
+
+                                </div>
+                              </div>
+                              <div class="col">
+                                <div class="form-group">
+                                  <label>Keresztnév</label>
+                                  <input type="text" name="firstName" [(ngModel)]="user.firstName"
+                                         class="form-control">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col">
+                                <div class="form-group">
+                                  <label>Felhasználónév</label>
+                                  <input type="text" name="username" required [(ngModel)]="user.username"
+                                         class="form-control">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-6">
+                                <label>Jelszó</label>
+                                <input type="password" name="password" ngModel #passwordInput="ngModel" class="form-control">
+                              </div>
+                              <div class="col-md-6">
+                                <label>Jelszó megerősítés</label>
+                                <input type="password" name="passwordCheck" ngModel #passwordCheckInput="ngModel"
+                                       class="form-control">
+
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col">
+                                <div class="form-group">
+                                  <label>Email</label>
+                                  <input type="text" name="email" required [(ngModel)]="user.email"
+                                         class="form-control">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col mb-3">
+                                <div class="form-group">
+                                  <label>Rang</label><small [hidden]="isAdmin">(read only)</small>
+                                  <select name="role" [(ngModel)]="user.role" class="form-control">
+                                    <option [hidden]="!isAdmin" value="ROLE_USER">USER</option>
+                                    <option [hidden]="!isAdmin" value="ROLE_HR">HR</option>
+                                    <option [hidden]="!isAdmin" value="ROLE_MANAGER">MANAGER</option>
+                                    <option [hidden]="!isAdmin" value="ROLE_ADMIN">ADMIN</option>
+                                    <option [hidden]="!isAdmin" value="ROLE_SUPER_ADMIN">SUPER ADMIN</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Vonalas telefon</label>
+                                  <input type="tel" name="phoneFix" [(ngModel)]="user.phoneFix" class="form-control">
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Mobil telefon</label>
+                                  <input type="tel" name="phoneMobile" [(ngModel)]="user.phoneMobile"
+                                         class="form-control">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <label>Lakcím</label>
+                                <input type="text" name="address" [(ngModel)]="user.address" class="form-control">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div [hidden]="!isAdmin" class="row">
+                          <div class="col-12 col-sm-5 offset-sm-1 mb-3">
+                            <div class="mb-2"><b>Fiók beállítások</b></div>
+                            <div class="row">
+                              <div class="col">
+                                <div class="custom-controls-stacked px-2">
+                                  <div class="custom-control custom-checkbox">
+                                    <input name="active" type="checkbox" [(ngModel)]="user.isActive"
+                                           class="custom-control-input">
+                                    <label class="custom-control-label">Active</label>
+                                  </div>
+                                  <div class="custom-control custom-checkbox">
+                                    <input name="notLocked" type="checkbox"
+                                           [(ngModel)]="user.isNotLocked" class="custom-control-input">
+                                    <label class="custom-control-label">Unlocked</label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col d-flex justify-content-end">
+                            <button style="margin-top: 1%;" class="btn btn-primary" type="submit">
+                              <i *ngIf="refreshing" class="fas fa-spinner fa-spin"></i>&nbsp;&nbsp;
+                              <span *ngIf="refreshing">Loading...</span>
+                              <span *ngIf="!refreshing">Save Changes</span>
+                            </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-3 mb-3">
+            <div class="card">
+              <div class="card-body">
+                <h3 class="card-title font-weight-bold">Permissions From Role: </h3>
+                <h3 *ngFor="let authority of user?.authorities" class="card-text">{{authority}}</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
