@@ -26,6 +26,11 @@ export class TvService {
   public getTvsByUsersEmail(email: string): Observable<Tv[] | HttpErrorResponse> {
     return this.http.get<Tv[]>(`${this.host}/tv/${email}`);
   }
+
+  public addNewTv(formData: FormData): Observable<Tv | HttpErrorResponse> {
+    return this.http.post<Tv>(`${this.host}/tv/new`, formData);
+  }
+
   public addTvsToLocalCache(tvs: Tv[]): void {
     localStorage.setItem('tvs', JSON.stringify(tvs));
   }
@@ -36,5 +41,25 @@ export class TvService {
     } else {
       return null;
     }
+  }
+
+  public createNewTvFormData(loggedInUsersEmal: string, tv: Tv): FormData {
+    const formData = new FormData();
+    formData.append('personEmail', loggedInUsersEmal);
+    formData.append('tvCategoryDescription', tv.tvCategoryDescription);
+    formData.append('errorSeenByCustomer',tv.errorSeenByCustomer);
+    formData.append('reservedDateToRepair', tv.reservedDateToRepair.toString());
+
+    return formData;
+  }
+
+  public updateTvFormDate(externalId: string,tv: Tv): FormData {
+    const formData = new FormData();
+    formData.append('tvExternalId', externalId);
+    formData.append('tvCategoryDescription', tv.tvCategoryDescription);
+    formData.append('errorSeenByCustomer',tv.errorSeenByCustomer);
+    formData.append('reservedDateToRepair', tv.reservedDateToRepair.toString());
+
+    return formData;
   }
 }

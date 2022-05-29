@@ -1,5 +1,5 @@
 export class Person {
-  public exteralId: string;
+  public externalId: string;
   public firstName: string;
   public lastName: string;
   public email: string;
@@ -18,7 +18,7 @@ export class Person {
   public isNotLocked: boolean;
 
   constructor() {
-    this.exteralId = '';
+    this.externalId = '';
     this.firstName = '';
     this.lastName = '';
     this.username = '';
