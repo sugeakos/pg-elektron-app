@@ -31,6 +31,10 @@ export class TvService {
     return this.http.post<Tv>(`${this.host}/tv/new`, formData);
   }
 
+  public updateTvByAdmin(formData: FormData): Observable<Tv | HttpErrorResponse> {
+    return this.http.post<Tv>(`${this.host}/tv/update`, formData);
+  }
+
   public addTvsToLocalCache(tvs: Tv[]): void {
     localStorage.setItem('tvs', JSON.stringify(tvs));
   }
@@ -60,6 +64,14 @@ export class TvService {
     formData.append('errorSeenByCustomer',tv.errorSeenByCustomer);
     formData.append('reservedDateToRepair', tv.reservedDateToRepair.toString());
 
+    return formData;
+  }
+
+  public updateTvByAdminForm(tv: Tv, repairedError: string, price: number): FormData {
+    const formData = new FormData();
+    formData.append('externalTvId',tv.externalId);
+    formData.append('repairedError', repairedError);
+    formData.append('price', price.toString());
     return formData;
   }
 }

@@ -48,7 +48,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-6 offset-3">
+    <div class="col-md-8 offset-2">
       <div [hidden]="loggedInUsersTvs.length !== 0" class="card bg-warning">
         <div class="card-body">
           <h4 class="card-header">Még nincs TV hozzárendelve {{loggedInUser.lastName}} {{loggedInUser.firstName}}
@@ -59,15 +59,18 @@
               data-bs-target="#addTvModal">
         <i class="fa fa-plus"></i>New Tv
       </button>
+      <mat-slide-toggle color="primary" arial-labelledby="check1"  >Slide me!
+        <input style="display: none;" type="checkbox" role="switch" name="check1" id="check1">
+      </mat-slide-toggle>
       <div [hidden]="loggedInUsersTvs.length === 0" class="card bg-info">
         <div class="card-body">
           <h4 class="card-header"><b>{{loggedInUser.firstName}}</b> TV-i</h4>
           <div class="card-text table-responsive">
-            <table class="table table-info table-striped table-hover ">
+            <table class="table table table-striped table-hover ">
               <thead class="table-borderless ">
-              <tr  class="text-center">
+              <tr  class="text-center align-middle">
                 <th>Márka</th>
-                <th style="width: 50%;">{{loggedInUser.firstName}} által észlelt hiba</th>
+                <th>{{loggedInUser.firstName}} által észlelt hiba</th>
                 <th>Lefoglalt időpont</th>
                 <th >Javított hiba</th>
                 <th>Javítás dátuma</th>
@@ -76,7 +79,7 @@
               </tr>
               </thead>
               <tbody *ngFor="let tv of loggedInUsersTvs">
-              <tr class="text-center ">
+              <tr class="text-center align-middle">
                 <td (click)="onSelectTv(tv)">{{tv?.tvCategoryDescription}}</td>
                 <td (click)="onSelectTv(tv)">{{tv?.errorSeenByCustomer}}</td>
                 <td (click)="onSelectTv(tv)">{{tv?.reservedDateToRepair | date:'fullDate'}}</td>
