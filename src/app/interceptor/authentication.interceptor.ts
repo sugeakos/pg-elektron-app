@@ -6,7 +6,7 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {AuthenticationService} from '../service/authentication/authentication.service';
+import {AuthenticationService} from '../user/service/authentication.service';
 
 
 @Injectable()
@@ -31,7 +31,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 
     this.authService.loadToken();
     const token = this.authService.getToken();
-    const request = httpRequest.clone({setHeaders: { Authorization: `PGElektron ${token}`}});
+    const request = httpRequest.clone({setHeaders: { Authorization: `Bearer ${token}`}});
     return httpHandler.handle(request);
   }
 }

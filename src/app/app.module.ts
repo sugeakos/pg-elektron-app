@@ -5,23 +5,26 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthenticationService } from './service/authentication/authentication.service';
-import { PersonService } from './service/person/person.service';
-import { IndexComponent } from './index/index.component';
+import { AuthenticationService } from './user/service/authentication.service';
+import { PersonService } from './user/service/person.service';
+import { IndexComponent } from './controller/index/index.component';
 import { AuthenticationGuard } from './guard/authentication.guard';
 import { AuthenticationInterceptor } from './interceptor/authentication.interceptor';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { RegistrationComponent } from './registration/registration.component';
+import { RegistrationComponent } from './user/controller/registration/registration.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MaterialModule } from './modules/material.module';
-import { LoginComponent } from './login/login.component';
-import { UserIndexComponent } from './user-index/user-index.component';
-import { AdminIndexComponent } from './admin-index/admin-index.component';
+import { LoginComponent } from './user/controller/login/login.component';
+import { UserIndexComponent } from './user/controller/user-index/user-index.component';
+import { AdminIndexComponent } from './user/controller/admin-index/admin-index.component';
 import { AdminGuard } from './guard/admin.guard';
-import { UserProfileComponent } from './user-profile/user-profile.component';
+import { UserProfileComponent } from './user/controller/user-profile/user-profile.component';
+import { DataTablesModule } from 'angular-datatables';
+import { NavbarComponent } from './controller/navbar/navbar.component';
+import { AgGridModule } from 'ag-grid-angular';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     LoginComponent,
     UserIndexComponent,
     AdminIndexComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +47,9 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     MatMenuModule,
     MatSidenavModule,
     MatNativeDateModule,
-    MaterialModule
+    MaterialModule,
+    DataTablesModule,
+    AgGridModule.withComponents([]),
   ],
   providers: [AuthenticationService, PersonService, AuthenticationGuard,AdminGuard,
     {provide: HTTP_INTERCEPTORS,

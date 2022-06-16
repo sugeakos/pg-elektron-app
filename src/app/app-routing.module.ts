@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminIndexComponent } from './admin-index/admin-index.component';
+import { AdminIndexComponent } from './user/controller/admin-index/admin-index.component';
 import { AdminGuard } from './guard/admin.guard';
 import { AuthenticationGuard } from './guard/authentication.guard';
-import { IndexComponent } from './index/index.component';
-import { LoginComponent } from './login/login.component';
-import { RegistrationComponent } from './registration/registration.component';
-import { UserIndexComponent } from './user-index/user-index.component';
-import { UserProfileComponent } from './user-profile/user-profile.component';
+import { IndexComponent } from './controller/index/index.component';
+import { LoginComponent } from './user/controller/login/login.component';
+import { RegistrationComponent } from './user/controller/registration/registration.component';
+import { UserIndexComponent } from './user/controller/user-index/user-index.component';
+import { UserProfileComponent } from './user/controller/user-profile/user-profile.component';
 
 const routes: Routes = [
   {path: 'index', component: IndexComponent},

@@ -1,0 +1,115 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <!-- Container wrapper -->
+  <div class="container-fluid">
+    <!-- Navbar brand -->
+    <a class="navbar-brand" >PG-Elektron</a>
+
+    <!-- Toggle button -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+      <i class="fas fa-bars text-light"></i>
+    </button>
+
+    <!-- Collapsible wrapper -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- Left links -->
+      <ul class="navbar-nav me-auto d-flex flex-row mt-3 mt-lg-0">
+        <li class="nav-item text-center mx-2 mx-lg-1" >
+          <a class="nav-link " aria-current="page" *ngIf="isLoggedIn === true " routerLinkActive="active" routerLink="/user/index" >
+            <div>
+              <i class="fas fa-home fa-lg mb-1"></i>
+            </div>
+            Index
+          </a>
+          <a class="nav-link " aria-current="page" *ngIf="isLoggedIn !== true " routerLinkActive="active" routerLink="/index" >
+            <div>
+              <i class="fas fa-home fa-lg mb-1"></i>
+            </div>
+            Index
+          </a>
+
+        </li>
+        <li *ngIf="isAdminLoggedIn" style="cursor:pointer; display: block"  class="nav-item text-center mx-2 mx-lg-1">
+          <a class="nav-link" routerLink="/admin/index" routerLinkActive="active">
+            <div>
+              <i class="fas fa-toolbox"></i>
+
+            </div>
+            Admin panel
+          </a>
+        </li>
+        <li class="nav-item text-center mx-2 mx-lg-1" >
+          <a class="nav-link " aria-disabled="true" [hidden]="!isLoggedIn" routerLinkActive="active" routerLink="/user/profile">
+            <div>
+              <i class="fa-solid fa-id-badge"></i>
+
+            </div>
+            Profile
+          </a>
+        </li>
+        <li class="nav-item dropdown text-center mx-2 mx-lg-1" >
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-target="#secondaryDropdown" data-bs-toggle="dropdown"
+             aria-expanded="false">
+            <div>
+              <i class="far fa-envelope fa-lg mb-1"></i>
+              <span class="badge rounded-pill badge-notification bg-primary">11</span>
+            </div>
+            Dropdown
+          </a>
+          <!-- Dropdown menu -->
+          <ul class="dropdown-menu dropdown-menu-dark" id="secondaryDropdown" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <!-- Left links -->
+
+      <!-- Right links -->
+      <ul class="navbar-nav ms-auto d-flex flex-row mt-3 mt-lg-0">
+        <li [hidden]="isLoggedIn" class="nav-item text-center mx-2 mx-lg-1">
+          <a class="nav-link" routerLink="/register">
+            <div>
+              <i class="fa-solid fa-id-card"></i>
+
+            </div>
+            Registration
+          </a>
+        </li>
+
+        <li class="nav-item text-center mx-2 mx-lg-1" routerLinkActive="active">
+          <a class="nav-link" *ngIf="isLoggedIn === true" href="#" (click)="onLogout()">
+            <div>
+              <i class="fas fa-terminal fa-lg mb-1"></i>
+
+            </div>
+            Logout
+          </a>
+        </li>
+        <li class="nav-item text-center mx-2 mx-lg-1" routerLinkActive="active">
+          <a class="nav-link" *ngIf="isLoggedIn !== true" routerLink="/login">
+            <div>
+              <i class="fas fa-terminal fa-lg mb-1"></i>
+
+            </div>
+            Login
+          </a>
+        </li>
+      </ul>
+      <!-- Right links -->
+
+    </div>
+    <!-- Collapsible wrapper -->
+  </div>
+  <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->
+<br>
