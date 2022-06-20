@@ -7,7 +7,7 @@
 			"projectType": "application",
 			"schematics": {
 				"@schematics/angular:application": {
-					"strict": true
+					"strict": false
 				},
 				"@schematics/angular:component": {
 					"style": "scss"
@@ -36,14 +36,12 @@
 							"node_modules/datatables.net-dt/css/jquery.dataTables.css",
 							"node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css",
 							"node_modules/ag-grid-community/dist/styles/ag-grid.css",
-              "node_modules/mdb-ui-kit/css/mdb.min.css",
-              "node_modules/mdb-ui-kit/css/mdb.dark.min.css",
-              "node_modules/mdb-ui-kit/css/mdb.dark.rtl.min.css",
-              "node_modules/mdb-ui-kit/css/mdb.rtl.min.css"
+              "node_modules/angular-notifier/styles.scss"
+
 						],
 						"scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
               "node_modules/datatables.net/js/jquery.dataTables.js",
               "node_modules/mdb-ui-kit/js/mdb.min.js"
 						]

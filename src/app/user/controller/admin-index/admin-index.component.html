@@ -11,7 +11,7 @@
 
       <div class="card bg-info">
         <div class="card-body">
-          <h4 class="card-header"><b>Users</b></h4>
+          <h4 class="card-header bg-info"><b>Users</b></h4>
           <div class="card-text table-responsive">
             <!--            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table table-striped table-hover ">-->
             <!--              <thead class="table-borderless ">-->
@@ -82,16 +82,16 @@
 
       <div class="card">
         <div *ngIf="selectedUsersTvs.length === 0" class="card-body">
-          <div class="card-header">
+          <div class="card-header ">
             Nincs tv hozzárendelve <b>{{selectedUser.lastName}} {{selectedUser.firstName}}</b> felhasználóhoz.
           </div>
         </div>
         <div *ngIf="selectedUsersTvs.length !== 0" class="card-body">
-          <div class="card-header">
+          <div class="card-header text-black">
             {{selectedUser.firstName}} TV-i
           </div>
           <div class="card-text table-responsive">
-            <table class="table table table-striped table-hover ">
+            <table class="table table-light table-striped table-hover ">
               <thead class="table-borderless ">
               <tr class="text-center align-middle">
                 <th>#</th>
@@ -139,7 +139,7 @@
   <div *ngIf="selectedUser.firstName !== ''" style="margin-top: 1%;" class="row">
     <div class="col">
       <div class="card bg-info">
-        <h3 class="card-header text-center" id="exampleModalLongTitle">
+        <h3 class="card-header bg-info text-center" id="exampleModalLongTitle">
           <b>{{selectedUser?.lastName}} {{selectedUser?.firstName}}</b>
           <button style="margin-left: 1%;" class="btn btn-outline-primary" (click)="onEditUserByAdmin(selectedUser)">
             <i class="fas fa-edit"></i>
@@ -212,7 +212,7 @@
         <div class="modal-body">
           <div class="">
             <form #editTvForm="ngForm">
-              <div class="form-group">
+              <div class="form-group" hidden>
                 <label>TV ID</label>
                 <input type="text" name="firstName" required readonly
                        [(ngModel)]="updateTv.externalId" class="form-control">

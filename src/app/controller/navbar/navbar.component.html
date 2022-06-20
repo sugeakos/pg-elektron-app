@@ -49,25 +49,31 @@
             Profile
           </a>
         </li>
-        <li class="nav-item dropdown text-center mx-2 mx-lg-1" >
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-target="#secondaryDropdown" data-bs-toggle="dropdown"
+        <li *ngIf="isLoggedIn" class="nav-item dropdown text-center mx-2 mx-lg-1" >
+          <a class="nav-link dropdown-toggle" routerLinkActive="active" href="#" id="navbarDropdown" role="button" data-bs-target="#secondaryDropdown" data-bs-toggle="dropdown"
              aria-expanded="false">
             <div>
               <i class="far fa-envelope fa-lg mb-1"></i>
-              <span class="badge rounded-pill badge-notification bg-primary">11</span>
             </div>
-            Dropdown
+            Funkciók
           </a>
           <!-- Dropdown menu -->
-          <ul class="dropdown-menu dropdown-menu-dark" id="secondaryDropdown" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
+          <ul class="dropdown-menu dropdown-menu-dark text-center" id="secondaryDropdown" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" routerLinkActive="active" routerLink="/tv/create"> <i class="fa fa-plus"></i> Új TV</a></li>
+<!--            <li><a class="dropdown-item" routerLinkActive="active" routerLink="/tv/update/:id">TV időpontfoglalás módosítása</a></li>-->
             <li>
               <hr class="dropdown-divider" />
             </li>
-            <li>
-              <a class="dropdown-item" href="#">Something else here</a>
+            <li *ngIf="isAdminLoggedIn" >
+              <a class="dropdown-item" href="#">Új személy</a>
             </li>
+            <li *ngIf="isAdminLoggedIn">
+              <a class="dropdown-item" href="#">Új tv személyhez</a>
+            </li>
+            <li *ngIf="isAdminLoggedIn">
+              <a class="dropdown-item" href="#">Új márka</a>
+            </li>
+
           </ul>
         </li>
       </ul>

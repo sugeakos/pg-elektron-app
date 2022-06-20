@@ -9,16 +9,11 @@
             felhasználóhoz. </h4>
         </div>
       </div>
-      <button style="margin-top: 1%;margin-bottom: 1%;" type="button" class="btn btn-info" data-bs-toggle="modal"
-              data-bs-target="#addTvModal">
-        <i class="fa fa-plus"></i>New Tv
-      </button>
-      <mat-slide-toggle color="primary" arial-labelledby="check1">Slide me!
-        <input style="display: none;" type="checkbox" role="switch" name="check1" id="check1">
-      </mat-slide-toggle>
+
+
       <div [hidden]="loggedInUsersTvs.length === 0" class="card bg-info">
         <div class="card-body">
-          <h4 class="card-header"><b>{{loggedInUser.firstName}}</b> TV-i</h4>
+          <h4 class="card-header bg-info"><b>{{loggedInUser.firstName}}</b> TV-i</h4>
           <div class="card-text table-responsive">
 <!--            <table class="table table table-striped table-hover ">-->
 <!--              <thead class="table-borderless ">-->
@@ -56,16 +51,17 @@
         </div>
       </div><div [hidden]="loggedInUsersTvs.length === 0" class="card bg-info">
         <div class="card-body">
-          <h4 class="card-header"><b>{{loggedInUser.firstName}}</b> TV-i</h4>
+          <h4 class="card-header bg-info"><b>{{loggedInUser.firstName}}</b> TV-i</h4>
           <div class="card-text table-responsive">
-            <table class="table table table-striped table-hover ">
+            <table class="table table-primary table-striped table-hover ">
               <thead class="table-borderless ">
               <tr class="text-center align-middle">
                 <th>#</th>
                 <th>Márka</th>
                 <th>{{loggedInUser.firstName}} által észlelt hiba</th>
                 <th>Lefoglalt időpont</th>
-                <th>Javított hiba</th>
+                <th>Információ</th>
+                <th>Lefoglalt időpont szerkesztése</th>
               </tr>
               </thead>
               <tbody *ngFor="let tv of loggedInUsersTvs; let i = index">
@@ -77,6 +73,11 @@
                 <td>
                   <button type="button" (click)="onSelectTv(tv)" class="btn btn-outline-primary">
                     <mat-icon aria-hidden="false">information</mat-icon>
+                  </button>
+                </td>
+                <td>
+                  <button type="button" (click)="onUpdateSelectedTv(tv)" class="btn btn-outline-primary">
+                    afsdfsdf
                   </button>
                 </td>
               </tr>
@@ -96,71 +97,20 @@
           </div>
         </div>
       </div>
-
-      <!--         Add Tv Modal   -->
-      <div class="modal fade" tabindex="-1" role="dialog"
-           id="addTvModal" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h2 class="modal-title text-center"><b>Új Tv</b></h2>
-              <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div>
-                <form #newTvForm="ngForm" (ngSubmit)="onAddNewTv(newTvForm)">
-                  <div class="form-group">
-                    <label>Email</label>
-                    <input type="text" name="personEmail" class="form-control" readonly
-                           [(ngModel)]="loggedInUser.email">
-                  </div>
-                  <div class="form-group">
-                    <label>Márka</label>
-                    <select name="tvCategoryDescription" required ngModel="null" class="form-control">
-                      <option value="null">Válassz márkát</option>
-                      <option *ngFor="let cat of tvCategories"
-                              value="{{cat?.description}}">{{cat?.description}}</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label>Hiba:</label>
-                    <input type="text" name="errorSeenByCustomer" required ngModel class="form-control">
-                  </div>
-                  <div class="form-group">
-                    <label>Idopont:</label>
-                    <input type="date" name="reservedDateToRepair" required ngModel class="form-control">
-                  </div>
-                  <button type="submit" style="display: none;" id="new-tv-save"></button>
-                </form>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="new-tv-close">Close</button>
-              <button type="button" (click)="saveNewTv()" [disabled]="newTvForm.invalid" class="btn btn-primary">Save
-                changes
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--   Add Tv Modal-end   -->
-
       <!--         Update Tv Modal   -->
       <div class="modal fade" tabindex="-1" role="dialog"
            id="updateTvModal" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title text-center">Új Tv</h5>
+              <h5 class="modal-title text-center">Tv módosítása</h5>
               <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
               <div>
-                <form #updateTvForm="ngForm" (ngSubmit)="onUpdateTv(updateTvForm)">
+                <form #updateTvForm="ngForm" >
                   <div class="form-group">
                     <label>Email</label>
                     <input type="text" name="personEmail" class="form-control" readonly
@@ -189,7 +139,7 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="update-tv-close">Close
               </button>
-              <button type="button" (click)="saveNewTv()" [disabled]="newTvForm.invalid" class="btn btn-primary">Save
+              <button type="button" (click)="saveNewTv()" [disabled]="updateTvForm.invalid" class="btn btn-primary">Save
                 changes
               </button>
             </div>

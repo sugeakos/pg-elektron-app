@@ -1,0 +1,47 @@
+<app-navbar></app-navbar>
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-3">
+      <div class="card bg-info">
+        <h4 class="card-header text-light">TV</h4>
+        <div class="card-body">
+          <div class="modal-body">
+            <div>
+              <form #newTvForm="ngForm" (ngSubmit)="onAddNewTv(newTvForm)">
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="text" name="personEmail" class="form-control" readonly
+                         [(ngModel)]="loggedInUsersEmail">
+                </div>
+                <div class="form-group">
+                  <label>Márka</label>
+                  <select name="tvCategoryDescription" required ngModel class="form-control">
+                    <option value="null" [selected]="true">Válassz márkát</option>
+                    <option *ngFor="let cat of tvCategories"
+                            value="{{cat?.description}}">{{cat?.description}}</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Hiba:</label>
+                  <input type="text" name="errorSeenByCustomer"  required ngModel class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Idopont:</label>
+                  <input type="datetime-local" name="reservedDateToRepair" required ngModel class="form-control">
+                </div>
+                <button type="submit" style="display: none;" id="new-tv-save"></button>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" (click)="saveNewTv()" [disabled]="newTvForm.invalid" class="btn btn-primary">Save
+              changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

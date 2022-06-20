@@ -15,6 +15,8 @@ import {NgForm} from '@angular/forms';
 import {ThemePalette} from '@angular/material/core';
 import {CellClickedEvent, ColDef, GridReadyEvent} from 'ag-grid-community';
 import {AgGridAngular} from 'ag-grid-angular'
+import { NotificationService } from 'src/app/custom-features/notification.service';
+import { NotificationType } from 'src/app/enumeration/notification.type';
 //
 // import {
 //   MAT_MOMENT_DATE_FORMATS,
@@ -73,7 +75,8 @@ export class UserIndexComponent implements OnInit, OnDestroy {
   @ViewChild(AgGridAngular) agGrid!: AgGridAngular;
 
   constructor(private personServie: PersonService, private authService: AuthenticationService, private router: Router,
-              private tvService: TvService, private tvCatService: TvCategoryService, private http: HttpClient) {
+              private tvService: TvService, private tvCatService: TvCategoryService, private http: HttpClient,
+              private notifier: NotificationService) {
   }
 
 
@@ -81,8 +84,6 @@ export class UserIndexComponent implements OnInit, OnDestroy {
     this.loggedInUser = this.authService.getUserFromLocalCache();
     this.getAllCategories();
     this.getUserTvs();
-
-    console.log(this.rowData$);
   }
 
   // public hungarian(): void {
@@ -133,34 +134,41 @@ export class UserIndexComponent implements OnInit, OnDestroy {
         (response: Tv[]) => {
           this.loggedInUsersTvs = response;
 
-          this.rowData$ = [
-            {externalId: response[0].externalId,
-              personEmail: response[0].personEmail,
-              tvCategoryDescription: response[0].tvCategoryDescription,
-              errorSeenByCustomer: response[0].errorSeenByCustomer,
-              reservedDateToRepair: response[0].reservedDateToRepair,
-              dateOfCorrection: response[0].dateOfCorrection,
-              repairedError: response[0].repairedError,
-              price: response[0].price,
-              itStillInProgress: response[0].isItStillInProgress
+        //   this.rowData$ = [
+        //     {externalId: response[0].externalId,
+        //       personEmail: response[0].personEmail,
+        //       tvCategoryDescription: response[0].tvCategoryDescription,
+        //       errorSeenByCustomer: response[0].errorSeenByCustomer,
+        //       reservedDateToRepair: response[0].reservedDateToRepair,
+        //       dateOfCorrection: response[0].dateOfCorrection,
+        //       repairedError: response[0].repairedError,
+        //       price: response[0].price,
+        //       itStillInProgress: response[0].isItStillInProgress
+        //
+        //     },
+        //     {externalId: response[1].externalId,
+        //       personEmail: response[1].personEmail,
+        //       tvCategoryDescription: response[1].tvCategoryDescription,
+        //       errorSeenByCustomer: response[1].errorSeenByCustomer,
+        //       reservedDateToRepair: response[1].reservedDateToRepair,
+        //       dateOfCorrection: response[1].dateOfCorrection,
+        //       repairedError: response[1].repairedError,
+        //       price: response[1].price,
+        //       itStillInProgress: response[1].isItStillInProgress,
+        //
+        //     },
+        //   ];
+        // console.log(this.rowData$);
+          if(response.length > 0){
+            this.sendNotification(NotificationType.SUCCESS,`Sikeresen be lett olvasva ${response.length} tv.`);
+          } else {
+            this.sendNotification(NotificationType.INFO,`Még nincs hozzárendelve TV a profiljához.`);
+          }
 
-            },
-            {externalId: response[1].externalId,
-              personEmail: response[1].personEmail,
-              tvCategoryDescription: response[1].tvCategoryDescription,
-              errorSeenByCustomer: response[1].errorSeenByCustomer,
-              reservedDateToRepair: response[1].reservedDateToRepair,
-              dateOfCorrection: response[1].dateOfCorrection,
-              repairedError: response[1].repairedError,
-              price: response[1].price,
-              itStillInProgress: response[1].isItStillInProgress,
-
-            },
-          ];
-        console.log(this.rowData$);
         },
         (error: HttpErrorResponse) => {
           console.log(error.error.message);
+          this.sendNotification(NotificationType.ERROR,error.error.message);
         }
       )
     );
@@ -181,46 +189,31 @@ export class UserIndexComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onAddNewTv(tvForm: NgForm): void {
-    const formData = this.tvService.createNewTvFormData(this.loggedInUser.email, tvForm.value);
-    this.subs.add(
-      this.tvService.addNewTv(formData).subscribe(
-        (response: Tv) => {
-          this.clickButton('new-tv-close');
-          this.getUserTvs();
-          tvForm.reset();
-        },
-        (err: HttpErrorResponse) => {
-          tvForm.reset();
-          console.log(err.error.message);
-          this.clickButton('new-tv-close');
-        }
-      )
-    );
-  }
+
 
   public onSelectTv(selectedTv: Tv): void {
     this.selectedTv = selectedTv;
     this.clickButton('openTvInfo');
+    this.sendNotification(NotificationType.INFO,"asda");
   }
 
-  public onUpdateTv(updateTvForm: NgForm): void {
-    const formData = this.tvService.updateTvFormDate(this.selectedTv.externalId, updateTvForm.value);
-    this.subs.add(
-      this.tvService.addNewTv(formData).subscribe(
-        (response: Tv) => {
-          this.clickButton('new-tv-close');
-          this.getUserTvs();
-          updateTvForm.reset();
-        },
-        (err: HttpErrorResponse) => {
-          updateTvForm.reset();
-          console.log(err.error.message);
-          this.clickButton('new-tv-close');
-        }
-      )
-    );
-  }
+  // public onUpdateTv(updateTvForm: NgForm): void {
+  //   const formData = this.tvService.updateTvFormDate(this.selectedTv.externalId, updateTvForm.value);
+  //   this.subs.add(
+  //     this.tvService.addNewTv(formData).subscribe(
+  //       (response: Tv) => {
+  //         this.clickButton('new-tv-close');
+  //         this.getUserTvs();
+  //         updateTvForm.reset();
+  //       },
+  //       (err: HttpErrorResponse) => {
+  //         updateTvForm.reset();
+  //         console.log(err.error.message);
+  //         this.clickButton('new-tv-close');
+  //       }
+  //     )
+  //   );
+  // }
 
   public saveNewTv(): void {
     this.clickButton('new-tv-save');
@@ -237,7 +230,19 @@ export class UserIndexComponent implements OnInit, OnDestroy {
   public onLogOut(): void {
     this.authService.logout();
     this.router.navigate(['/index']);
+    this.sendNotification(NotificationType.WARNING,'Sikeresen kijelentkezett.');
+  }
 
+  public onUpdateSelectedTv(tv: Tv): void {
+    this.router.navigateByUrl(`/tv/update/${tv.externalId}`);
+  }
+
+  private sendNotification(notificationType: NotificationType, message: string): void {
+    if (message) {
+      this.notifier.sendNotification(notificationType, message);
+    } else {
+      this.notifier.sendNotification(notificationType, 'An error occurred. Please try again.');
+    }
   }
 
   ngOnDestroy(): void {

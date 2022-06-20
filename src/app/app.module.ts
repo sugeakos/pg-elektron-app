@@ -25,6 +25,10 @@ import { UserProfileComponent } from './user/controller/user-profile/user-profil
 import { DataTablesModule } from 'angular-datatables';
 import { NavbarComponent } from './controller/navbar/navbar.component';
 import { AgGridModule } from 'ag-grid-angular';
+import { CreateNewTvComponent } from './tv/controller/create-new-tv/create-new-tv.component';
+import { NotificationModule } from './modules/notification.module';
+import { NotificationService } from './custom-features/notification.service';
+import { UpdateTvComponent } from './tv/controller/update-tv/update-tv.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +39,9 @@ import { AgGridModule } from 'ag-grid-angular';
     UserIndexComponent,
     AdminIndexComponent,
     UserProfileComponent,
-    NavbarComponent
+    NavbarComponent,
+    CreateNewTvComponent,
+    UpdateTvComponent
   ],
   imports: [
     BrowserModule,
@@ -49,9 +55,11 @@ import { AgGridModule } from 'ag-grid-angular';
     MatNativeDateModule,
     MaterialModule,
     DataTablesModule,
+    NotificationModule,
     AgGridModule.withComponents([]),
+
   ],
-  providers: [AuthenticationService, PersonService, AuthenticationGuard,AdminGuard,
+  providers: [AuthenticationService, PersonService, NotificationService, AuthenticationGuard,AdminGuard,
     {provide: HTTP_INTERCEPTORS,
     useClass: AuthenticationInterceptor,
     multi: true},

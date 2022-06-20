@@ -21,43 +21,23 @@ export class TvService {
     return this.http.get<Tv[]>(`${this.host}/tv/${email}`);
   }
 
-  public addNewTv(formData: FormData): Observable<Tv | HttpErrorResponse> {
-    return this.http.post<Tv>(`${this.host}/tv/new`, formData);
+  public addNewTv(tv: Tv): Observable<Tv | HttpErrorResponse> {
+    return this.http.post<Tv>(`${this.host}/tv/new`, tv);
   }
 
-  public updateTvByAdmin(formData: FormData): Observable<Tv | HttpErrorResponse> {
-    return this.http.post<Tv>(`${this.host}/tv/update`, formData);
+  public updateTvByAdmin(tv: Tv): Observable<Tv | HttpErrorResponse> {
+    return this.http.post<Tv>(`${this.host}/tv/update`, tv);
   }
 
   public fetchAllTvs(): Observable<Tv[]> {
     return this.http.get<Tv[]>(`${this.host}/tv/all-tv`);
   }
 
-  public createNewTvFormData(loggedInUsersEmal: string, tv: Tv): FormData {
-    const formData = new FormData();
-    formData.append('personEmail', loggedInUsersEmal);
-    formData.append('tvCategoryDescription', tv.tvCategoryDescription);
-    formData.append('errorSeenByCustomer',tv.errorSeenByCustomer);
-    formData.append('reservedDateToRepair', tv.reservedDateToRepair.toString());
-
-    return formData;
+  public updateReservedDate(tv: Tv): Observable<Tv | HttpErrorResponse> {
+    return this.http.post<Tv>(`${this.host}/tv/update-reserved-date`,tv);
   }
 
-  public updateTvFormDate(externalId: string,tv: Tv): FormData {
-    const formData = new FormData();
-    formData.append('tvExternalId', externalId);
-    formData.append('tvCategoryDescription', tv.tvCategoryDescription);
-    formData.append('errorSeenByCustomer',tv.errorSeenByCustomer);
-    formData.append('reservedDateToRepair', tv.reservedDateToRepair.toString());
-
-    return formData;
-  }
-
-  public updateTvByAdminForm(tv: Tv, repairedError: string, price: number): FormData {
-    const formData = new FormData();
-    formData.append('externalTvId',tv.externalId);
-    formData.append('repairedError', repairedError);
-    formData.append('price', price.toString());
-    return formData;
+  public findATv(id: string): Observable<Tv | HttpErrorResponse> {
+    return this.http.get<Tv>(`${this.host}/tv/find/${id}`);
   }
 }

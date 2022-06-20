@@ -1,0 +1,34 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-3">
+      <div class="card bg-info text-dark">
+        <h3 class="card-header"><b> Keresett Tv</b></h3>
+        <div class="card-body">
+          <form #updateTvForm="ngForm" (ngSubmit)="onUpdateReservedDate(updateTvForm)">
+            <div class="form-group">
+              <label>Email</label>
+              <input type="text" name="personEmail" class="form-control" readonly
+                     [(ngModel)]="selectedTv.personEmail">
+            </div>
+            <div class="form-group">
+              <label>Márka</label>
+              <input type="text" name="tvCategoryDescription" readonly [(ngModel)]="selectedTv.tvCategoryDescription" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Hiba:</label>
+              <input type="text" name="errorSeenByCustomer" readonly required [(ngModel)]="selectedTv.errorSeenByCustomer" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Idopont:</label>
+              <input type="datetime-local" name="reservedDateToRepair" required [(ngModel)]="selectedTv.reservedDateToRepair" class="form-control">
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary" >Mentés</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

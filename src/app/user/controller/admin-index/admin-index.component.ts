@@ -80,7 +80,7 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subs.add(
       this.tvService.getTvsByUsersEmail(this.selectedUser.email).subscribe(
         (response: Tv[]) => {
-          
+
           this.selectedUsersTvs = response;
 
           console.log(response);
@@ -98,9 +98,9 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public onUpdateUserByAdmin(editUserForm: NgForm): void {
-    const formData = this.personService.createPersonFormData(this.selectedUser.username,editUserForm.value);
+    //const formData = this.personService.createPersonFormData(this.selectedUser.username,editUserForm.value);
     this.subs.add(
-      this.personService.updateUser(formData).subscribe(
+      this.personService.updateUser(editUserForm.value).subscribe(
         (response: Person) => {
           this.clickButton('closeEditUserModalButton');
           this.getAllUsers();
@@ -120,9 +120,9 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public onUpdateTvByAdmin(): void {
-    const formData = this.tvService.updateTvByAdminForm(this.updateTv, this.updateTv.repairedError, this.updateTv.price);
+    //const formData = this.tvService.updateTvByAdminForm(this.updateTv, this.updateTv.repairedError, this.updateTv.price);
     this.subs.add(
-      this.tvService.updateTvByAdmin(formData).subscribe(
+      this.tvService.updateTvByAdmin(this.updateTv).subscribe(
         (response: Tv) => {
           console.log(response);
           this.clickButton('closeEditTvModalButton');

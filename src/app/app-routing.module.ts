@@ -8,6 +8,8 @@ import { LoginComponent } from './user/controller/login/login.component';
 import { RegistrationComponent } from './user/controller/registration/registration.component';
 import { UserIndexComponent } from './user/controller/user-index/user-index.component';
 import { UserProfileComponent } from './user/controller/user-profile/user-profile.component';
+import { CreateNewTvComponent } from './tv/controller/create-new-tv/create-new-tv.component';
+import { UpdateTvComponent } from './tv/controller/update-tv/update-tv.component';
 
 const routes: Routes = [
   {path: 'index', component: IndexComponent},
@@ -16,6 +18,10 @@ const routes: Routes = [
   {path: 'user/index', component: UserIndexComponent, canActivate: [AuthenticationGuard]},
   {path: 'user/profile', component: UserProfileComponent, canActivate: [AuthenticationGuard]},
   {path: 'admin/index', component: AdminIndexComponent, canActivate: [AdminGuard]},
+  {path:'tv', component:CreateNewTvComponent, canActivate: [AuthenticationGuard]},
+  {path:'tv/update/:id', component:UpdateTvComponent, canActivate: [AuthenticationGuard]},
+
+
   {path: '',redirectTo: 'index', pathMatch: 'full'},
   {path: '**',redirectTo: 'index', pathMatch: 'full'}
 

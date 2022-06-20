@@ -9,14 +9,11 @@ import {FormControl} from '@angular/forms'
   styleUrls: ['./index.component.scss']
 })
 export class IndexComponent implements OnInit {
-  public mode = new FormControl('over');
-  public shouldRun = true;
+ 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  public toggle(): void {
 
-  }
 }
