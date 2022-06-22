@@ -13,204 +13,137 @@
 
       <div [hidden]="loggedInUsersTvs.length === 0" class="card bg-info">
         <div class="card-body">
-          <h4 class="card-header bg-info"><b>{{loggedInUser.firstName}}</b> TV-i</h4>
+          <h4 class="card-header text-dark"><b>{{loggedInUser?.firstName}}</b> TV-i</h4>
           <div class="card-text table-responsive">
-<!--            <table class="table table table-striped table-hover ">-->
-<!--              <thead class="table-borderless ">-->
-<!--              <tr class="text-center align-middle">-->
-<!--                <th>#</th>-->
-<!--                <th>Márka</th>-->
-<!--                <th>{{loggedInUser.firstName}} által észlelt hiba</th>-->
-<!--                <th>Lefoglalt időpont</th>-->
-<!--                <th>Javított hiba</th>-->
-<!--              </tr>-->
-<!--              </thead>-->
-<!--              <tbody *ngFor="let tv of loggedInUsersTvs; let i = index">-->
-<!--              <tr class="text-center align-middle" style="cursor: pointer;">-->
-<!--                <td (click)="onSelectTv(tv)">{{i + 1}}</td>-->
-<!--                <td (click)="onSelectTv(tv)">{{tv?.tvCategoryDescription}}</td>-->
-<!--                <td (click)="onSelectTv(tv)">{{tv?.errorSeenByCustomer}}</td>-->
-<!--                <td (click)="onSelectTv(tv)">{{tv?.reservedDateToRepair | date:'fullDate'}}</td>-->
-<!--                <td>-->
-<!--                  <button type="button" (click)="onSelectTv(tv)" class="btn btn-outline-primary">-->
-<!--                    <mat-icon aria-hidden="false">information</mat-icon>-->
-<!--                  </button>-->
-<!--                </td>-->
-<!--              </tr>-->
-<!--              </tbody>-->
-<!--            </table>-->
             <ag-grid-angular
-              style="width: 100%; height: 100%"
-              class="ag-theme-alpine"
+              style="width: 100%; height: 500px; background-color: black; cursor: pointer;"
+              class="ag-theme-alpine ag-row-hover ag-column-hover"
               [animateRows]="true"
-              [rowData]="rowData$"
-              [columnDefs]="columnDefs"
+              (cellClicked)="onCellClicked($event)"
+              (cellContextMenu)="onCellDoubleClicked($event)"
+              [rowData]="rowData"
+              [columnDefs]="columnDef"
+              [pagination]="true"
+              [paginationAutoPageSize]="true"
               (gridReady)="onGridReady($event)"
             ></ag-grid-angular>
           </div>
         </div>
-      </div><div [hidden]="loggedInUsersTvs.length === 0" class="card bg-info">
-        <div class="card-body">
-          <h4 class="card-header bg-info"><b>{{loggedInUser.firstName}}</b> TV-i</h4>
-          <div class="card-text table-responsive">
-            <table class="table table-primary table-striped table-hover ">
-              <thead class="table-borderless ">
-              <tr class="text-center align-middle">
-                <th>#</th>
-                <th>Márka</th>
-                <th>{{loggedInUser.firstName}} által észlelt hiba</th>
-                <th>Lefoglalt időpont</th>
-                <th>Információ</th>
-                <th>Lefoglalt időpont szerkesztése</th>
-              </tr>
-              </thead>
-              <tbody *ngFor="let tv of loggedInUsersTvs; let i = index">
-              <tr class="text-center align-middle" style="cursor: pointer;">
-                <td (click)="onSelectTv(tv)">{{i + 1}}</td>
-                <td (click)="onSelectTv(tv)">{{tv?.tvCategoryDescription}}</td>
-                <td (click)="onSelectTv(tv)">{{tv?.errorSeenByCustomer}}</td>
-                <td (click)="onSelectTv(tv)">{{tv?.reservedDateToRepair | date:'fullDate'}}</td>
-                <td>
-                  <button type="button" (click)="onSelectTv(tv)" class="btn btn-outline-primary">
-                    <mat-icon aria-hidden="false">information</mat-icon>
-                  </button>
-                </td>
-                <td>
-                  <button type="button" (click)="onUpdateSelectedTv(tv)" class="btn btn-outline-primary">
-                    afsdfsdf
-                  </button>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-<!--            <ag-grid-angular-->
-<!--              style="width: 100%; height: 100%"-->
-<!--              class="ag-theme-alpine"-->
-<!--              [columnDefs]="columnDefs"-->
-<!--              [defaultColDef]="defaultColDef"-->
-<!--              [rowData]="probaTv | async"-->
-<!--              [rowSelection]="'multiple'"-->
-<!--              [animateRows]="true"-->
-<!--              (gridReady)="onGridReady($event)"-->
-<!--              (cellClicked)="onCellClicked($event)"-->
-<!--            ></ag-grid-angular>-->
+      </div>
+    </div>
+    <!--         Update Tv Modal   -->
+    <div class="modal fade" tabindex="-1" role="dialog"
+         id="updateTvModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-center">Tv módosítása</h5>
+            <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <form #updateTvForm="ngForm">
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="text" name="personEmail" class="form-control" readonly
+                         [(ngModel)]="loggedInUser.email">
+                </div>
+                <div class="form-group">
+                  <label>Márka</label>
+                  <select name="tvCategoryDescription" required ngModel="null" class="form-control">
+                    <option value="null">Válassz márkát</option>
+                    <option *ngFor="let cat of tvCategories"
+                            value="{{cat?.description}}">{{cat?.description}}</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Hiba:</label>
+                  <input type="text" name="errorSeenByCustomer" required ngModel class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Idopont:</label>
+                  <input type="date" name="reservedDateToRepair" required ngModel class="form-control">
+                </div>
+                <button type="submit" style="display: none;" id="update-tv-save"></button>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="update-tv-close">Close
+            </button>
+            <button type="button" (click)="saveNewTv()" [disabled]="updateTvForm.invalid" class="btn btn-primary">Save
+              changes
+            </button>
           </div>
         </div>
       </div>
-      <!--         Update Tv Modal   -->
-      <div class="modal fade" tabindex="-1" role="dialog"
-           id="updateTvModal" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title text-center">Tv módosítása</h5>
-              <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div>
-                <form #updateTvForm="ngForm" >
-                  <div class="form-group">
-                    <label>Email</label>
-                    <input type="text" name="personEmail" class="form-control" readonly
-                           [(ngModel)]="loggedInUser.email">
-                  </div>
-                  <div class="form-group">
-                    <label>Márka</label>
-                    <select name="tvCategoryDescription" required ngModel="null" class="form-control">
-                      <option value="null">Válassz márkát</option>
-                      <option *ngFor="let cat of tvCategories"
-                              value="{{cat?.description}}">{{cat?.description}}</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label>Hiba:</label>
-                    <input type="text" name="errorSeenByCustomer" required ngModel class="form-control">
-                  </div>
-                  <div class="form-group">
-                    <label>Idopont:</label>
-                    <input type="date" name="reservedDateToRepair" required ngModel class="form-control">
-                  </div>
-                  <button type="submit" style="display: none;" id="update-tv-save"></button>
-                </form>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="update-tv-close">Close
-              </button>
-              <button type="button" (click)="saveNewTv()" [disabled]="updateTvForm.invalid" class="btn btn-primary">Save
-                changes
-              </button>
-            </div>
+    </div>
+    <!--   Update Tv Modal-end   -->
+    <!--   Tv info modal   -->
+    <button [hidden]="true" type="button" id="openTvInfo" data-bs-toggle="modal" data-bs-target="#viewTvInfoModal">
+    </button>
+    <!--   Tv edit   -->
+    <button [hidden]="true" type="button" id="openTvEdit" data-bs-toggle="modal" data-bs-target="#editTvModal">
+    </button>
+
+    <!--   Tv info modal   -->
+    <div class="modal fade bd-example-modal-lg" id="viewTvInfoModal" tabindex="-1" role="dialog" aria-labelledby=""
+         aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title text-center" id="exampleModalLongTitle">
+              <b>{{selectedTv?.tvCategoryDescription}}</b>
+            </h3>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
-        </div>
-      </div>
-      <!--   Update Tv Modal-end   -->
-      <!--   Tv info modal   -->
-      <button [hidden]="true" type="button" id="openTvInfo" data-bs-toggle="modal" data-bs-target="#viewTvInfoModal">
-      </button>
-      <!--   Tv edit   -->
-      <button [hidden]="true" type="button" id="openTvEdit" data-bs-toggle="modal" data-bs-target="#editTvModal">
-      </button>
+          <div class="modal-body">
+            <div>
+              <div class="card">
 
-      <!--   Tv info modal   -->
-      <div class="modal fade bd-example-modal-lg" id="viewTvInfoModal" tabindex="-1" role="dialog" aria-labelledby=""
-           aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h3 class="modal-title text-center" id="exampleModalLongTitle">
-                <b>{{selectedTv?.tvCategoryDescription}}</b>
-              </h3>
-              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div>
-                <div class="card">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"> {{selectedTv?.tvCategoryDescription}}</li>
+                  <li class="list-group-item"><i
+                    class="fa-solid fa-triangle-exclamation float-right"></i> {{selectedTv?.errorSeenByCustomer}}
+                  </li>
+                  <li class="list-group-item"><i
+                    class="fas fa-calendar float-right"></i> {{selectedTv?.reservedDateToRepair | date:'fullDate'}}
+                  </li>
+                  <li *ngIf="selectedTv?.repairedError" class="list-group-item"><i
+                    class="fas fa-bug-slash float-right"></i> {{selectedTv?.repairedError}}
+                  <li *ngIf="selectedTv?.dateOfCorrection" class="list-group-item"><i
+                    class="fas fa-calendar float-right"></i> {{selectedTv?.dateOfCorrection | date:'fullDate'}}
+                  </li>
+                  <li *ngIf="selectedTv?.price" class="list-group-item"><i
+                    class="fa-regular fa-money-bill-1"></i> {{selectedTv?.price }}
+                  </li>
 
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item"> {{selectedTv?.tvCategoryDescription}}</li>
-                    <li class="list-group-item"><i
-                      class="fa-solid fa-triangle-exclamation float-right"></i> {{selectedTv?.errorSeenByCustomer}}
-                    </li>
-                    <li class="list-group-item"><i
-                      class="fas fa-calendar float-right"></i> {{selectedTv?.reservedDateToRepair | date:'fullDate'}}
-                    </li>
-                    <li *ngIf="selectedTv?.repairedError" class="list-group-item"><i
-                      class="fas fa-bug-slash float-right"></i> {{selectedTv?.repairedError}}
-                    <li *ngIf="selectedTv?.dateOfCorrection" class="list-group-item"><i
-                      class="fas fa-calendar float-right"></i> {{selectedTv?.dateOfCorrection | date:'fullDate'}}
-                    </li>
-                    <li *ngIf="selectedTv?.price" class="list-group-item"><i
-                      class="fa-regular fa-money-bill-1"></i> {{selectedTv?.price }}
-                    </li>
-
-                    <li class="list-group-item">
+                  <li class="list-group-item">
                     <span [hidden]="selectedTv?.isItStillInProgress">
                       <i class="fas fa-spinner fa-spin float-right" style="color: red;">
                       </i>
                        Javítás alatt
                     </span>
-                      <span [hidden]="!selectedTv?.isItStillInProgress">
+                    <span [hidden]="!selectedTv?.isItStillInProgress">
                       <i class="fa-solid fa-circle-check float-right" style="color: lawngreen;">
                       </i>
                         Kész
                     </span>
-                    </li>
-                  </ul>
-                </div>
+                  </li>
+                </ul>
               </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
-      <!--   Tv info modal end   -->
     </div>
+    <!--   Tv info modal end   -->
   </div>
 </div>

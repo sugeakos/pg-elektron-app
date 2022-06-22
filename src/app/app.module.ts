@@ -1,6 +1,6 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -29,6 +29,9 @@ import { CreateNewTvComponent } from './tv/controller/create-new-tv/create-new-t
 import { NotificationModule } from './modules/notification.module';
 import { NotificationService } from './custom-features/notification.service';
 import { UpdateTvComponent } from './tv/controller/update-tv/update-tv.component';
+import { ResetPasswordComponent } from './user/controller/reset-password/reset-password.component';
+import { CreateNewUserComponent } from './user/controller/create-new-user/create-new-user.component';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,9 @@ import { UpdateTvComponent } from './tv/controller/update-tv/update-tv.component
     UserProfileComponent,
     NavbarComponent,
     CreateNewTvComponent,
-    UpdateTvComponent
+    UpdateTvComponent,
+    ResetPasswordComponent,
+    CreateNewUserComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +61,8 @@ import { UpdateTvComponent } from './tv/controller/update-tv/update-tv.component
     MaterialModule,
     DataTablesModule,
     NotificationModule,
-    AgGridModule.withComponents([]),
+    AgGridModule,
+    ReactiveFormsModule,
 
   ],
   providers: [AuthenticationService, PersonService, NotificationService, AuthenticationGuard,AdminGuard,

@@ -9,68 +9,63 @@
     <!--    Users    -->
     <div class="col-md-5">
 
+<!--      <div class="card bg-info">-->
+<!--        <div class="card-body">-->
+<!--          <h4 class="card-header bg-info"><b>Users</b></h4>-->
+<!--          <div class="card-text table-responsive">-->
+<!--            <mat-form-field appearance="standard">-->
+<!--              <mat-label>Filter</mat-label>-->
+<!--              <input matInput (keyup)="applyFilter($event)" placeholder="PL.: su" #input>-->
+<!--            </mat-form-field>-->
+
+<!--            <table mat-table [dataSource]="dataSource">-->
+<!--              <ng-container matColumnDef="#">-->
+<!--                <th mat-header-cell *matHeaderCellDef> #</th>-->
+<!--                <td (click)="onSelectUser(user)" mat-cell *matCellDef="let i = index; let user;"> {{i + 1}}.</td>-->
+<!--              </ng-container>-->
+
+<!--              <ng-container matColumnDef="name">-->
+<!--                <th mat-header-cell *matHeaderCellDef>Teljes név</th>-->
+<!--                <td (click)="onSelectUser(user)" mat-cell-->
+<!--                    *matCellDef="let user"> {{user.lastName}} {{user.firstName}}</td>-->
+<!--              </ng-container>-->
+
+<!--              <ng-container matColumnDef="email">-->
+<!--                <th mat-header-cell *matHeaderCellDef>Email</th>-->
+<!--                <td (click)="onSelectUser(user)" mat-cell *matCellDef="let user"> {{user.email}}</td>-->
+<!--              </ng-container>-->
+
+<!--              <ng-container matColumnDef="username">-->
+<!--                <th mat-header-cell *matHeaderCellDef>Felhasználó név</th>-->
+<!--                <td (click)="onSelectUser(user)" mat-cell *matCellDef="let user"> {{user.username}}</td>-->
+<!--              </ng-container>-->
+
+<!--              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>-->
+<!--              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
+<!--              <tr class="mat-row" *matNoDataRow>-->
+<!--                <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>-->
+<!--              </tr>-->
+<!--            </table>-->
+<!--            <mat-paginator [pageSizeOptions]="[5, 10, 20] " [length]="users.length"-->
+<!--                           showFirstLastButtons [pageSize]="5"-->
+
+<!--                           aria-label="Select page of periodic elements">-->
+<!--            </mat-paginator>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
       <div class="card bg-info">
-        <div class="card-body">
-          <h4 class="card-header bg-info"><b>Users</b></h4>
-          <div class="card-text table-responsive">
-            <!--            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table table-striped table-hover ">-->
-            <!--              <thead class="table-borderless ">-->
-            <!--              <tr class="text-center align-middle">-->
-            <!--                <th>#</th>-->
-            <!--                <th>Teljes név</th>-->
-            <!--                <th>Email</th>-->
-            <!--                <th>Felhasználónév</th>-->
-            <!--              </tr>-->
-            <!--              </thead>-->
-            <!--              <tbody *ngFor="let appUser of users; let i = index">-->
-            <!--              <tr class="text-center align-middle">-->
-            <!--                <td>{{i + 1}}</td>-->
-            <!--                <td (click)="onSelectUser(appUser)">{{appUser?.lastName}} {{appUser?.firstName}}</td>-->
-            <!--                <td (click)="onSelectUser(appUser)">{{appUser?.email}}</td>-->
-            <!--                <td (click)="onSelectUser(appUser)">{{appUser?.username}}</td>-->
-            <!--              </tr>-->
-            <!--              </tbody>-->
-            <!--            </table>-->
-            <!--Filter-->
-            <mat-form-field appearance="standard">
-              <mat-label>Filter</mat-label>
-              <input matInput (keyup)="applyFilter($event)" placeholder="PL.: su" #input>
-            </mat-form-field>
+        <div class="card-body text-dark">
+          <h3 class="card-header">AG Grid</h3>
+          <ag-grid-angular
+            style="width: 100%; height: 300px;"
+            class="ag-theme-alpine"
+            [gridOptions]="gridOptions"
+            [rowData]="rowData"
 
-            <table mat-table [dataSource]="dataSource">
-              <ng-container matColumnDef="#">
-                <th mat-header-cell *matHeaderCellDef> #</th>
-                <td (click)="onSelectUser(user)" mat-cell *matCellDef="let i = index; let user;"> {{i + 1}}.</td>
-              </ng-container>
+            [columnDefs]="columnDef">
 
-              <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef>Teljes név</th>
-                <td (click)="onSelectUser(user)" mat-cell
-                    *matCellDef="let user"> {{user.lastName}} {{user.firstName}}</td>
-              </ng-container>
-
-              <ng-container matColumnDef="email">
-                <th mat-header-cell *matHeaderCellDef>Email</th>
-                <td (click)="onSelectUser(user)" mat-cell *matCellDef="let user"> {{user.email}}</td>
-              </ng-container>
-
-              <ng-container matColumnDef="username">
-                <th mat-header-cell *matHeaderCellDef>Felhasználó név</th>
-                <td (click)="onSelectUser(user)" mat-cell *matCellDef="let user"> {{user.username}}</td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-              <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-              </tr>
-            </table>
-            <mat-paginator [pageSizeOptions]="[5, 10, 20] " [length]="users.length"
-                           showFirstLastButtons [pageSize]="2"
-
-                           aria-label="Select page of periodic elements">
-            </mat-paginator>
-          </div>
+          </ag-grid-angular>
         </div>
       </div>
 
@@ -78,11 +73,11 @@
     </div>
     <!--    Users end    -->
     <!--    TV list-->
-    <div *ngIf="selectedUser.firstName !== '' " class="col-md-7">
+    <div *ngIf="selectedUser?.firstName !== '' " class="col-md-7">
 
       <div class="card">
         <div *ngIf="selectedUsersTvs.length === 0" class="card-body">
-          <div class="card-header ">
+          <div class="card-header text-black">
             Nincs tv hozzárendelve <b>{{selectedUser.lastName}} {{selectedUser.firstName}}</b> felhasználóhoz.
           </div>
         </div>
@@ -91,43 +86,17 @@
             {{selectedUser.firstName}} TV-i
           </div>
           <div class="card-text table-responsive">
-            <table class="table table-light table-striped table-hover ">
-              <thead class="table-borderless ">
-              <tr class="text-center align-middle">
-                <th>#</th>
-                <th>Márka</th>
-                <th>Észlelt hiba</th>
-                <th>Lefoglalt időpont</th>
-                <th>Javított hiba</th>
-                <th>Javítás dátuma</th>
-                <th>Javítás ára</th>
-                <th>Javítás állapota</th>
-                <th>Update</th>
-              </tr>
-              </thead>
-              <tbody *ngFor="let tv of selectedUsersTvs; let i = index">
-              <tr class="text-center align-middle">
-                <td>{{i + 1}}</td>
-                <td>{{tv?.tvCategoryDescription}}</td>
-                <td>{{tv?.errorSeenByCustomer}}</td>
-                <td>{{tv?.reservedDateToRepair | date:'fullDate'}}</td>
-                <td>{{tv?.repairedError}}</td>
-                <td>{{tv?.dateOfCorrection | date:'fullDate'}}</td>
-
-                <td>{{tv?.price}}</td>
-                <td>
-                  <span [hidden]="!tv?.isItStillInProgress" style="color: lawngreen;"
-                        class="badge badge-success">Kész</span>
-                  <span [hidden]="tv?.isItStillInProgress " style="color: red" class="badge badge-danger">Javítás alatt áll</span>
-                </td>
-                <td>
-                  <button class="btn btn-outline-info" (click)="onEditTvByAdmin(tv)"><i class="fas fa-edit"></i>
-
-                  </button>
-                </td>
-              </tr>
-              </tbody>
-            </table>
+            <ag-grid-angular
+            class="ag-theme-alpine"
+            style="height: 300px;"
+            [rowData] = "rowDataTv"
+            [columnDefs] = "colDefTv"
+            [animatedRows]="true"
+            [pagination]="true"
+            [paginationAutoPageSize]="true"
+            (cellClicked)="onTvGridCellClicked($event)"
+            >
+            </ag-grid-angular>
           </div>
         </div>
       </div>
@@ -140,10 +109,9 @@
     <div class="col">
       <div class="card bg-info">
         <h3 class="card-header bg-info text-center" id="exampleModalLongTitle">
-          <b>{{selectedUser?.lastName}} {{selectedUser?.firstName}}</b>
-          <button style="margin-left: 1%;" class="btn btn-outline-primary" (click)="onEditUserByAdmin(selectedUser)">
-            <i class="fas fa-edit"></i>
-          </button>
+          <b>{{selectedUser?.lastName}} {{selectedUser?.firstName}}</b> &nbsp;
+          <i (click)="onEditUserByAdmin(selectedUser)" class="fas fa-edit btn-outline-primary"></i>
+
         </h3>
 
         <div class="card-body">
@@ -175,7 +143,7 @@
 
             </li>
 
-            <li class="list-group-item user_list" title="Zarolas">
+            <li class="list-group-item  user_list" title="Zarolas">
                   <span [hidden]="selectedUser?.isNotLocked">
                       <i class="fa fa-unlock float-right" style="color: green;">
                       </i>
@@ -209,7 +177,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body text-dark">
           <div class="">
             <form #editTvForm="ngForm">
               <div class="form-group" hidden>
@@ -249,7 +217,7 @@
               </div>
               <div *ngIf="updateTv?.dateOfCorrection" class="form-group">
                 <label>Javítás időpontja</label>
-                <input type="text" name="dateOfCorrection" [(ngModel)]="updateTv.dateOfCorrection" class="form-control">
+                <input type="text" name="dateOfCorrection" readonly [(ngModel)]="updateTv.dateOfCorrection" class="form-control">
 
               </div>
             </form>
@@ -278,7 +246,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body text-dark">
           <div class="">
             <form #editUserForm="ngForm">
               <div class="form-group">

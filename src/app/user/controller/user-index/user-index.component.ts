@@ -1,5 +1,5 @@
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {AsyncSubject, Observable, Subject} from 'rxjs';
 import {SubSink} from 'subsink';
@@ -13,10 +13,16 @@ import {TvService} from '../../../tv/service/tv.service';
 import {TvCategoryService} from '../../../tv-category/service/tv-category.service';
 import {NgForm} from '@angular/forms';
 import {ThemePalette} from '@angular/material/core';
-import {CellClickedEvent, ColDef, GridReadyEvent} from 'ag-grid-community';
+import {CellClickedEvent, CellDoubleClickedEvent, ColDef, GridApi, GridReadyEvent} from 'ag-grid-community';
 import {AgGridAngular} from 'ag-grid-angular'
-import { NotificationService } from 'src/app/custom-features/notification.service';
-import { NotificationType } from 'src/app/enumeration/notification.type';
+import {NotificationService} from 'src/app/custom-features/notification.service';
+import {NotificationType} from 'src/app/enumeration/notification.type';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
+
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
+
 //
 // import {
 //   MAT_MOMENT_DATE_FORMATS,
@@ -41,7 +47,7 @@ import { NotificationType } from 'src/app/enumeration/notification.type';
   //   {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
   // ],
 })
-export class UserIndexComponent implements OnInit, OnDestroy {
+export class UserIndexComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private subs = new SubSink();
   public loggedInUser: Person; //logged in user
@@ -53,24 +59,27 @@ export class UserIndexComponent implements OnInit, OnDestroy {
   public isStillInProgress: boolean;
   public reservedTime: string;
   public tvCategories: TvCategory[];
-  public rowData$: any[];
+  public rowData: any[];
+  public rowStyle: string | string[];
   //dataGrid
-  public columnDefs: ColDef[] = [
-    {headerName: 'ID', field: 'externalId', sortable: true},
-    {headerName: 'Customer', field: 'personEmail', sortable: true},
-    {headerName: 'Brand', field: 'tvCategoryDescription', sortable: true},
-    {headerName: 'Error', field: 'errorSeenByCustomer'},
-    {headerName: 'Reserved Date', field: 'reservedDateToRepair'},
-    {headerName: 'Date of Correction', field: 'dateOfCorrection'},
-    {headerName: 'Repaired Error', field: 'repairedError'},
-    {headerName: 'Price', field: 'price'},
-    {headerName: 'In progress', field: 'isItStillInProgress'},
+  public columnDef: ColDef[] = [
+    {headerName: 'Brend', field: 'tvCategoryDescription', sortable: true},
+    {headerName: `Felhasználó által látott hiba`, field: 'errorSeenByCustomer'},
+    {headerName: 'Lefoglalt időpont', field: 'reservedDateToRepair', sortable: true},
+    {headerName: 'Javítás időpontja', field: 'dateOfCorrection'},
+    {headerName: 'Javított hiba', field: 'repairedError'},
+    {headerName: 'Javítás ára', field: 'price'},
+    {headerName: 'Javítás alatt áll', field: 'isItStillInProgress'}
   ];
 
   public defaultColDef: ColDef = {
+    flex: 100,
+    width: 200,
     sortable: true,
     filter: true,
   };
+  private gridApi!: GridApi;
+
 
   @ViewChild(AgGridAngular) agGrid!: AgGridAngular;
 
@@ -81,10 +90,19 @@ export class UserIndexComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    this.loggedInUsersTvs = [];
     this.loggedInUser = this.authService.getUserFromLocalCache();
     this.getAllCategories();
     this.getUserTvs();
+    this.selectedTv = null;
   }
+
+
+
+  ngAfterViewInit(): void {
+
+  }
+
 
   // public hungarian(): void {
   //   this._locale = 'hu';
@@ -98,17 +116,22 @@ export class UserIndexComponent implements OnInit, OnDestroy {
 
   //DataGrid
   public onGridReady(params: GridReadyEvent) {
-    //this.rowData$ = this.tvService.fetchAllTvs();
-
-
+    //this.rowData = this.loggedInUsersTvs;
+    this.agGrid.api.setRowData(this.rowData);
   }
 
   public onCellClicked(e: CellClickedEvent): void {
-    console.log('cellClicked', e);
+    this.selectedTv = e.data;
+    this.onSelectTv(this.selectedTv);
+  }
+
+  public onCellDoubleClicked(e: CellDoubleClickedEvent): void {
+    this.selectedTv = e.data;
+    this.onUpdateSelectedTv(this.selectedTv);
   }
 
   public clearSelection(): void {
-    this.agGrid.api.deselectAll();
+    //this.agGrid.api.deselectAll();
   }
 
   //DataGridEnd
@@ -133,42 +156,19 @@ export class UserIndexComponent implements OnInit, OnDestroy {
       this.tvService.getTvsByUsersEmail(this.loggedInUser.email).subscribe(
         (response: Tv[]) => {
           this.loggedInUsersTvs = response;
+          this.rowData = response;
 
-        //   this.rowData$ = [
-        //     {externalId: response[0].externalId,
-        //       personEmail: response[0].personEmail,
-        //       tvCategoryDescription: response[0].tvCategoryDescription,
-        //       errorSeenByCustomer: response[0].errorSeenByCustomer,
-        //       reservedDateToRepair: response[0].reservedDateToRepair,
-        //       dateOfCorrection: response[0].dateOfCorrection,
-        //       repairedError: response[0].repairedError,
-        //       price: response[0].price,
-        //       itStillInProgress: response[0].isItStillInProgress
-        //
-        //     },
-        //     {externalId: response[1].externalId,
-        //       personEmail: response[1].personEmail,
-        //       tvCategoryDescription: response[1].tvCategoryDescription,
-        //       errorSeenByCustomer: response[1].errorSeenByCustomer,
-        //       reservedDateToRepair: response[1].reservedDateToRepair,
-        //       dateOfCorrection: response[1].dateOfCorrection,
-        //       repairedError: response[1].repairedError,
-        //       price: response[1].price,
-        //       itStillInProgress: response[1].isItStillInProgress,
-        //
-        //     },
-        //   ];
-        // console.log(this.rowData$);
-          if(response.length > 0){
-            this.sendNotification(NotificationType.SUCCESS,`Sikeresen be lett olvasva ${response.length} tv.`);
+
+          if (response.length > 0) {
+            this.sendNotification(NotificationType.SUCCESS, `Sikeresen be lett olvasva ${response.length} tv.`);
           } else {
-            this.sendNotification(NotificationType.INFO,`Még nincs hozzárendelve TV a profiljához.`);
+            this.sendNotification(NotificationType.INFO, `Még nincs hozzárendelve TV a profiljához.`);
           }
 
         },
         (error: HttpErrorResponse) => {
           console.log(error.error.message);
-          this.sendNotification(NotificationType.ERROR,error.error.message);
+          this.sendNotification(NotificationType.ERROR, error.error.message);
         }
       )
     );
@@ -190,11 +190,9 @@ export class UserIndexComponent implements OnInit, OnDestroy {
   }
 
 
-
   public onSelectTv(selectedTv: Tv): void {
     this.selectedTv = selectedTv;
     this.clickButton('openTvInfo');
-    this.sendNotification(NotificationType.INFO,"asda");
   }
 
   // public onUpdateTv(updateTvForm: NgForm): void {
@@ -230,7 +228,7 @@ export class UserIndexComponent implements OnInit, OnDestroy {
   public onLogOut(): void {
     this.authService.logout();
     this.router.navigate(['/index']);
-    this.sendNotification(NotificationType.WARNING,'Sikeresen kijelentkezett.');
+    this.sendNotification(NotificationType.WARNING, 'Sikeresen kijelentkezett.');
   }
 
   public onUpdateSelectedTv(tv: Tv): void {

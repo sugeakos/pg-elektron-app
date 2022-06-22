@@ -1,10 +1,12 @@
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {CustomHttpResponse} from '../../domain/custom-http-response/custom-http-response';
 import {Person} from '../../user/domain/person'
 import {environment} from '../../../environments/environment';
-
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 @Injectable({
   providedIn: 'root'
 })
@@ -28,6 +30,10 @@ export class PersonService {
 
   public resetPassword(email: string): Observable<CustomHttpResponse | HttpErrorResponse> {
     return this.http.get<CustomHttpResponse>(`${this.host}/person/reset-password/${email}`);
+  }
+
+  public verifyEmailAddress(code: string): Observable<CustomHttpResponse | HttpErrorResponse> {
+    return this.http.get<CustomHttpResponse>(`${this.host}/verify/${code}`);
   }
 
   public addUsersToLocalCache(users: Person[]): void {

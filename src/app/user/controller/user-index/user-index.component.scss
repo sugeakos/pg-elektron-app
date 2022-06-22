@@ -1,5 +1,5 @@
 @import 'ag-grid-community/dist/styles/ag-grid.css';
-@import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+@import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
 
 html, body {
   height: 100%;
@@ -7,4 +7,21 @@ html, body {
   padding: 5px;
   box-sizing: border-box;
   -webkit-overflow-scrolling: touch;
+}
+.mat-table{
+  overflow: auto;
+  max-height: 500px;
+  width: 100%;
+  background-color: rgba(58, 80, 196, 0.82);
+
+
+}
+th {
+  color: white;
+}
+td {
+  cursor: pointer;
+}
+.ag-theme-alpine{
+  column-rule-color: black;
 }

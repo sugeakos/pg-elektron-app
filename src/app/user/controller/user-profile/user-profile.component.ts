@@ -6,6 +6,8 @@ import { Person } from '../../domain/person';
 import { RegistrationComponent } from '../registration/registration.component';
 import { AuthenticationService } from '../../service/authentication.service';
 import { PersonService } from '../../service/person.service';
+import { NotificationService } from 'src/app/custom-features/notification.service';
+import { NotificationType } from 'src/app/enumeration/notification.type';
 
 @Component({
   selector: 'app-user-profile',
@@ -24,7 +26,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   public passErrorString: string;
   private passRegex= '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}';
   constructor(private authService: AuthenticationService,private personServie: PersonService, private router: Router,
-              ) { }
+              private notifier: NotificationService) { }
 
 
 
@@ -42,10 +44,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         (response: Person) => {
           this.authService.addUserToLocalCache(response);
           this.refreshing = false;
+          this.sendNotification(NotificationType.SUCCESS,`Sikeresen frissítve lett ${response.lastName} ${response.firstName} felhasználó adatai.`);
         },
         (errorResponse: HttpErrorResponse) => {
           console.log(errorResponse.error.message);
           this.refreshing = false;
+          this.sendNotification(NotificationType.ERROR,`Hiba történt az adatok mentése közben.`);
         }
       )
     );
@@ -69,6 +73,14 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       this.validPass = false;
       this.passErrorString = 'A jelszónak minimum 8 karakter hosszúnak kell lennie, tartalmaznia kell: legalább 1 kisbetűt, 1 nagybetűt, 1 számot, és 1 speciális karaktert: $@$!%&';
       return false;
+    }
+  }
+
+  private sendNotification(notificationType: NotificationType, message: string): void {
+    if (message) {
+      this.notifier.sendNotification(notificationType, message);
+    } else {
+      this.notifier.sendNotification(notificationType, 'An error occurred. Please try again.');
     }
   }
 

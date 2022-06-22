@@ -7,6 +7,7 @@ import {
 } from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {AuthenticationService} from '../user/service/authentication.service';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable()
@@ -14,7 +15,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 
   constructor(private authService: AuthenticationService) {
   }
-
+  private host = environment.apiUrl;
   intercept(httpRequest: HttpRequest<any>, httpHandler: HttpHandler): Observable<HttpEvent<any>> {
     if (httpRequest.url.includes(`${this.authService.host}/login`)) {
       return httpHandler.handle(httpRequest);
@@ -26,6 +27,12 @@ export class AuthenticationInterceptor implements HttpInterceptor {
       return httpHandler.handle(httpRequest);
     }
     if (httpRequest.url.includes(`${this.authService.host}/person/reset-password`)) {
+      return httpHandler.handle(httpRequest);
+    }
+    if (httpRequest.url.includes(`${this.authService.host}/index?code=**`)) {
+      return httpHandler.handle(httpRequest);
+    }
+    if(httpRequest.url.includes(`${this.authService.host}/verify`)) {
       return httpHandler.handle(httpRequest);
     }
 

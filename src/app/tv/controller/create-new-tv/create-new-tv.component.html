@@ -17,7 +17,7 @@
                 <div class="form-group">
                   <label>Márka</label>
                   <select name="tvCategoryDescription" required ngModel class="form-control">
-                    <option value="null" [selected]="true">Válassz márkát</option>
+                    <option value="" >Válassz márkát</option>
                     <option *ngFor="let cat of tvCategories"
                             value="{{cat?.description}}">{{cat?.description}}</option>
                   </select>

@@ -1,6 +1,6 @@
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import { NgForm } from '@angular/forms';
+import {NgForm} from '@angular/forms';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import {Subject} from 'rxjs';
@@ -10,6 +10,9 @@ import {Tv} from '../../../tv/domain/tv';
 import {AuthenticationService} from '../../service/authentication.service';
 import {PersonService} from '../../service/person.service';
 import {TvService} from '../../../tv/service/tv.service';
+import {CellClickedEvent, CellDoubleClickedEvent, ColDef, GridOptions, SelectionChangedEvent} from 'ag-grid-community';
+import {NotificationService} from 'src/app/custom-features/notification.service';
+import { NotificationType } from 'src/app/enumeration/notification.type';
 
 @Component({
   selector: 'app-admin-index',
@@ -20,39 +23,74 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
   private subs = new SubSink();
   public users: Person[];
   public selectedUser: Person;
+  public tempUserSelection: Person = new Person();
   public selectedUsersTvs: Tv[];
   public updateTv = new Tv();
 
   public editUser = new Person();
   private currentUsername: string;
 
-  //datatable
-  public displayedColumns: string[] = ['name', 'email', 'username'];
-  public dataSource: any;
+  public rowData: any[];
+  public rowDataTv: any[];
+  //dataGrid
+  public columnDef: ColDef[] = [
+    {field: 'email', sortable: true},
+    {field: 'lastName', sortable: true},
+    {field: 'firstName'},
+    {field: 'username'}
+  ];
+  public colDefTv: ColDef[] = [
+    {headerName: 'Brend', field: 'tvCategoryDescription', sortable: true},
+    {headerName: `Felhasználó által látott hiba`, field: 'errorSeenByCustomer'},
+    {headerName: 'Lefoglalt időpont', field: 'reservedDateToRepair'},
+    {headerName: 'Javítás időpontja', field: 'dateOfCorrection'},
+    {headerName: 'Javított hiba', field: 'repairedError'},
+    {headerName: 'Javítás ára', field: 'price'},
+    {headerName: 'Javítás alatt áll', field: 'isItStillInProgress'}
+  ];
+  public defaultColDef: ColDef = {
+    flex: 100,
+    width: 200,
+    sortable: true,
+    filter: true,
+  };
+  public gridOptions: GridOptions = null;
 
   constructor(private personService: PersonService, private authService: AuthenticationService,
-              private tvService: TvService, private http: HttpClient) {
+              private tvService: TvService, private http: HttpClient, private notifier: NotificationService) {
   }
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  ngAfterViewInit(): void {
-        this.dataSource.paginator = this.paginator;
-    }
 
+
+  ngAfterViewInit(): void {
+
+  }
 
 
   ngOnInit(): void {
+    this.gridOptions = {
+      rowSelection: 'single',
+      animateRows: true,
+      // onSelectionChanged: (event: SelectionChangedEvent) => {
+      //   event.api.getSelectedRows();
+      //
+      // },
+      pagination: true,
+      paginationAutoPageSize: true,
+      onCellClicked: (event: CellClickedEvent) => {
+        this.selectedUser = event.data;
+        this.onSelectUser(this.selectedUser);
+        this.getUserTvs();
+      }
+    };
     this.getAllUsers();
     this.selectedUser = new Person();
     this.selectedUsersTvs = new Array();
+
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  public onTvGridCellClicked(e: CellClickedEvent): void {
+    this.onEditTvByAdmin(e.data);
   }
 
   public getAllUsers(): void {
@@ -61,10 +99,11 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
         (response: Person[]) => {
           this.personService.addUsersToLocalCache(response);
           this.users = response;
-          this.dataSource = new MatTableDataSource(response);
+          this.rowData = response;
+
         },
         (error: HttpErrorResponse) => {
-          console.log(error.error.message);
+
         }
       )
     );
@@ -82,8 +121,7 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
         (response: Tv[]) => {
 
           this.selectedUsersTvs = response;
-
-          console.log(response);
+          this.rowDataTv = response;
         },
         (error: HttpErrorResponse) => {
           console.log(error.error.message);
@@ -92,6 +130,7 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
     );
 
   }
+
   public onEditUserByAdmin(user: Person): void {
     this.editUser = user;
     this.clickButton('openUserEdit');
@@ -129,7 +168,7 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
           this.getUserTvs();
         },
         (err: HttpErrorResponse) => {
-          console.log(err.error.message);
+          this.sendNotification(NotificationType.ERROR,`${err.error.message}`);
         }
       )
     );
@@ -139,11 +178,17 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
     document.getElementById(buttonId).click();
   }
 
-  ngOnDestroy(): void {
-    this.subs.unsubscribe();
-
+  private sendNotification(notificationType: NotificationType, message: string): void {
+    if (message) {
+      this.notifier.sendNotification(notificationType, message);
+    } else {
+      this.notifier.sendNotification(notificationType, 'An error occurred. Please try again.');
+    }
   }
 
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
 
 
 }

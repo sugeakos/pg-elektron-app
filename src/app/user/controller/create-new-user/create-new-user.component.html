@@ -1,0 +1,48 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-3">
+      <div class="card text-dark bg-info">
+        <h3 class="card-header">Új személy hozzáadása</h3>
+        <div class="card-body card-text">
+          <form action="">
+            <div class="row">
+              <div class="col-6">
+                <div class="input-group mb-3">
+                  <span class="input-group-text"><i class="fas fa-user"></i></span>
+                  <mat-form-field class="form-control" appearance="outline">
+                    <mat-label>Vezetéknév</mat-label>
+                    <input type="text" matInput [formControl]="lastNameControl" placeholder="Példa">
+                    <mat-error *ngIf="lastNameControl.hasError('required')">
+                      Adja meg a vezetéknevét!
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="input-group mb-3">
+                  <span class="input-group-text"><i class="fas fa-user"></i></span>
+                  <mat-form-field class="form-control" appearance="outline">
+                    <mat-label>Keresztnév</mat-label>
+                    <input type="text" matInput [formControl]="firstNameControl" placeholder="Pista">
+                    <mat-error *ngIf=" firstNameControl.hasError('required')">
+                      Adja meg a keresztnevét!
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col">
+
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

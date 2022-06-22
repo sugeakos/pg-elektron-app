@@ -65,13 +65,13 @@
               <hr class="dropdown-divider" />
             </li>
             <li *ngIf="isAdminLoggedIn" >
-              <a class="dropdown-item" href="#">Új személy</a>
+              <a class="dropdown-item" routerLinkActive="active" routerLink="/user/new">Új személy</a>
             </li>
             <li *ngIf="isAdminLoggedIn">
-              <a class="dropdown-item" href="#">Új tv személyhez</a>
+              <a class="dropdown-item" routerLinkActive="active" href="#">Új tv személyhez</a>
             </li>
             <li *ngIf="isAdminLoggedIn">
-              <a class="dropdown-item" href="#">Új márka</a>
+              <a class="dropdown-item" routerLinkActive="active" href="#">Új márka</a>
             </li>
 
           </ul>
@@ -82,7 +82,7 @@
       <!-- Right links -->
       <ul class="navbar-nav ms-auto d-flex flex-row mt-3 mt-lg-0">
         <li [hidden]="isLoggedIn" class="nav-item text-center mx-2 mx-lg-1">
-          <a class="nav-link" routerLink="/register">
+          <a class="nav-link" routerLinkActive="active" routerLink="/register">
             <div>
               <i class="fa-solid fa-id-card"></i>
 
@@ -90,9 +90,18 @@
             Registration
           </a>
         </li>
+        <li [hidden]="isLoggedIn" class="nav-item text-center mx-2 mx-lg-1">
+          <a class="nav-link" routerLinkActive="active" routerLink="/reset-password">
+            <div>
+              <i class="fa-solid fa-key"></i>
 
-        <li class="nav-item text-center mx-2 mx-lg-1" routerLinkActive="active">
-          <a class="nav-link" *ngIf="isLoggedIn === true" href="#" (click)="onLogout()">
+            </div>
+            Új jelszó kérése
+          </a>
+        </li>
+
+        <li class="nav-item text-center mx-2 mx-lg-1" >
+          <a class="nav-link" *ngIf="isLoggedIn === true"  (click)="onLogout()">
             <div>
               <i class="fas fa-terminal fa-lg mb-1"></i>
 
@@ -100,8 +109,8 @@
             Logout
           </a>
         </li>
-        <li class="nav-item text-center mx-2 mx-lg-1" routerLinkActive="active">
-          <a class="nav-link" *ngIf="isLoggedIn !== true" routerLink="/login">
+        <li class="nav-item text-center mx-2 mx-lg-1" >
+          <a class="nav-link" *ngIf="isLoggedIn !== true" routerLinkActive="active" routerLink="/login">
             <div>
               <i class="fas fa-terminal fa-lg mb-1"></i>
 

@@ -26,7 +26,7 @@
 						"polyfills": "src/polyfills.ts",
 						"tsConfig": "tsconfig.app.json",
 						"assets": [
-							"src/favicon.ico",
+							"src/logo.ico",
 							"src/assets"
 						],
 						"styles": [
@@ -34,8 +34,11 @@
 							"src/styles.scss",
 							"node_modules/bootstrap/dist/css/bootstrap.min.css",
 							"node_modules/datatables.net-dt/css/jquery.dataTables.css",
-							"node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css",
-							"node_modules/ag-grid-community/dist/styles/ag-grid.css",
+              "node_modules/ag-grid-community/dist/styles/ag-grid.css",
+              "node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css",
+              "node_modules/ag-grid-community/dist/styles/ag-theme-alpine-dark.css",
+              "node_modules/ag-grid-community/dist/styles/ag-theme-material.css",
+
               "node_modules/angular-notifier/styles.scss"
 
 						],
@@ -105,7 +108,7 @@
 						"tsConfig": "tsconfig.spec.json",
 						"karmaConfig": "karma.conf.js",
 						"assets": [
-							"src/favicon.ico",
+							"src/logo.ico",
 							"src/assets"
 						],
 						"styles": [
