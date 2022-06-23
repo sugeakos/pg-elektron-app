@@ -60,7 +60,6 @@
           <!-- Dropdown menu -->
           <ul class="dropdown-menu dropdown-menu-dark text-center" id="secondaryDropdown" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" routerLinkActive="active" routerLink="/tv/create"> <i class="fa fa-plus"></i> Új TV</a></li>
-<!--            <li><a class="dropdown-item" routerLinkActive="active" routerLink="/tv/update/:id">TV időpontfoglalás módosítása</a></li>-->
             <li>
               <hr class="dropdown-divider" />
             </li>
@@ -68,10 +67,7 @@
               <a class="dropdown-item" routerLinkActive="active" routerLink="/user/new">Új személy</a>
             </li>
             <li *ngIf="isAdminLoggedIn">
-              <a class="dropdown-item" routerLinkActive="active" routerLink="tv/create/:email">Új tv személyhez</a>
-            </li>
-            <li *ngIf="isAdminLoggedIn">
-              <a class="dropdown-item" routerLinkActive="active" href="#">Új márka</a>
+              <a class="dropdown-item" routerLinkActive="active" routerLink="/tv/category/new">Új márka</a>
             </li>
 
           </ul>
@@ -87,7 +83,7 @@
               <i class="fa-solid fa-id-card"></i>
 
             </div>
-            Registration
+            Regisztráció
           </a>
         </li>
         <li [hidden]="isLoggedIn" class="nav-item text-center mx-2 mx-lg-1">
@@ -106,7 +102,7 @@
               <i class="fas fa-terminal fa-lg mb-1"></i>
 
             </div>
-            Logout
+            Kijelentkezés
           </a>
         </li>
         <li class="nav-item text-center mx-2 mx-lg-1" >
@@ -115,7 +111,7 @@
               <i class="fas fa-terminal fa-lg mb-1"></i>
 
             </div>
-            Login
+            Bejelentkezés
           </a>
         </li>
       </ul>

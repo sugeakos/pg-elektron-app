@@ -1,1 +1,38 @@
-<p>add-new-tv-category works!</p>
+<app-navbar></app-navbar>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-3">
+      <div class="card text-dark bg-info">
+        <h3 class="card-header">Új márka hozzáadása</h3>
+        <div class="card-body card-text">
+          <form action="">
+            <div class="row">
+              <div class="col offset-3">
+                <div class="form-group">
+                  <mat-form-field style="background-color: white" appearance="outline">
+                    <mat-label>Márka neve</mat-label>
+                    <input type="text" style="width: 500px;" [formControl]="tvCatDescriptionControl" matInput class="form-control">
+                    <mat-error *ngIf="tvCatDescriptionControl.hasError('required')">
+                      Töltse ki a mezőt.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6 offset-3">
+                <button type="button" (click)="saveNewTvCategory()"
+                        [disabled]="tvCatDescriptionControl.hasError('required')"
+                        class="btn-outline-primary">Mentés
+                </button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

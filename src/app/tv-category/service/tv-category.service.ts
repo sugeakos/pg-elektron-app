@@ -15,8 +15,8 @@ export class TvCategoryService {
     return this.http.get<TvCategory[]>(`${this.host}/tv-categories`);
   }
 
-  public addNewTvCategory(formData: FormData): Observable<TvCategory | HttpErrorResponse> {
-    return this.http.post<TvCategory>(`${this.host}/tv-categories/new`,formData);
+  public addNewTvCategory(newCat: TvCategory): Observable<TvCategory | HttpErrorResponse> {
+    return this.http.post<TvCategory>(`${this.host}/tv-categories/new`,newCat);
   }
-  
+
 }

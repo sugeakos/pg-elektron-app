@@ -80,11 +80,11 @@
             <li class="list-group-item user_list" title="Mobil telefon">
               <b>Mobiltelefon:</b> {{ selectedUser?.phoneMobile}}</li>
             <li class="list-group-item user_list"
-                title="Csatlakozas datuma"><b>Csatlakozás dátuma:</b> {{ selectedUser?.joinDate | date: 'fullDate'}}
+                title="Csatlakozas datuma"><b>Csatlakozás dátuma:</b> {{ selectedUser?.joinDate | date: 'yyyy-MM-dd HH:mm:ss'}}
             </li>
             <li class="list-group-item user_list"
                 title="Legutobbi bejelentkezes"><b>Utolsó bejelentkezés
-              dátuma:</b> {{ selectedUser?.lastLoginDate | date: 'fullDate'}}</li>
+              dátuma:</b> {{ selectedUser?.lastLoginDate | date: 'yyyy-MM-dd HH:mm:ss'}}</li>
             <li class="list-group-item user_list" title="Aktivitas">
                   <span [hidden]="selectedUser?.isActive">
                       <i class="fa-solid fa-eye float-right" style="color: limegreen;">
