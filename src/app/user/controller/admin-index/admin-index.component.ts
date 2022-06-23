@@ -13,6 +13,7 @@ import {TvService} from '../../../tv/service/tv.service';
 import {CellClickedEvent, CellDoubleClickedEvent, ColDef, GridOptions, SelectionChangedEvent} from 'ag-grid-community';
 import {NotificationService} from 'src/app/custom-features/notification.service';
 import { NotificationType } from 'src/app/enumeration/notification.type';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-index',
@@ -26,7 +27,6 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
   public tempUserSelection: Person = new Person();
   public selectedUsersTvs: Tv[];
   public updateTv = new Tv();
-
   public editUser = new Person();
   private currentUsername: string;
 
@@ -57,7 +57,7 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
   public gridOptions: GridOptions = null;
 
   constructor(private personService: PersonService, private authService: AuthenticationService,
-              private tvService: TvService, private http: HttpClient, private notifier: NotificationService) {
+              private tvService: TvService, private http: HttpClient, private notifier: NotificationService, private router: Router) {
   }
 
 
@@ -70,10 +70,6 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
     this.gridOptions = {
       rowSelection: 'single',
       animateRows: true,
-      // onSelectionChanged: (event: SelectionChangedEvent) => {
-      //   event.api.getSelectedRows();
-      //
-      // },
       pagination: true,
       paginationAutoPageSize: true,
       onCellClicked: (event: CellClickedEvent) => {
@@ -97,13 +93,13 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subs.add(
       this.personService.getUsers().subscribe(
         (response: Person[]) => {
-          this.personService.addUsersToLocalCache(response);
+
           this.users = response;
           this.rowData = response;
 
         },
         (error: HttpErrorResponse) => {
-
+          this.sendNotification(NotificationType.ERROR,error.error.message);
         }
       )
     );
@@ -124,29 +120,43 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
           this.rowDataTv = response;
         },
         (error: HttpErrorResponse) => {
-          console.log(error.error.message);
+         this.sendNotification(NotificationType.ERROR,error.error.message);
         }
       )
     );
 
   }
+  public cellContextMenu(e): void {
+    this.selectedUser = e.data;
+    this.onCreateTvToSelectedUser(this.selectedUser);
+  }
+
+  public onCreateTvToSelectedUser(selectedUser: Person) {
+    this.router.navigateByUrl(`/tv/create/${selectedUser.email}`);
+    }
 
   public onEditUserByAdmin(user: Person): void {
     this.editUser = user;
+    this.currentUsername = user.username
+
     this.clickButton('openUserEdit');
   }
 
-  public onUpdateUserByAdmin(editUserForm: NgForm): void {
-    //const formData = this.personService.createPersonFormData(this.selectedUser.username,editUserForm.value);
+  public onUpdateUserByAdmin(updatedPerson: Person): void {
+
+    this.editUser.password = '';
+    console.log(this.editUser);
     this.subs.add(
-      this.personService.updateUser(editUserForm.value).subscribe(
+      this.personService.updateUser(this.editUser,this.currentUsername).subscribe(
         (response: Person) => {
           this.clickButton('closeEditUserModalButton');
+          console.log(response);
           this.getAllUsers();
-          window.location.reload();
+          this.sendNotification(NotificationType.SUCCESS,`${response.firstName} adatai sikeresn frissítve lettek.`);
+          this.currentUsername = null;
         },
         (err: HttpErrorResponse) => {
-          console.log(err.error.message);
+          this.sendNotification(NotificationType.ERROR,err.error.message);
         }
       )
     );

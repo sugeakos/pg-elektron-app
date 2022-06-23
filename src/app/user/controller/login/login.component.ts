@@ -8,6 +8,7 @@ import { AuthenticationService } from '../../service/authentication.service';
 import { PersonService } from '../../service/person.service';
 import { NotificationService } from 'src/app/custom-features/notification.service';
 import { NotificationType } from 'src/app/enumeration/notification.type';
+import { FormControl, NgForm, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,11 @@ import { NotificationType } from 'src/app/enumeration/notification.type';
 export class LoginComponent implements OnInit, OnDestroy {
   public showLoading: boolean;
   private subs = new SubSink();
+  private loginUser: Person = new Person();
+  public hide: boolean = true;
+  //form control
+  public passwordControl: FormControl = new FormControl('',[Validators.required]);
+  public usernameControl: FormControl = new FormControl('',[Validators.required]);
   constructor(private router: Router, private authService: AuthenticationService, private notifier: NotificationService) {
   }
 
@@ -29,10 +35,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onLogin(user: Person): void {
+  public onLogin(userForm: NgForm): void {
+    this.loginUser.password = this.passwordControl.value;
+    this.loginUser.username = this.usernameControl.value;
     this.showLoading = true;
     this.subs.add(
-      this.authService.login(user).subscribe(
+      this.authService.login(this.loginUser).subscribe(
         (response: HttpResponse<Person>) => {
           const token = response.headers.get(HeaderType.JWT_TOKEN);
           this.authService.saveTokenToLocalStorage(token);

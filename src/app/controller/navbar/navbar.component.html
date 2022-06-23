@@ -68,7 +68,7 @@
               <a class="dropdown-item" routerLinkActive="active" routerLink="/user/new">Új személy</a>
             </li>
             <li *ngIf="isAdminLoggedIn">
-              <a class="dropdown-item" routerLinkActive="active" href="#">Új tv személyhez</a>
+              <a class="dropdown-item" routerLinkActive="active" routerLink="tv/create/:email">Új tv személyhez</a>
             </li>
             <li *ngIf="isAdminLoggedIn">
               <a class="dropdown-item" routerLinkActive="active" href="#">Új márka</a>

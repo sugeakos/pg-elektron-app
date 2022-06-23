@@ -41,11 +41,6 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
   selector: 'app-user-index',
   templateUrl: './user-index.component.html',
   styleUrls: ['./user-index.component.scss'],
-  // providers:[
-  //   {provide: MAT_DATE_LOCALE, useValue:'hu-HU'},
-  //   {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],},
-  //   {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
-  // ],
 })
 export class UserIndexComponent implements OnInit, OnDestroy, AfterViewInit {
 
@@ -103,17 +98,6 @@ export class UserIndexComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
-
-  // public hungarian(): void {
-  //   this._locale = 'hu';
-  //   this._adapter.setLocale(this._locale);
-  // }
-  public myFilter = (d: Date): boolean => {
-    const day = d.getUTCDay();
-    // Prevent Saturday and Sunday from being selected.
-    return day !== 5 && day !== 6;
-  }
-
   //DataGrid
   public onGridReady(params: GridReadyEvent) {
     //this.rowData = this.loggedInUsersTvs;
@@ -125,13 +109,13 @@ export class UserIndexComponent implements OnInit, OnDestroy, AfterViewInit {
     this.onSelectTv(this.selectedTv);
   }
 
-  public onCellDoubleClicked(e: CellDoubleClickedEvent): void {
+  public cellContextMenu(e: CellDoubleClickedEvent): void {
     this.selectedTv = e.data;
     this.onUpdateSelectedTv(this.selectedTv);
   }
 
   public clearSelection(): void {
-    //this.agGrid.api.deselectAll();
+
   }
 
   //DataGridEnd
@@ -194,25 +178,6 @@ export class UserIndexComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedTv = selectedTv;
     this.clickButton('openTvInfo');
   }
-
-  // public onUpdateTv(updateTvForm: NgForm): void {
-  //   const formData = this.tvService.updateTvFormDate(this.selectedTv.externalId, updateTvForm.value);
-  //   this.subs.add(
-  //     this.tvService.addNewTv(formData).subscribe(
-  //       (response: Tv) => {
-  //         this.clickButton('new-tv-close');
-  //         this.getUserTvs();
-  //         updateTvForm.reset();
-  //       },
-  //       (err: HttpErrorResponse) => {
-  //         updateTvForm.reset();
-  //         console.log(err.error.message);
-  //         this.clickButton('new-tv-close');
-  //       }
-  //     )
-  //   );
-  // }
-
   public saveNewTv(): void {
     this.clickButton('new-tv-save');
   }

@@ -1,32 +1,25 @@
-import {HttpErrorResponse} from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormControl, NgForm, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-import {DlDateTimePickerChange} from 'angular-bootstrap-datetimepicker';
+import { FormControl, NgForm, Validators } from '@angular/forms';
+import { ActivatedRoute, Params } from '@angular/router';
 import {NotificationService} from 'src/app/custom-features/notification.service';
-import {NotificationType} from 'src/app/enumeration/notification.type';
-import {TvCategory} from 'src/app/tv-category/domain/tv-category';
+import { NotificationType } from 'src/app/enumeration/notification.type';
+import { TvCategory } from 'src/app/tv-category/domain/tv-category';
 import {TvCategoryService} from 'src/app/tv-category/service/tv-category.service';
-import {Person} from 'src/app/user/domain/person';
-import {AuthenticationService} from 'src/app/user/service/authentication.service';
 import {PersonService} from 'src/app/user/service/person.service';
 import {SubSink} from 'subsink';
-import {Tv} from '../../domain/tv';
+import { Tv } from '../../domain/tv';
 import {TvService} from '../../service/tv.service';
 
 @Component({
-  selector: 'app-create-new-tv',
-  templateUrl: './create-new-tv.component.html',
-  styleUrls: ['./create-new-tv.component.scss']
+  selector: 'app-add-tv-to-user',
+  templateUrl: './add-tv-to-user.component.html',
+  styleUrls: ['./add-tv-to-user.component.scss']
 })
-export class CreateNewTvComponent implements OnInit, OnDestroy {
+export class AddTvToUserComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
-  public loggedInUser: Person; //logged in user
-  public tvCategory: string;
+  private selectedUsersEmail: string;
   public tvCategories: TvCategory[];
-  public newTv: Tv;
-  public loggedInUsersEmail: string;
-
   public minDate: Date;
   public maxDate: Date;
   public stepMinute;
@@ -34,15 +27,15 @@ export class CreateNewTvComponent implements OnInit, OnDestroy {
   public minTime = 9;
   public maxTime = 16;
   public validDateTime: boolean = false;
-  private emailRegex = '^(?=.{1,64}@)[A-Za-z0-9_-]+(.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(.[A-Za-z0-9-]+)*(.[A-Za-z]{2,})$';
   private selectedDateTime: Date;
+  public newTv: Tv;
   public emailControl: FormControl;
   public tvCatControl: FormControl = new FormControl('Válasszon márkát', [Validators.required]);
   public errorTextControl: FormControl = new FormControl('', [Validators.required]);
   public reservedDateToRepair: FormControl = new FormControl('', [Validators.required]);
 
-  constructor(private personService: PersonService, private authService: AuthenticationService, private tvService: TvService,
-              private tvCatService: TvCategoryService, private router: Router, private notifier: NotificationService) {
+  constructor(private personService: PersonService, private tvService: TvService, private tvCatService: TvCategoryService,
+              private notifier: NotificationService, private route: ActivatedRoute) {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
     const currentDay = new Date().getDay();
@@ -51,7 +44,19 @@ export class CreateNewTvComponent implements OnInit, OnDestroy {
     this.maxDate = new Date(currentYear + 0, currentMonth + 3, 31);
     this.stepMinute = 10;
     this.defaultTime = [9, 0, 0];
+  }
 
+
+  ngOnInit(): void {
+    this.subs.add(
+      this.route.params.subscribe(
+        (params: Params) => {
+          this.selectedUsersEmail = params['email'];
+        }
+      )
+    );
+    this.getAllCategories();
+    this.emailControl = new FormControl(this.selectedUsersEmail,[Validators.email, Validators.required]);
   }
 
   myFilter = (d: Date | null): boolean => {
@@ -59,13 +64,6 @@ export class CreateNewTvComponent implements OnInit, OnDestroy {
     // Prevent Saturday and Sunday from being selected.
     return day !== 0 && day !== 6;
   };
-
-  ngOnInit(): void {
-    this.loggedInUser = this.authService.getUserFromLocalCache();
-    this.loggedInUsersEmail = this.loggedInUser.email;
-    this.emailControl = new FormControl(this.loggedInUsersEmail, [Validators.required, Validators.email, Validators.pattern(this.emailRegex)]);
-    this.getAllCategories();
-  }
 
   public getAllCategories(): void {
     this.subs.add(
@@ -75,40 +73,38 @@ export class CreateNewTvComponent implements OnInit, OnDestroy {
 
         },
         (err: HttpErrorResponse) => {
-          console.log(err.error.message);
+          this.notifier.sendNotification(NotificationType.ERROR, `${err.error.message}`);
         }
       )
     );
   }
-
-  public onAddNewTv(tvForm: NgForm): void {
-    this.newTv = new Tv();
-    this.newTv.personEmail = this.emailControl.value;
-    this.newTv.tvCategoryDescription = this.tvCatControl.value;
-    this.newTv.errorSeenByCustomer = this.errorTextControl.value;
-    this.newTv.reservedDateToRepair = Date.parse(this.reservedDateToRepair.value);
-      this.subs.add(
-        this.tvService.addNewTv(this.newTv).subscribe(
-          (response: Tv) => {
-            tvForm.resetForm();
-            //this.router.navigateByUrl('/user/index');
-            this.sendNotification(NotificationType.SUCCESS, `Sikeresen lefoglalta az időpontot.`);
-          },
-          (err: HttpErrorResponse) => {
-            tvForm.reset();
-            this.sendNotification(NotificationType.ERROR, `Hiba történt, próbálja meg később`);
-          }
-        )
-      );
-
-  }
-
   public saveNewTv(): void {
     this.clickButton('new-tv-save');
   }
 
   private clickButton(buttonId: string): void {
     document.getElementById(buttonId).click();
+  }
+  public onAddNewTv(tvForm: NgForm): void {
+    this.newTv = new Tv();
+    this.newTv.personEmail = this.emailControl.value;
+    this.newTv.tvCategoryDescription = this.tvCatControl.value;
+    this.newTv.errorSeenByCustomer = this.errorTextControl.value;
+    this.newTv.reservedDateToRepair = Date.parse(this.reservedDateToRepair.value);
+    this.subs.add(
+      this.tvService.addNewTv(this.newTv).subscribe(
+        (response: Tv) => {
+          tvForm.resetForm();
+          //this.router.navigateByUrl('/user/index');
+          this.sendNotification(NotificationType.SUCCESS, `Sikeresen lefoglalta az időpontot.`);
+        },
+        (err: HttpErrorResponse) => {
+          tvForm.reset();
+          this.sendNotification(NotificationType.ERROR, `Hiba történt, próbálja meg később`);
+        }
+      )
+    );
+
   }
 
   public addEvent($event: any) {
@@ -121,7 +117,6 @@ export class CreateNewTvComponent implements OnInit, OnDestroy {
     }
 
   }
-
   private sendNotification(notificationType: NotificationType, message: string): void {
     if (message) {
       this.notifier.sendNotification(notificationType, message);

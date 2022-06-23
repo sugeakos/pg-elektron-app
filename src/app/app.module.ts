@@ -15,7 +15,7 @@ import { RegistrationComponent } from './user/controller/registration/registrati
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatNativeDateModule } from '@angular/material/core';
+import {ErrorStateMatcher, MatNativeDateModule, MAT_DATE_LOCALE, ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 import { MaterialModule } from './modules/material.module';
 import { LoginComponent } from './user/controller/login/login.component';
 import { UserIndexComponent } from './user/controller/user-index/user-index.component';
@@ -32,6 +32,8 @@ import { UpdateTvComponent } from './tv/controller/update-tv/update-tv.component
 import { ResetPasswordComponent } from './user/controller/reset-password/reset-password.component';
 import { CreateNewUserComponent } from './user/controller/create-new-user/create-new-user.component';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { AddTvToUserComponent } from './tv/controller/add-tv-to-user/add-tv-to-user.component';
+import { AddNewTvCategoryComponent } from './tv-category/controller/add-new-tv-category/add-new-tv-category.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,9 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
     CreateNewTvComponent,
     UpdateTvComponent,
     ResetPasswordComponent,
-    CreateNewUserComponent
+    CreateNewUserComponent,
+    AddTvToUserComponent,
+    AddNewTvCategoryComponent
   ],
   imports: [
     BrowserModule,
@@ -69,6 +73,8 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
     {provide: HTTP_INTERCEPTORS,
     useClass: AuthenticationInterceptor,
     multi: true},
+    {provide: MAT_DATE_LOCALE, useValue: 'hu-HU'},
+    //{provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher},
   ],
   bootstrap: [AppComponent]
 })

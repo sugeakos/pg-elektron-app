@@ -29,7 +29,7 @@ export class IndexComponent implements OnInit, OnDestroy {
         this.personService.verifyEmailAddress(this.code).subscribe(
           (response) => {
             this.router.navigateByUrl('/login');
-            this.sendNotification(NotificationType.SUCCESS, `Köszönjük, hogy megerősítette az email címét, mostmár beléphet.`);
+            this.sendNotification(NotificationType.SUCCESS, `${response.message}.`);
           },
           (error: HttpErrorResponse) => {
             this.router.navigateByUrl('/login');

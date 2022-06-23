@@ -9,60 +9,15 @@
     <!--    Users    -->
     <div class="col-md-5">
 
-<!--      <div class="card bg-info">-->
-<!--        <div class="card-body">-->
-<!--          <h4 class="card-header bg-info"><b>Users</b></h4>-->
-<!--          <div class="card-text table-responsive">-->
-<!--            <mat-form-field appearance="standard">-->
-<!--              <mat-label>Filter</mat-label>-->
-<!--              <input matInput (keyup)="applyFilter($event)" placeholder="PL.: su" #input>-->
-<!--            </mat-form-field>-->
-
-<!--            <table mat-table [dataSource]="dataSource">-->
-<!--              <ng-container matColumnDef="#">-->
-<!--                <th mat-header-cell *matHeaderCellDef> #</th>-->
-<!--                <td (click)="onSelectUser(user)" mat-cell *matCellDef="let i = index; let user;"> {{i + 1}}.</td>-->
-<!--              </ng-container>-->
-
-<!--              <ng-container matColumnDef="name">-->
-<!--                <th mat-header-cell *matHeaderCellDef>Teljes név</th>-->
-<!--                <td (click)="onSelectUser(user)" mat-cell-->
-<!--                    *matCellDef="let user"> {{user.lastName}} {{user.firstName}}</td>-->
-<!--              </ng-container>-->
-
-<!--              <ng-container matColumnDef="email">-->
-<!--                <th mat-header-cell *matHeaderCellDef>Email</th>-->
-<!--                <td (click)="onSelectUser(user)" mat-cell *matCellDef="let user"> {{user.email}}</td>-->
-<!--              </ng-container>-->
-
-<!--              <ng-container matColumnDef="username">-->
-<!--                <th mat-header-cell *matHeaderCellDef>Felhasználó név</th>-->
-<!--                <td (click)="onSelectUser(user)" mat-cell *matCellDef="let user"> {{user.username}}</td>-->
-<!--              </ng-container>-->
-
-<!--              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>-->
-<!--              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
-<!--              <tr class="mat-row" *matNoDataRow>-->
-<!--                <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>-->
-<!--              </tr>-->
-<!--            </table>-->
-<!--            <mat-paginator [pageSizeOptions]="[5, 10, 20] " [length]="users.length"-->
-<!--                           showFirstLastButtons [pageSize]="5"-->
-
-<!--                           aria-label="Select page of periodic elements">-->
-<!--            </mat-paginator>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
       <div class="card bg-info">
         <div class="card-body text-dark">
-          <h3 class="card-header">AG Grid</h3>
+          <h3 class="card-header">Felhasználók</h3>
           <ag-grid-angular
             style="width: 100%; height: 300px;"
             class="ag-theme-alpine"
             [gridOptions]="gridOptions"
             [rowData]="rowData"
-
+            (cellContextMenu)="cellContextMenu($event)"
             [columnDefs]="columnDef">
 
           </ag-grid-angular>
@@ -78,12 +33,12 @@
       <div class="card">
         <div *ngIf="selectedUsersTvs.length === 0" class="card-body">
           <div class="card-header text-black">
-            Nincs tv hozzárendelve <b>{{selectedUser.lastName}} {{selectedUser.firstName}}</b> felhasználóhoz.
+            Nincs tv hozzárendelve <b>{{selectedUser?.lastName}} {{selectedUser?.firstName}}</b> felhasználóhoz.
           </div>
         </div>
         <div *ngIf="selectedUsersTvs.length !== 0" class="card-body">
           <div class="card-header text-black">
-            {{selectedUser.firstName}} TV-i
+            {{selectedUser?.firstName}} TV-i
           </div>
           <div class="card-text table-responsive">
             <ag-grid-angular
@@ -93,6 +48,7 @@
             [columnDefs] = "colDefTv"
             [animatedRows]="true"
             [pagination]="true"
+
             [paginationAutoPageSize]="true"
             (cellClicked)="onTvGridCellClicked($event)"
             >
@@ -224,10 +180,10 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeEditTvModalButton">Close
+          <button type="button" class=" btn-outline-secondary" data-bs-dismiss="modal" id="closeEditTvModalButton">Bezárás
           </button>
-          <button type="button" (click)="onUpdateTvByAdmin()" [disabled]="editTvForm.invalid" class="btn btn-primary">
-            Save changes
+          <button type="button" (click)="onUpdateTvByAdmin()" [disabled]="editTvForm.invalid" class="btn-outline-primary">
+            Mentés
           </button>
         </div>
       </div>
@@ -241,43 +197,43 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="modal-title text-center"><b>{{selectedUser?.firstName}}</b> adatainak a módosítása</h3>
+          <h3 class="modal-title text-center text-dark"><b>{{selectedUser?.firstName}}</b> adatainak a módosítása</h3>
           <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body text-dark">
           <div class="">
-            <form #editUserForm="ngForm">
+            <form #editUserForm="ngForm" >
               <div class="form-group">
                 <label>Email</label>
                 <input type="text" name="email" required
                        [(ngModel)]="editUser.email" class="form-control">
               </div>
               <div class="form-group ">
-                <label>Last Name</label>
+                <label>Vezetéknév</label>
                 <input type="text" name="lastName" [(ngModel)]="editUser.lastName" class="form-control">
               </div>
               <div class="form-group">
-                <label>First Name</label>
+                <label>Keresztnév</label>
                 <input type="text" name="firstName" [(ngModel)]="editUser.firstName" class="form-control">
               </div>
               <div class="form-group">
-                <label>Username</label>
+                <label>Felhasználónév</label>
                 <input type="text" name="username" [(ngModel)]="editUser.username" class="form-control">
               </div>
               <div class="form-group">
-                <label>Address</label>
+                <label>Lakcím</label>
                 <input type="text" name="address" [(ngModel)]="editUser.address" class="form-control">
               </div>
 
               <div class="form-group">
-                <label>Fix phone number</label>
+                <label>Telefon szám</label>
                 <input type="tel" name="phoneFix" [(ngModel)]="editUser.phoneFix"
                        class="form-control">
               </div>
               <div class="form-group">
-                <label>Mobile phone number</label>
+                <label>Mobilszám</label>
                 <input type="tel" name="phoneMobile" [(ngModel)]="editUser.phoneMobile"
                        class="form-control">
               </div>
@@ -296,28 +252,33 @@
               <fieldset class="form-group">
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input name="active" type="checkbox" [(ngModel)]="editUser.isActive"
+                    <input name="active" type="checkbox" [(ngModel)]="!editUser.isActive"
                            class="form-check-input">
-                    Inacitve
+                    Inaktív
                   </label>
                 </div>
                 <div class="form-check disabled">
                   <label class="form-check-label">
-                    <input name="locked" type="checkbox" [(ngModel)]="editUser.isNotLocked"
+                    <input name="locked" type="checkbox" [(ngModel)]="!editUser.isNotLocked"
                            class="form-check-input">
-                    Locked
+                    Zárolt
                   </label>
                 </div>
               </fieldset>
+              <div [hidden]="true" class="form-group">
+                <label>Mobilszám</label>
+                <input type="password" name="password" value="" [(ngModel)]="editUser.password"
+                       class="form-control">
+              </div>
             </form>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeEditUserModalButton">Close
+          <button type="button" class=" btn-outline-secondary" data-bs-dismiss="modal" id="closeEditUserModalButton">Mégse
           </button>
-          <button type="button" (click)="onUpdateUserByAdmin(editUserForm)" [disabled]="editUserForm.invalid"
-                  class="btn btn-primary">
-            Save changes
+          <button type="button" (click)="onUpdateUserByAdmin(editUserForm.value)" [disabled]="editUserForm.invalid"
+                  class="btn-outline-primary">
+            Mentés
           </button>
         </div>
       </div>

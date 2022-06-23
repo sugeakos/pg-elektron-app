@@ -5,24 +5,35 @@
     <div class="col-md-6 offset-3">
       <div class="card text-dark bg-info">
         <div class="card-body">
-          <h4 class="card-title">Regisztráció/Registration</h4>
+          <h4 class="card-title">Regisztráció</h4>
           <div class="card-text">
-            <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm.value)">
+            <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)">
 
               <div class="row">
                 <div class="col-md-6">
                   <div class="input-group mb-3">
                     <span class="input-group-text"><i class="fas fa-user"></i></span>
-                    <input type="text" name="firstName" placeholder="First name" required ngModel
-                           #firstNameInput="ngModel"
-                           class="form-control">
+                    <mat-form-field class="form-control" appearance="outline">
+                      <mat-label>Vezetéknév</mat-label>
+                      <input type="text" matInput [formControl]="lastNameControl" placeholder="Vezetéknév"
+                             class="form-control">
+                      <mat-error *ngIf="lastNameControl?.hasError('required')">
+                        Adja meg a vezetéknevét.
+                      </mat-error>
+                    </mat-form-field>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="input-group mb-3">
                     <span class="input-group-text"><i class="fas fa-user"></i></span>
-                    <input type="text" name="lastName" placeholder="Last name" required ngModel #lastNameInput="ngModel"
-                           class="form-control">
+                    <mat-form-field class="form-control" appearance="outline">
+                      <mat-label>Keresztnév</mat-label>
+                      <input type="text" matInput [formControl]="firstNameControl" placeholder="Keresztnév"
+                             class="form-control">
+                      <mat-error *ngIf="firstNameControl?.hasError('required')">
+                        Adja meg a keresztnevét.
+                      </mat-error>
+                    </mat-form-field>
                   </div>
                 </div>
               </div>
@@ -31,8 +42,14 @@
                 <div class="col">
                   <div class="input-group mb-3">
                     <span class="input-group-text"><i class="fas fa-user"></i></span>
-                    <input type="text" name="username" placeholder="Username" required ngModel #usernameInput="ngModel"
-                           class="form-control">
+                    <mat-form-field class="form-control" appearance="outline">
+                      <mat-label>Felhasználónév</mat-label>
+                      <input type="text" matInput [formControl]="usernameControl" placeholder="Felhasználónév"
+                             class="form-control">
+                      <mat-error *ngIf="usernameControl?.hasError('required')">
+                        Felhasználó nevét.
+                      </mat-error>
+                    </mat-form-field>
                   </div>
                 </div>
               </div>
@@ -41,8 +58,17 @@
                 <div class="col">
                   <div class="input-group mb-3">
                     <span class="input-group-text"><i class="fa-solid fa-map"></i></span>
-                    <input type="text" name="address" placeholder="Address" required ngModel #addressInput="ngModel"
-                           class="form-control">
+                    <mat-form-field class="form-control" appearance="outline">
+                      <mat-label>Lakcím</mat-label>
+                      <input type="text" matInput [formControl]="addressControl" placeholder="Lakcím"
+                             class="form-control">
+                      <mat-error *ngIf="addressControl?.hasError('minLength')">
+                        Minimum 10 karakter.
+                      </mat-error>
+                      <mat-error *ngIf="addressControl?.hasError('required')">
+                        Adja meg a lakcímét.
+                      </mat-error>
+                    </mat-form-field>
                   </div>
                 </div>
               </div>
@@ -51,8 +77,22 @@
                 <div class="col">
                   <div class="input-group mb-3">
                     <span class="input-group-text"><i class="fa-solid fa-at"></i></span>
-                    <input type="email" name="email" placeholder="Email" required ngModel #emailInput="ngModel"
-                           class="form-control">
+                    <mat-form-field class="form-control" appearance="outline">
+                      <mat-label>Email</mat-label>
+                      <input type="email" matInput [formControl]="emailControl" placeholder="Email"
+                             class="form-control">
+                      <mat-error *ngIf="emailControl?.hasError('pattern')">
+                        Adjon meg egy helyes email címet pl.: pelda@gmail.com.
+                      </mat-error>
+                      <mat-error *ngIf="emailControl?.hasError('required')">
+                        Adja meg email címét.
+                      </mat-error>
+                      <mat-error *ngIf="emailControl?.hasError('email')">
+                        Az email kell tartalmazz a következő @ jelet.
+                      </mat-error>
+                      <mat-error
+                        *ngIf="!emailControl?.hasError('email') && !emailControl?.hasError('required') && !emailControl?.hasError('pattern')"></mat-error>
+                    </mat-form-field>
                   </div>
                 </div>
               </div>
@@ -61,9 +101,28 @@
                 <div class="col">
                   <div class="input-group mb-3">
                     <span class="input-group-text"><i class="fa-solid fa-fingerprint"></i></span>
-                    <input type="password" name="password" placeholder="Password" required ngModel
-                           #passwordInput="ngModel"
-                           class="form-control">
+                    <mat-form-field class="form-control" appearance="outline">
+                      <mat-label>Jelszó</mat-label>
+                      <input [type]="hide ? 'password' : 'text'" matInput [formControl]="passwordControl"
+                             placeholder="Jelszó"
+                             class="form-control">
+                      <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
+                              [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                      </button>
+                      <mat-error *ngIf="passwordControl.hasError('pattern')">
+                        Kell 8 karakter, abból,
+                        1 nagybetű,
+                        1 szám,
+                        1 speciális karakter pl.: !#$_ .
+                      </mat-error>
+                      <mat-error
+                        *ngIf="!passwordControl.hasError('pattern') && !passwordControl.hasError('required') "></mat-error>
+                      <mat-error *ngIf="passwordControl.hasError('required')">
+                        Adja meg a jelszavát újra.
+                      </mat-error>
+
+                    </mat-form-field>
                   </div>
                 </div>
               </div>
@@ -72,19 +131,28 @@
                 <div class="col">
                   <div class="input-group mb-3">
                     <span class="input-group-text"><i class="fa-solid fa-fingerprint"></i></span>
-                    <input type="password" name="passwordCheck"
-                           (change)="checkPasswords(passwordInput.value,passwordCheckInput.value)"
-                           placeholder="Confirm password" required ngModel #passwordCheckInput="ngModel"
-                           class="form-control">
-
+                    <mat-form-field class="form-control" appearance="outline">
+                      <mat-label>Jelszó újra</mat-label>
+                      <input [type]="hide ? 'password' : 'text'" matInput [formControl]="passwordCheckControl"
+                             placeholder="Jelszó újra"
+                             class="form-control">
+                      <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
+                              [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                      </button>
+                      <mat-error *ngIf="passwordCheckControl.hasError('pattern')">
+                        Kell 8 karakter, abból,
+                        1 nagybetű,
+                        1 szám,
+                        1 speciális karakter pl.: !#$_ .
+                      </mat-error>
+                      <mat-error
+                        *ngIf="!passwordCheckControl.hasError('pattern') && !passwordCheckControl.hasError('required') "></mat-error>
+                      <mat-error *ngIf="passwordCheckControl.hasError('required')">
+                        Adja meg a jelszavát.
+                      </mat-error>
+                    </mat-form-field>
                   </div>
-                  <span
-                    *ngIf="!validPass && ((passwordInput.touched && passwordInput.invalid) || (passwordCheckInput.touched && passwordCheckInput.invalid)) "
-                    style="color: red" class="help-block">
-                    {{passErrorString}}
-                  </span>
-                  <span *ngIf="validPass" style="color: red" class="help-block">
-                  </span>
 
                 </div>
 
@@ -94,26 +162,59 @@
                 <div class="col-md-6">
                   <div class="input-group mb-3">
                     <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
-                    <input type="tel" name="phoneFix" placeholder="Phone number" [maxLength]="12" required ngModel
-                           #phoneFixInput="ngModel"
-                           class="form-control">
+                    <mat-form-field class="form-control" appearance="outline">
+                      <mat-label>Telefonszám</mat-label>
+                      <input type="tel" matInput [formControl]="phoneFixControl" placeholder="Telefonszám"
+                             class="form-control">
+                      <mat-error *ngIf="phoneFixControl?.hasError('minLength')">
+                        Minimum 6 karakter.
+                      </mat-error>
+                      <mat-error *ngIf="phoneFixControl?.hasError('maxLength')">
+                        Maximum 12 karakter.
+                      </mat-error>
+                      <mat-error *ngIf="phoneFixControl?.hasError('required')">
+                        A telefonszámot kötelező megadni.
+                      </mat-error>
+<!--                      <mat-error-->
+<!--                        *ngIf="!phoneFixControl?.hasError('minLenght') &&-->
+<!--                      !phoneFixControl?.hasError('maxLenght') &&-->
+<!--                      !phoneFixControl?.hasError('required')">-->
+
+<!--                      </mat-error>-->
+                    </mat-form-field>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="input-group mb-3">
                     <span class="input-group-text"><i class="fa-solid fa-mobile"></i></span>
-                    <input type="tel" name="phoneMobile" placeholder="Mobile number" required ngModel
-                           [maxLength]="12"
-                           #mobileInput="ngModel"
-                           class="form-control">
+                    <mat-form-field class="form-control" appearance="outline">
+                      <mat-label>Mobilszám</mat-label>
+                      <input type="tel" matInput [formControl]="phoneMobileControl" placeholder="Mobilszám"
+                             class="form-control">
+                      <mat-error *ngIf="phoneMobileControl?.hasError('minLength')">
+                        Minimum 10 karakter.
+                      </mat-error>
+                      <mat-error *ngIf="phoneMobileControl?.hasError('maxLength')">
+                        Maximum 12 karakter.
+                      </mat-error>
+                      <mat-error *ngIf="phoneMobileControl?.hasError('required')">
+                        A mobilszámot kötelező megadni.
+                      </mat-error>
+                      <mat-error
+                        *ngIf="!phoneMobileControl?.hasError('minLenght') &&
+                      !phoneMobileControl?.hasError('maxLenght') &&
+                      !phoneMobileControl?.hasError('required')">
+
+                      </mat-error>
+                    </mat-form-field>
                   </div>
-                  <span class="help-block"></span>
+
                 </div>
               </div>
               <div class="row">
                 <div class="col d-flex justify-content-center">
                   <button type="submit" class="btn btn-primary" name="button" [disabled]="registerForm.invalid ||
-                  showLoading || checkPasswords(passwordInput.value,passwordCheckInput.value)">
+                  showLoading || checkPasswords()">
                     <i *ngIf="showLoading" class="fas fa-spinner fa-spin"></i> &nbsp;&nbsp;
                     <span *ngIf="showLoading"> Loading...</span>
                     <span *ngIf="!showLoading">Register</span>
@@ -125,7 +226,8 @@
           </div>
           <div class="mt-4">
             <div class="d-flex justify-content-center links">
-              Already have an account?  <a routerLink="/login" class="ml-2" style="color: black; margin-left: 1%;"> Log In</a>
+              Already have an account? <a routerLink="/login" class="ml-2" style="color: black; margin-left: 1%;"> Log
+              In</a>
             </div>
           </div>
         </div>

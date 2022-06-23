@@ -20,7 +20,7 @@
               class="ag-theme-alpine ag-row-hover ag-column-hover"
               [animateRows]="true"
               (cellClicked)="onCellClicked($event)"
-              (cellContextMenu)="onCellDoubleClicked($event)"
+              (cellContextMenu)="cellContextMenu($event)"
               [rowData]="rowData"
               [columnDefs]="columnDef"
               [pagination]="true"

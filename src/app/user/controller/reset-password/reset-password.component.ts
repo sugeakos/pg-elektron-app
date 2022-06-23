@@ -15,6 +15,7 @@ import {PersonService} from '../../service/person.service';
 export class ResetPasswordComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
+  
   public showLoading: boolean = false;
   public emailFormControl: FormControl = new FormControl('', [Validators.required, Validators.email]);
 

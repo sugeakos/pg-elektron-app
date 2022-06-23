@@ -5,41 +5,160 @@
       <div class="card text-dark bg-info">
         <h3 class="card-header">Új személy hozzáadása</h3>
         <div class="card-body card-text">
-          <form action="">
+          <form #registerForm="ngForm" (ngSubmit)="onAddNewUser(registerForm)">
+
             <div class="row">
-              <div class="col-6">
+              <div class="col-md-6">
                 <div class="input-group mb-3">
                   <span class="input-group-text"><i class="fas fa-user"></i></span>
                   <mat-form-field class="form-control" appearance="outline">
                     <mat-label>Vezetéknév</mat-label>
-                    <input type="text" matInput [formControl]="lastNameControl" placeholder="Példa">
-                    <mat-error *ngIf="lastNameControl.hasError('required')">
-                      Adja meg a vezetéknevét!
+                    <input type="text" matInput [formControl]="lastNameControl" placeholder="Vezetéknév"
+                           class="form-control">
+                    <mat-error *ngIf="lastNameControl?.hasError('required')">
+                      Adja meg a vezetéknevét.
                     </mat-error>
                   </mat-form-field>
                 </div>
               </div>
-
-              <div class="col-6">
+              <div class="col-md-6">
                 <div class="input-group mb-3">
                   <span class="input-group-text"><i class="fas fa-user"></i></span>
                   <mat-form-field class="form-control" appearance="outline">
                     <mat-label>Keresztnév</mat-label>
-                    <input type="text" matInput [formControl]="firstNameControl" placeholder="Pista">
-                    <mat-error *ngIf=" firstNameControl.hasError('required')">
-                      Adja meg a keresztnevét!
+                    <input type="text" matInput [formControl]="firstNameControl" placeholder="Keresztnév"
+                           class="form-control">
+                    <mat-error *ngIf="firstNameControl?.hasError('required')">
+                      Adja meg a keresztnevét.
                     </mat-error>
                   </mat-form-field>
                 </div>
               </div>
-
             </div>
 
             <div class="row">
               <div class="col">
+                <div class="input-group mb-3">
+                  <span class="input-group-text"><i class="fas fa-user"></i></span>
+                  <mat-form-field class="form-control" appearance="outline">
+                    <mat-label>Felhasználónév</mat-label>
+                    <input type="text" matInput [formControl]="usernameControl" placeholder="Felhasználónév"
+                           class="form-control">
+                    <mat-error *ngIf="usernameControl?.hasError('required')">
+                      Felhasználó nevét.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <div class="input-group mb-3">
+                  <span class="input-group-text"><i class="fa-solid fa-map"></i></span>
+                  <mat-form-field class="form-control" appearance="outline">
+                    <mat-label>Lakcím</mat-label>
+                    <input type="text" matInput [formControl]="addressControl" placeholder="Lakcím"
+                           class="form-control">
+                    <mat-error *ngIf="addressControl?.hasError('minLength')">
+                      Minimum 10 karakter.
+                    </mat-error>
+                    <mat-error *ngIf="addressControl?.hasError('required')">
+                      Adja meg a lakcímét.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <div class="input-group mb-3">
+                  <span class="input-group-text"><i class="fa-solid fa-at"></i></span>
+                  <mat-form-field class="form-control" appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input type="email" matInput [formControl]="emailControl" placeholder="Email"
+                           class="form-control">
+                    <mat-error *ngIf="emailControl?.hasError('pattern')">
+                      Adjon meg egy helyes email címet pl.: pelda@gmail.com.
+                    </mat-error>
+                    <mat-error *ngIf="emailControl?.hasError('required')">
+                      Adja meg email címét.
+                    </mat-error>
+                    <mat-error *ngIf="emailControl?.hasError('email')">
+                      Az email kell tartalmazz a következő @ jelet.
+                    </mat-error>
+                    <mat-error
+                      *ngIf="!emailControl?.hasError('email') && !emailControl?.hasError('required') && !emailControl?.hasError('pattern')"></mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="input-group mb-3">
+                  <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
+                  <mat-form-field class="form-control" appearance="outline">
+                    <mat-label>Telefonszám</mat-label>
+                    <input type="tel" matInput [formControl]="phoneFixControl" placeholder="Telefonszám"
+                           class="form-control">
+                    <mat-error *ngIf="phoneFixControl?.hasError('minLength')">
+                      Minimum 6 karakter.
+                    </mat-error>
+                    <mat-error *ngIf="phoneFixControl?.hasError('maxLength')">
+                      Maximum 12 karakter.
+                    </mat-error>
+                    <mat-error *ngIf="phoneFixControl?.hasError('required')">
+                      A telefonszámot kötelező megadni.
+                    </mat-error>
+                    <!--                      <mat-error-->
+                    <!--                        *ngIf="!phoneFixControl?.hasError('minLenght') &&-->
+                    <!--                      !phoneFixControl?.hasError('maxLenght') &&-->
+                    <!--                      !phoneFixControl?.hasError('required')">-->
+
+                    <!--                      </mat-error>-->
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="input-group mb-3">
+                  <span class="input-group-text"><i class="fa-solid fa-mobile"></i></span>
+                  <mat-form-field class="form-control" appearance="outline">
+                    <mat-label>Mobilszám</mat-label>
+                    <input type="tel" matInput [formControl]="phoneMobileControl" placeholder="Mobilszám"
+                           class="form-control">
+                    <mat-error *ngIf="phoneMobileControl?.hasError('minLength')">
+                      Minimum 10 karakter.
+                    </mat-error>
+                    <mat-error *ngIf="phoneMobileControl?.hasError('maxLength')">
+                      Maximum 12 karakter.
+                    </mat-error>
+                    <mat-error *ngIf="phoneMobileControl?.hasError('required')">
+                      A mobilszámot kötelező megadni.
+                    </mat-error>
+                    <mat-error
+                      *ngIf="!phoneMobileControl?.hasError('minLenght') &&
+                      !phoneMobileControl?.hasError('maxLenght') &&
+                      !phoneMobileControl?.hasError('required')">
+
+                    </mat-error>
+                  </mat-form-field>
+                </div>
 
               </div>
             </div>
+            <div class="row">
+              <div class="col d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary" name="button" [disabled]="registerForm.invalid ||
+                  showLoading">
+                  <i *ngIf="showLoading" class="fas fa-spinner fa-spin"></i> &nbsp;&nbsp;
+                  <span *ngIf="showLoading"> Loading...</span>
+                  <span *ngIf="!showLoading">Hozzáadás</span>
+                </button>
+              </div>
+            </div>
+
           </form>
         </div>
       </div>

@@ -24,8 +24,8 @@ export class PersonService {
     return this.http.post<Person>(`${this.host}/person/add`, formData);
   }
 
-  public updateUser(formData: FormData): Observable<Person | HttpErrorResponse> {
-    return this.http.post<Person>(`${this.host}/person/update`, formData);
+  public updateUser(person: Person, currentUsername: string): Observable<Person | HttpErrorResponse> {
+    return this.http.post<Person>(`${this.host}/person/update/${currentUsername}`, person);
   }
 
   public resetPassword(email: string): Observable<CustomHttpResponse | HttpErrorResponse> {

@@ -38,9 +38,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   public onUpdateCurrentUser(person: Person): void {
     this.refreshing = true;
     this.currentUsername = this.authService.getUserFromLocalCache().username;
-    const formData = this.personServie.createPersonFormData(this.currentUsername, person );
+    //const formData = this.personServie.createPersonFormData(this.currentUsername, person );
     this.subs.add(
-      this.personServie.updateUser(formData).subscribe(
+      this.personServie.updateUser(person,this.currentUsername).subscribe(
         (response: Person) => {
           this.authService.addUserToLocalCache(response);
           this.refreshing = false;

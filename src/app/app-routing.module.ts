@@ -12,6 +12,7 @@ import { CreateNewTvComponent } from './tv/controller/create-new-tv/create-new-t
 import { UpdateTvComponent } from './tv/controller/update-tv/update-tv.component';
 import { ResetPasswordComponent } from './user/controller/reset-password/reset-password.component';
 import { CreateNewUserComponent } from './user/controller/create-new-user/create-new-user.component';
+import { AddTvToUserComponent } from './tv/controller/add-tv-to-user/add-tv-to-user.component';
 
 const routes: Routes = [
   {path: 'index', component: IndexComponent},
@@ -23,6 +24,7 @@ const routes: Routes = [
   {path: 'user/new',component: CreateNewUserComponent, canActivate: [AdminGuard]},
   {path: 'admin/index', component: AdminIndexComponent, canActivate: [AdminGuard]},
   {path:'tv/create', component:CreateNewTvComponent, canActivate: [AuthenticationGuard]},
+  {path:'tv/create/:email', component:AddTvToUserComponent, canActivate: [ AdminGuard]},
   {path:'tv/update/:id', component:UpdateTvComponent, canActivate: [AuthenticationGuard]},
 
 

@@ -43,7 +43,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 import {OverlayModule} from '@angular/cdk/overlay';
-import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import { DlDateTimeDateModule, DlDateTimePickerModule} from 'angular-bootstrap-datetimepicker';
 
 
 
@@ -96,7 +97,10 @@ import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-mat
     PortalModule,
     ScrollingModule,
     NgxMatDatetimePickerModule,
+    NgxMatNativeDateModule,
     NgxMatTimepickerModule,
+    DlDateTimeDateModule,  // <--- Determines the data type of the model
+    DlDateTimePickerModule,
 
   ]
 })
