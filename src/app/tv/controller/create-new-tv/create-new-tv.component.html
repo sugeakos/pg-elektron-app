@@ -3,8 +3,8 @@
 <div class="container">
   <div class="row">
     <div class="col-md-6 offset-3">
-      <div class="card bg-info">
-        <h4 class="card-header text-light">TV</h4>
+      <div class="card card_custom">
+        <h4 class="card-header text-dark">TV</h4>
         <div class="card-body">
           <div class="modal-body">
             <div>
@@ -30,9 +30,9 @@
                 </div>
 
                 <div class="form-group">
-                  <mat-form-field appearance="outline">
+                  <mat-form-field class="card_custom" appearance="outline">
                     <mat-label>Márka</mat-label>
-                    <mat-select [formControl]="tvCatControl" class="form-control">
+                    <mat-select [formControl]="tvCatControl" class="form-control card_custom">
                       <mat-option *ngFor="let cat of tvCategories"
                                   [value]="cat.description">{{cat?.description}}</mat-option>
                     </mat-select>
@@ -43,9 +43,9 @@
                 </div>
 
                 <div class="form-group">
-                  <mat-form-field appearance="outline">
+                  <mat-form-field  appearance="outline">
                     <mat-label>Hiba:</mat-label>
-                    <textarea [formControl]="errorTextControl" matInput class="form-control bg-info text-dark"
+                    <textarea [formControl]="errorTextControl" matInput class="form-control card_custom text-dark"
                               rows="10"></textarea>
                   </mat-form-field>
                   <mat-error *ngIf="errorTextControl.hasError('required')">
@@ -82,7 +82,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" (click)="saveNewTv()" [disabled]="errorTextControl.hasError('required') ||
-                tvCatControl.hasError('required') || emailControl?.hasError('required') || !validDateTime" class="btn btn-primary">
+                tvCatControl.hasError('required') || emailControl?.hasError('required') || !validDateTime" class=" btn-primary">
               Foglalás
             </button>
           </div>

@@ -36,9 +36,8 @@ export class UpdateTvComponent implements OnInit, OnDestroy {
               private tvCatService: TvCategoryService, private notifier: NotificationService, private router: Router) {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
-    const currentDay = new Date().getDay();
 
-    this.minDate = new Date(currentYear - 0, currentMonth, new Date().getDate() + currentDay);
+    this.minDate = new Date(currentYear - 0, currentMonth, new Date().getDate());
     this.maxDate = new Date(currentYear + 0, currentMonth + 3, 31);
     this.stepMinute = 10;
     this.defaultTime = [9, 0, 0];

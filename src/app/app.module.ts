@@ -68,6 +68,7 @@ import { AddNewTvCategoryComponent } from './tv-category/controller/add-new-tv-c
     AgGridModule,
     ReactiveFormsModule,
 
+
   ],
   providers: [AuthenticationService, PersonService, NotificationService, AuthenticationGuard,AdminGuard,
     {provide: HTTP_INTERCEPTORS,

@@ -58,11 +58,32 @@ export class UserIndexComponent implements OnInit, OnDestroy, AfterViewInit {
   public rowStyle: string | string[];
   //dataGrid
   public columnDef: ColDef[] = [
-    {headerName: 'Brend', field: 'tvCategoryDescription', sortable: true},
-    {headerName: `Felhasználó által látott hiba`, field: 'errorSeenByCustomer'},
+    {
+      headerName: 'Márka', field: 'tvCategoryDescription', sortable: true, filter: 'agTextColumnFilter',
+      filterParams: {
+        caseSensitive: false,
+        filterOptions: ['contains', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+      }
+    },
+    {
+      headerName: `Felhasználó által látott hiba`, field: 'errorSeenByCustomer',  filter: 'agTextColumnFilter',
+      filterParams: {
+        caseSensitive: false,
+        filterOptions: ['contains', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+      }
+    },
     {headerName: 'Lefoglalt időpont', field: 'reservedDateToRepair', sortable: true},
     {headerName: 'Javítás időpontja', field: 'dateOfCorrection'},
-    {headerName: 'Javított hiba', field: 'repairedError'},
+    {
+      headerName: 'Javított hiba', field: 'repairedError', filter: 'agTextColumnFilter',
+      filterParams: {
+        caseSensitive: false,
+        filterOptions: ['contains', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+      }
+    },
     {headerName: 'Javítás ára', field: 'price'},
     {headerName: 'Javítás alatt áll', field: 'isItStillInProgress'}
   ];
@@ -91,7 +112,6 @@ export class UserIndexComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getUserTvs();
     this.selectedTv = null;
   }
-
 
 
   ngAfterViewInit(): void {
@@ -178,6 +198,7 @@ export class UserIndexComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedTv = selectedTv;
     this.clickButton('openTvInfo');
   }
+
   public saveNewTv(): void {
     this.clickButton('new-tv-save');
   }

@@ -35,6 +35,9 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     if(httpRequest.url.includes(`${this.authService.host}/verify`)) {
       return httpHandler.handle(httpRequest);
     }
+    if(httpRequest.url.includes(`http://localhost:4200/favicon.ico`)) {
+      return httpHandler.handle(httpRequest);
+    }
 
     this.authService.loadToken();
     const token = this.authService.getToken();

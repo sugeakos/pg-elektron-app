@@ -3,13 +3,14 @@
 <div class="container">
   <div class="row">
     <div class="col-md-6 offset-3">
-      <div class="card text-dark bg-info">
+      <div class="card text-dark card_custom">
         <h3 class="card-header">Új márka hozzáadása</h3>
         <div class="card-body card-text">
           <form action="">
             <div class="row">
               <div class="col offset-3">
-                <div class="form-group">
+                <div class="input-group mb-3">
+                  <span class="input-group-text"><i class="fa-solid fa-tv"></i></span>
                   <mat-form-field style="background-color: white" appearance="outline">
                     <mat-label>Márka neve</mat-label>
                     <input type="text" style="width: 500px;" [formControl]="tvCatDescriptionControl" matInput class="form-control">

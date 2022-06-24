@@ -2,7 +2,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-6 offset-3">
-      <div class="card text-dark bg-info">
+      <div class="card text-dark card_custom">
         <div class="card-body">
           <h4 class="card-title">Bejelentkezés</h4>
           <div class="card-text">
@@ -49,11 +49,11 @@
 
               <div class="row">
                 <div class="col d-flex justify-content-center">
-                  <button type="submit" class="btn btn-primary" name="button" [disabled]="loginForm.invalid ||
-                  showLoading">
+                  <button type="submit" class=" btn-primary" name="button" [disabled]="loginForm.invalid ||
+                  showLoading || passwordControl?.hasError('required') || usernameControl?.hasError('required')">
                     <i *ngIf="showLoading" class="fas fa-spinner fa-spin"></i> &nbsp;&nbsp;
-                    <span *ngIf="showLoading"> Loading...</span>
-                    <span *ngIf="!showLoading">Login</span>
+                    <span *ngIf="showLoading"> Pillanat...</span>
+                    <span *ngIf="!showLoading">Bejelentkezés</span>
                   </button>
                 </div>
               </div>

@@ -29,7 +29,7 @@ export class TvService {
     return this.http.post<Tv>(`${this.host}/tv/update`, tv);
   }
 
-  public fetchAllTvs(): Observable<Tv[]> {
+  public fetchAllTvs(): Observable<Tv[] | HttpErrorResponse> {
     return this.http.get<Tv[]>(`${this.host}/tv/all-tv`);
   }
 

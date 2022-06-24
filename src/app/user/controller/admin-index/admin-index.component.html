@@ -9,7 +9,7 @@
     <!--    Users    -->
     <div class="col-md-5">
 
-      <div class="card bg-info">
+      <div class="card card_custom">
         <div class="card-body text-dark">
           <h3 class="card-header">Felhasználók</h3>
           <ag-grid-angular
@@ -30,7 +30,7 @@
     <!--    TV list-->
     <div *ngIf="selectedUser?.firstName !== '' " class="col-md-7">
 
-      <div class="card">
+      <div class="card card_custom">
         <div *ngIf="selectedUsersTvs.length === 0" class="card-body">
           <div class="card-header text-black">
             Nincs tv hozzárendelve <b>{{selectedUser?.lastName}} {{selectedUser?.firstName}}</b> felhasználóhoz.
@@ -62,9 +62,9 @@
   </div>
   <!-- User details -->
   <div *ngIf="selectedUser.firstName !== ''" style="margin-top: 1%;" class="row">
-    <div class="col">
-      <div class="card bg-info">
-        <h3 class="card-header bg-info text-center" id="exampleModalLongTitle">
+    <div class="col" >
+      <div class="card card_custom">
+        <h3 class="card-header text-dark text-center" id="exampleModalLongTitle">
           <b>{{selectedUser?.lastName}} {{selectedUser?.firstName}}</b> &nbsp;
           <i (click)="onEditUserByAdmin(selectedUser)" class="fas fa-edit btn-outline-primary"></i>
 
@@ -118,6 +118,7 @@
     </div>
   </div>
   <!--  User details end-->
+
 
   <!-- Main content end -->
 

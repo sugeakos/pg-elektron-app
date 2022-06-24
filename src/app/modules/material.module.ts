@@ -45,6 +45,7 @@ import {MatTreeModule} from '@angular/material/tree';
 import {OverlayModule} from '@angular/cdk/overlay';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { DlDateTimeDateModule, DlDateTimePickerModule} from 'angular-bootstrap-datetimepicker';
+import { AgChartsAngularModule } from 'ag-charts-angular';
 
 
 
@@ -101,6 +102,7 @@ import { DlDateTimeDateModule, DlDateTimePickerModule} from 'angular-bootstrap-d
     NgxMatTimepickerModule,
     DlDateTimeDateModule,  // <--- Determines the data type of the model
     DlDateTimePickerModule,
+    AgChartsAngularModule
 
   ]
 })

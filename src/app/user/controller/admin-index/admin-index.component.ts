@@ -10,10 +10,17 @@ import {Tv} from '../../../tv/domain/tv';
 import {AuthenticationService} from '../../service/authentication.service';
 import {PersonService} from '../../service/person.service';
 import {TvService} from '../../../tv/service/tv.service';
-import {CellClickedEvent, CellDoubleClickedEvent, ColDef, GridOptions, SelectionChangedEvent} from 'ag-grid-community';
+import {
+  AgChartOptions,
+  CellClickedEvent,
+  CellDoubleClickedEvent,
+  ColDef,
+  GridOptions,
+  SelectionChangedEvent
+} from 'ag-grid-community';
 import {NotificationService} from 'src/app/custom-features/notification.service';
-import { NotificationType } from 'src/app/enumeration/notification.type';
-import { Router } from '@angular/router';
+import {NotificationType} from 'src/app/enumeration/notification.type';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-admin-index',
@@ -34,14 +41,49 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
   public rowDataTv: any[];
   //dataGrid
   public columnDef: ColDef[] = [
-    {field: 'email', sortable: true},
-    {field: 'lastName', sortable: true},
-    {field: 'firstName'},
-    {field: 'username'}
+    {
+      headerName: 'Email', field: 'email', sortable: true, filter: 'agTextColumnFilter',
+      filterParams: {
+        caseSensitive: false,
+        filterOptions: ['contains', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+      }
+    },
+    {
+      headerName: 'Vezeték név', field: 'lastName', sortable: true, filter: 'agTextColumnFilter',
+      filterParams: {
+        caseSensitive: false,
+        filterOptions: ['contains', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+      }
+    },
+    {
+      headerName: 'Keresztnév', field: 'firstName', filter: 'agTextColumnFilter',
+      filterParams: {
+        caseSensitive: false,
+        filterOptions: ['contains', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+      }
+    },
+    {
+      headerName: 'Felhasználónlv', field: 'username', filter: 'agTextColumnFilter',
+      filterParams: {
+        caseSensitive: false,
+        filterOptions: ['contains', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+      }
+    }
   ];
   public colDefTv: ColDef[] = [
-    {headerName: 'Brend', field: 'tvCategoryDescription', sortable: true},
-    {headerName: `Felhasználó által látott hiba`, field: 'errorSeenByCustomer'},
+    {
+      headerName: 'Márka', field: 'tvCategoryDescription', sortable: true, filter: 'agTextColumnFilter',
+      filterParams: {
+        caseSensitive: false,
+        filterOptions: ['contains', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+      }
+    },
+    {headerName: `Felhasználó által látott hiba`, field: 'errorSeenByCustomer', sortable: true},
     {headerName: 'Lefoglalt időpont', field: 'reservedDateToRepair'},
     {headerName: 'Javítás időpontja', field: 'dateOfCorrection'},
     {headerName: 'Javított hiba', field: 'repairedError'},
@@ -56,6 +98,10 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
   };
   public gridOptions: GridOptions = null;
 
+  public options: AgChartOptions;
+
+  public tvs: Tv[];
+
   constructor(private personService: PersonService, private authService: AuthenticationService,
               private tvService: TvService, private http: HttpClient, private notifier: NotificationService, private router: Router) {
   }
@@ -67,6 +113,7 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   ngOnInit(): void {
+    this.getAllTvs();
     this.gridOptions = {
       rowSelection: 'single',
       animateRows: true,
@@ -81,7 +128,6 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getAllUsers();
     this.selectedUser = new Person();
     this.selectedUsersTvs = new Array();
-
   }
 
 
@@ -94,12 +140,24 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
       this.personService.getUsers().subscribe(
         (response: Person[]) => {
 
-          this.users = response;
+          //this.users = response;
           this.rowData = response;
-
         },
         (error: HttpErrorResponse) => {
-          this.sendNotification(NotificationType.ERROR,error.error.message);
+          this.sendNotification(NotificationType.ERROR, error.error.message);
+        }
+      )
+    );
+  }
+
+  public getAllTvs(): void {
+    this.subs.add(
+      this.tvService.fetchAllTvs().subscribe(
+        (response: Tv[]) => {
+          this.tvs = response;
+        },
+        (error: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, "Hiba történt");
         }
       )
     );
@@ -120,12 +178,13 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
           this.rowDataTv = response;
         },
         (error: HttpErrorResponse) => {
-         this.sendNotification(NotificationType.ERROR,error.error.message);
+          this.sendNotification(NotificationType.ERROR, error.error.message);
         }
       )
     );
 
   }
+
   public cellContextMenu(e): void {
     this.selectedUser = e.data;
     this.onCreateTvToSelectedUser(this.selectedUser);
@@ -133,7 +192,7 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public onCreateTvToSelectedUser(selectedUser: Person) {
     this.router.navigateByUrl(`/tv/create/${selectedUser.email}`);
-    }
+  }
 
   public onEditUserByAdmin(user: Person): void {
     this.editUser = user;
@@ -147,16 +206,16 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
     this.editUser.password = '';
     console.log(this.editUser);
     this.subs.add(
-      this.personService.updateUser(this.editUser,this.currentUsername).subscribe(
+      this.personService.updateUser(this.editUser, this.currentUsername).subscribe(
         (response: Person) => {
           this.clickButton('closeEditUserModalButton');
           console.log(response);
           this.getAllUsers();
-          this.sendNotification(NotificationType.SUCCESS,`${response.firstName} adatai sikeresn frissítve lettek.`);
+          this.sendNotification(NotificationType.SUCCESS, `${response.firstName} adatai sikeresn frissítve lettek.`);
           this.currentUsername = null;
         },
         (err: HttpErrorResponse) => {
-          this.sendNotification(NotificationType.ERROR,err.error.message);
+          this.sendNotification(NotificationType.ERROR, err.error.message);
         }
       )
     );
@@ -178,7 +237,7 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
           this.getUserTvs();
         },
         (err: HttpErrorResponse) => {
-          this.sendNotification(NotificationType.ERROR,`${err.error.message}`);
+          this.sendNotification(NotificationType.ERROR, `${err.error.message}`);
         }
       )
     );

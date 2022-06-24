@@ -3,7 +3,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-6 offset-3">
-      <div class="card bg-info text-dark">
+      <div class="card card_custom text-dark">
         <h3 class="card-header"><b> Keresett Tv</b></h3>
         <div class="card-body">
           <form #updateTvForm="ngForm" (ngSubmit)="onUpdateReservedDate(updateTvForm)">
@@ -39,7 +39,7 @@
               </mat-form-field>
             </div>
             <br>
-            <button type="submit" [disabled]="reservedDateToRepair.hasError('required') || !validDateTime" class="btn btn-primary" >Mentés</button>
+            <button type="submit" [disabled]="reservedDateToRepair.hasError('required') || !validDateTime" class="btn-primary" >Mentés</button>
           </form>
         </div>
       </div>

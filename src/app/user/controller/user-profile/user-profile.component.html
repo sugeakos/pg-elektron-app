@@ -6,7 +6,7 @@
       <div class="col">
         <div class="row">
           <div class="col mb-3">
-            <div class="card">
+            <div class="card card_custom">
               <div class="card-body">
                 <div class="e-profile">
                   <div class="row">
@@ -14,11 +14,11 @@
                       <div class="text-center text-sm-left mb-2 mb-sm-0">
                         <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{user?.lastName}} {{user?.firstName}}</h4>
                         <p class="mb-0">{{user?.username}}</p>
-                        <div *ngIf="user?.lastLoginDateDisplay !== null" class="text-muted"><small>Legutóbbi bejelentkezés:
+                        <div *ngIf="user?.lastLoginDateDisplay !== null" class="text-dark"><small>Legutóbbi bejelentkezés:
                           {{user?.lastLoginDateDisplay | date:'yyyy-MM-dd HH:mm:ss'}}</small></div>
                       </div>
                       <div class="text-center text-sm-right">
-                        <div class="text-muted"><small>Csatlakozott: {{user?.joinDate | date:'yyyy-MM-dd HH:mm:ss'}}</small></div>
+                        <div class="text-dark"><small>Csatlakozott: {{user?.joinDate | date:'yyyy-MM-dd HH:mm:ss'}}</small></div>
                       </div>
                     </div>
                   </div>

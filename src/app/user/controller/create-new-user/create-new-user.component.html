@@ -2,7 +2,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-6 offset-3">
-      <div class="card text-dark bg-info">
+      <div class="card text-dark card_custom">
         <h3 class="card-header">Új személy hozzáadása</h3>
         <div class="card-body card-text">
           <form #registerForm="ngForm" (ngSubmit)="onAddNewUser(registerForm)">
@@ -112,12 +112,6 @@
                     <mat-error *ngIf="phoneFixControl?.hasError('required')">
                       A telefonszámot kötelező megadni.
                     </mat-error>
-                    <!--                      <mat-error-->
-                    <!--                        *ngIf="!phoneFixControl?.hasError('minLenght') &&-->
-                    <!--                      !phoneFixControl?.hasError('maxLenght') &&-->
-                    <!--                      !phoneFixControl?.hasError('required')">-->
-
-                    <!--                      </mat-error>-->
                   </mat-form-field>
                 </div>
               </div>
@@ -150,10 +144,17 @@
             </div>
             <div class="row">
               <div class="col d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary" name="button" [disabled]="registerForm.invalid ||
-                  showLoading">
+                <button type="submit" class="btn-outline-primary" name="button" [disabled]="registerForm.invalid ||
+                  showLoading || phoneMobileControl?.hasError('maxLenght')||
+                  phoneMobileControl?.hasError('required') || phoneMobileControl?.hasError('minLenght') ||
+                  phoneMobileControl?.hasError('required') || phoneMobileControl?.hasError('maxLength') ||
+                  phoneMobileControl?.hasError('minLength') || emailControl?.hasError('email') ||
+                  emailControl?.hasError('required') || emailControl?.hasError('pattern')||
+                  addressControl?.hasError('required') || addressControl?.hasError('minLength') ||
+                  usernameControl?.hasError('required') || firstNameControl?.hasError('required')||
+                  lastNameControl?.hasError('required')">
                   <i *ngIf="showLoading" class="fas fa-spinner fa-spin"></i> &nbsp;&nbsp;
-                  <span *ngIf="showLoading"> Loading...</span>
+                  <span *ngIf="showLoading"> Pillanat...</span>
                   <span *ngIf="!showLoading">Hozzáadás</span>
                 </button>
               </div>
