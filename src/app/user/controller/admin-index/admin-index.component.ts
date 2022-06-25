@@ -29,7 +29,7 @@ import {Router} from '@angular/router';
 })
 export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
   private subs = new SubSink();
-  public users: Person[];
+  public tvs: any[];
   public selectedUser: Person;
   public tempUserSelection: Person = new Person();
   public selectedUsersTvs: Tv[];
@@ -50,7 +50,7 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     },
     {
-      headerName: 'Vezeték név', field: 'lastName', sortable: true, filter: 'agTextColumnFilter',
+      headerName: 'Vezetéknév', field: 'lastName', sortable: true, filter: 'agTextColumnFilter',
       filterParams: {
         caseSensitive: false,
         filterOptions: ['contains', 'startsWith', 'endsWith'],
@@ -66,7 +66,7 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     },
     {
-      headerName: 'Felhasználónlv', field: 'username', filter: 'agTextColumnFilter',
+      headerName: 'Felhasználónév', field: 'username', filter: 'agTextColumnFilter',
       filterParams: {
         caseSensitive: false,
         filterOptions: ['contains', 'startsWith', 'endsWith'],
@@ -86,7 +86,14 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
     {headerName: `Felhasználó által látott hiba`, field: 'errorSeenByCustomer', sortable: true},
     {headerName: 'Lefoglalt időpont', field: 'reservedDateToRepair'},
     {headerName: 'Javítás időpontja', field: 'dateOfCorrection'},
-    {headerName: 'Javított hiba', field: 'repairedError'},
+    {
+      headerName: 'Javított hiba', field: 'repairedError', filter: 'agTextColumnFilter',
+      filterParams: {
+        caseSensitive: false,
+        filterOptions: ['contains', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+      }
+    },
     {headerName: 'Javítás ára', field: 'price'},
     {headerName: 'Javítás alatt áll', field: 'isItStillInProgress'}
   ];
@@ -100,7 +107,9 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public options: AgChartOptions;
 
-  public tvs: Tv[];
+
+  private year: number; //= +new Date().getFullYear();
+  private chartData: any[];
 
   constructor(private personService: PersonService, private authService: AuthenticationService,
               private tvService: TvService, private http: HttpClient, private notifier: NotificationService, private router: Router) {
@@ -113,7 +122,6 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   ngOnInit(): void {
-    this.getAllTvs();
     this.gridOptions = {
       rowSelection: 'single',
       animateRows: true,
@@ -126,8 +134,25 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     };
     this.getAllUsers();
+
     this.selectedUser = new Person();
     this.selectedUsersTvs = new Array();
+    this.getAllTvs();
+    this.chartData = this.tvs;
+    this.options = {
+      title: {
+        text: "TV-k száma márkánként",
+      },
+      data: this.chartData,
+      series: [
+        {type: 'column', xKey: 'year', yKey: 'samsung', yName: 'Samsung'},
+        {type: 'column', xKey: 'year', yKey: 'lg', yName: 'LG'},
+        {type: 'column', xKey: 'year', yKey: 'toshiba', yName: 'Toshiba'},
+        {type: 'column', xKey: 'year', yKey: 'philips', yName: 'Philips'},
+        {type: 'column', xKey: 'year', yKey: 'vox', yName: 'Vox'},
+      ],
+    };
+
   }
 
 
@@ -139,9 +164,8 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subs.add(
       this.personService.getUsers().subscribe(
         (response: Person[]) => {
-
-          //this.users = response;
           this.rowData = response;
+
         },
         (error: HttpErrorResponse) => {
           this.sendNotification(NotificationType.ERROR, error.error.message);
@@ -155,9 +179,8 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
       this.tvService.fetchAllTvs().subscribe(
         (response: Tv[]) => {
           this.tvs = response;
-        },
-        (error: HttpErrorResponse) => {
-          this.sendNotification(NotificationType.ERROR, "Hiba történt");
+
+          console.log(this.tvs);
         }
       )
     );

@@ -29,6 +29,7 @@ export class CreateNewUserComponent implements OnInit, OnDestroy {
   public emailControl: FormControl = new FormControl('', [Validators.required, Validators.email, Validators.pattern(this.emailRegex)]);
   public phoneFixControl: FormControl = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(12)]);
   public phoneMobileControl: FormControl = new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(12)]);
+  public roleControl: FormControl = new FormControl('Válasszon rangot', [Validators.required]);
 
   constructor(private personService: PersonService, private notifier: NotificationService, private authService: AuthenticationService,
   private router: Router) {
@@ -47,15 +48,17 @@ export class CreateNewUserComponent implements OnInit, OnDestroy {
     this.newUser.username = this.usernameControl.value;
     this.newUser.address = this.addressControl.value;
     this.newUser.email = this.emailControl.value;
-
+    this.newUser.role = this.roleControl.value;
     this.newUser.phoneFix = this.phoneFixControl.value;
     this.newUser.phoneMobile = this.phoneMobileControl.value;
 
     this.subs.add(
-      this.authService.register(this.newUser).subscribe(
+      this.personService.addUser(this.newUser).subscribe(
         (response: Person) => {
           this.showLoading = true;
           this.sendNotification(NotificationType.SUCCESS, `A megerősítő email el lett küldve.`);
+          userForm.reset();
+          this.router.navigateByUrl('/user/index');
         },
         (error: HttpErrorResponse) => {
           this.showLoading = false;

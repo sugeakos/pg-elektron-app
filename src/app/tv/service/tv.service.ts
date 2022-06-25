@@ -21,7 +21,7 @@ export class TvService {
     return this.http.get<Tv[]>(`${this.host}/tv/${email}`);
   }
 
-  public addNewTv(tv: Tv): Observable<Tv | HttpErrorResponse> {
+  public addNewTv(tv: Tv): Observable<Tv | HttpErrorResponse | null> {
     return this.http.post<Tv>(`${this.host}/tv/new`, tv);
   }
 
@@ -29,11 +29,11 @@ export class TvService {
     return this.http.post<Tv>(`${this.host}/tv/update`, tv);
   }
 
-  public fetchAllTvs(): Observable<Tv[] | HttpErrorResponse> {
+  public fetchAllTvs(): Observable<Tv[]> {
     return this.http.get<Tv[]>(`${this.host}/tv/all-tv`);
   }
 
-  public updateReservedDate(tv: Tv): Observable<Tv | HttpErrorResponse> {
+  public updateReservedDate(tv: Tv): Observable<Tv | HttpErrorResponse | null> {
     return this.http.post<Tv>(`${this.host}/tv/update-reserved-date`,tv);
   }
 

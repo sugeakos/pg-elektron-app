@@ -32,5 +32,4 @@ export class Person {
     this.role = '';
     this.authorities = [];
   }
-
 }

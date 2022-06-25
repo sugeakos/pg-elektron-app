@@ -118,8 +118,15 @@
     </div>
   </div>
   <!--  User details end-->
-
-
+  <br>
+  <div class="row">
+    <div class="col-md-6 offset-3">
+      <ag-charts-angular
+        style="height: 50%; padding-top: 1%;"
+        [options]="options">
+      </ag-charts-angular>
+    </div>
+  </div>
   <!-- Main content end -->
 
   <!-- Edit Tv Modal -->
@@ -255,14 +262,14 @@
                   <label class="form-check-label">
                     <input name="active" type="checkbox" [(ngModel)]="!editUser.isActive"
                            class="form-check-input">
-                    Inaktív
+                    Aktív
                   </label>
                 </div>
                 <div class="form-check disabled">
                   <label class="form-check-label">
                     <input name="locked" type="checkbox" [(ngModel)]="!editUser.isNotLocked"
                            class="form-check-input">
-                    Zárolt
+                    Nem zárolt
                   </label>
                 </div>
               </fieldset>

@@ -28,7 +28,7 @@ export class UpdateTvComponent implements OnInit, OnDestroy {
   public stepMinute;
   public defaultTime: any[];
   public minTime = 9;
-  public maxTime = 16;
+  public maxTime = 17;
   public validDateTime: boolean = false;
   private selectedDateTime: Date;
   public reservedDateToRepair: FormControl = new FormControl('', [Validators.required]);
@@ -85,13 +85,19 @@ export class UpdateTvComponent implements OnInit, OnDestroy {
     this.selectedTv.reservedDateToRepair = Date.parse(this.reservedDateToRepair.value);
     this.subs.add(
       this.tvService.updateReservedDate(this.selectedTv).subscribe(
-        (respone: Tv) => {
-          tvForm.reset();
-          this.router.navigateByUrl('/user/index');
-          this.sendNotification(NotificationType.SUCCESS,`Sikeresen módosítva lett az időpont foglalás`);
+        (response: Tv | null) => {
+          if (response == null) {
+            this.sendNotification(NotificationType.WARNING, `A választott időpont már foglalt. Kérem válasszon másikat.`)
+          }
+          if (response != null) {
+            tvForm.resetForm();
+            //this.router.navigateByUrl('/user/index');
+            this.sendNotification(NotificationType.SUCCESS, `Sikeresen lefoglalta az időpontot.`);
+          }
         },
         (err: HttpErrorResponse) => {
-          this.sendNotification(NotificationType.ERROR,`Hiba történt az adatok mentése közben, próbálja meg később.`);
+          tvForm.reset();
+          this.sendNotification(NotificationType.ERROR, `Hiba történt, próbálja meg később`);
         }
       )
     );

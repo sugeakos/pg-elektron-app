@@ -94,7 +94,21 @@
                 </div>
               </div>
             </div>
-
+            <div class="form-group">
+              <mat-form-field class="card_custom" appearance="outline">
+                <mat-label>Márka</mat-label>
+                <mat-select matInput [formControl]="roleControl" class="form-control ">
+                  <mat-option  value="ROLE_USER">USER</mat-option>
+                  <mat-option  value="ROLE_HR">HR</mat-option>
+                  <mat-option  value="ROLE_MANAGER">MANAGER</mat-option>
+                  <mat-option  value="ROLE_ADMIN">ADMIN</mat-option>
+                  <mat-option  value="ROLE_SUPER_ADMIN">SUPER ADMIN</mat-option>
+                </mat-select>
+                <mat-error *ngIf="roleControl?.hasError('required')">
+                  Kötelezően választania kell egy márkát.
+                </mat-error>
+              </mat-form-field>
+            </div>
             <div class="row">
               <div class="col-md-6">
                 <div class="input-group mb-3">
@@ -151,7 +165,7 @@
                   phoneMobileControl?.hasError('minLength') || emailControl?.hasError('email') ||
                   emailControl?.hasError('required') || emailControl?.hasError('pattern')||
                   addressControl?.hasError('required') || addressControl?.hasError('minLength') ||
-                  usernameControl?.hasError('required') || firstNameControl?.hasError('required')||
+                  firstNameControl?.hasError('required')||
                   lastNameControl?.hasError('required')">
                   <i *ngIf="showLoading" class="fas fa-spinner fa-spin"></i> &nbsp;&nbsp;
                   <span *ngIf="showLoading"> Pillanat...</span>

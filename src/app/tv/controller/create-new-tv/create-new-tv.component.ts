@@ -32,7 +32,7 @@ export class CreateNewTvComponent implements OnInit, OnDestroy {
   public stepMinute;
   public defaultTime: any[];
   public minTime = 9;
-  public maxTime = 16;
+  public maxTime = 17;
   public validDateTime: boolean = false;
   private emailRegex = '^(?=.{1,64}@)[A-Za-z0-9_-]+(.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(.[A-Za-z0-9-]+)*(.[A-Za-z]{2,})$';
   private selectedDateTime: Date;
@@ -88,10 +88,15 @@ export class CreateNewTvComponent implements OnInit, OnDestroy {
     this.newTv.reservedDateToRepair = Date.parse(this.reservedDateToRepair.value);
       this.subs.add(
         this.tvService.addNewTv(this.newTv).subscribe(
-          (response: Tv) => {
-            tvForm.resetForm();
-            //this.router.navigateByUrl('/user/index');
-            this.sendNotification(NotificationType.SUCCESS, `Sikeresen lefoglalta az időpontot.`);
+          (response: Tv | null) => {
+            if (response == null) {
+              this.sendNotification(NotificationType.WARNING, `A választott időpont már foglalt. Kérem válasszon másikat.`)
+            }
+            if (response != null) {
+              tvForm.resetForm();
+              //this.router.navigateByUrl('/user/index');
+              this.sendNotification(NotificationType.SUCCESS, `Sikeresen lefoglalta az időpontot.`);
+            }
           },
           (err: HttpErrorResponse) => {
             tvForm.reset();

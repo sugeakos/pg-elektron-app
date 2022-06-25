@@ -20,8 +20,8 @@ export class PersonService {
     return this.http.get<Person[]>(`${this.host}/person/list`);
   }
 
-  public addUser(formData: FormData): Observable<Person | HttpErrorResponse> {
-    return this.http.post<Person>(`${this.host}/person/add`, formData);
+  public addUser(person: Person): Observable<Person | HttpErrorResponse> {
+    return this.http.post<Person>(`${this.host}/person/add`, person);
   }
 
   public updateUser(person: Person, currentUsername: string): Observable<Person | HttpErrorResponse> {
@@ -47,23 +47,5 @@ export class PersonService {
       return null;
     }
   }
-
-
-
-  public createPersonFormData(loggedInUsername: string, user: Person): FormData {
-    const formData = new FormData();
-    formData.append('currentUsername', loggedInUsername);
-    formData.append('firstName', user.firstName);
-    formData.append('lastName', user.lastName);
-    formData.append('username', user.username);
-    formData.append('email', user.email);
-    formData.append('password',user.password);
-    formData.append('phoneFix', user.phoneFix);
-    formData.append('phoneMobile', user.phoneMobile);
-    formData.append('address', user.address);
-    formData.append('isActive', JSON.stringify(user.isActive));
-    formData.append('isNotLocked', JSON.stringify(user.isNotLocked));
-    formData.append('role', user.role);
-    return formData;
-  }
+  
 }
