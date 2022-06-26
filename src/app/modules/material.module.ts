@@ -102,7 +102,7 @@ import { AgChartsAngularModule } from 'ag-charts-angular';
     NgxMatTimepickerModule,
     DlDateTimeDateModule,  // <--- Determines the data type of the model
     DlDateTimePickerModule,
-    AgChartsAngularModule
+    
 
   ]
 })

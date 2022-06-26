@@ -22,7 +22,7 @@ import { UserIndexComponent } from './user/controller/user-index/user-index.comp
 import { AdminIndexComponent } from './user/controller/admin-index/admin-index.component';
 import { AdminGuard } from './guard/admin.guard';
 import { UserProfileComponent } from './user/controller/user-profile/user-profile.component';
-import { DataTablesModule } from 'angular-datatables';
+
 import { NavbarComponent } from './controller/navbar/navbar.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { CreateNewTvComponent } from './tv/controller/create-new-tv/create-new-tv.component';
@@ -34,7 +34,7 @@ import { CreateNewUserComponent } from './user/controller/create-new-user/create
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { AddTvToUserComponent } from './tv/controller/add-tv-to-user/add-tv-to-user.component';
 import { AddNewTvCategoryComponent } from './tv-category/controller/add-new-tv-category/add-new-tv-category.component';
-
+import { NgChartsModule, NgChartsConfiguration } from 'ng2-charts';
 @NgModule({
   declarations: [
     AppComponent,
@@ -63,11 +63,10 @@ import { AddNewTvCategoryComponent } from './tv-category/controller/add-new-tv-c
     MatSidenavModule,
     MatNativeDateModule,
     MaterialModule,
-    DataTablesModule,
     NotificationModule,
     AgGridModule,
     ReactiveFormsModule,
-
+    NgChartsModule
 
   ],
   providers: [AuthenticationService, PersonService, NotificationService, AuthenticationGuard,AdminGuard,

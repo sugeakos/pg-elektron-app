@@ -11,16 +11,20 @@ import {AuthenticationService} from '../../service/authentication.service';
 import {PersonService} from '../../service/person.service';
 import {TvService} from '../../../tv/service/tv.service';
 import {
-  AgChartOptions,
   CellClickedEvent,
   CellDoubleClickedEvent,
   ColDef,
   GridOptions,
+  GridReadyEvent,
   SelectionChangedEvent
 } from 'ag-grid-community';
+import {ChartOptions, ChartType, ChartDataset, Color} from 'chart.js';
+
 import {NotificationService} from 'src/app/custom-features/notification.service';
 import {NotificationType} from 'src/app/enumeration/notification.type';
 import {Router} from '@angular/router';
+import {Label} from 'ag-charts-community/dist/cjs/es5/chart/label';
+
 
 @Component({
   selector: 'app-admin-index',
@@ -29,7 +33,7 @@ import {Router} from '@angular/router';
 })
 export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
   private subs = new SubSink();
-  public tvs: any[];
+  public tvs: any[] = new Array();
   public selectedUser: Person;
   public tempUserSelection: Person = new Person();
   public selectedUsersTvs: Tv[];
@@ -104,20 +108,43 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
     filter: true,
   };
   public gridOptions: GridOptions = null;
+  //chart start
 
-  public options: AgChartOptions;
+  public lg: number = 0;
+  public samsung: number = 0;
+  public toshiba: number = 0;
+  public philips: number = 0;
+  public vox: number = 0;
+  public colossus: number = 0;
+  public vivax: number = 0;
+  public fox: number = 0;
+  public tesla: number = 0;
+  public telefunken: number = 0;
+  public egyeb: number = 0;
+  private year: number = +new Date().getFullYear();
+  public showChart: boolean;
 
+  public barChartOptions: ChartOptions = {
+    responsive: true,
 
-  private year: number; //= +new Date().getFullYear();
-  private chartData: any[];
+  };
+
+  public barChartLabels: string[] = ['Samsung', 'LG', 'Toshiba', 'Philips', 'Vox', 'Colossus', 'Fox', 'Vivax', 'Tesla', 'Telefunken', 'Egyéb'];
+  public barChartType: ChartType = 'bar';
+  public barChartLegend = true;
+  public barChartData: ChartDataset[];
+
+  //chart end
+  public counter: number;
 
   constructor(private personService: PersonService, private authService: AuthenticationService,
               private tvService: TvService, private http: HttpClient, private notifier: NotificationService, private router: Router) {
+
   }
 
 
   ngAfterViewInit(): void {
-
+    this.getChart();
   }
 
 
@@ -134,24 +161,10 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     };
     this.getAllUsers();
-
     this.selectedUser = new Person();
     this.selectedUsersTvs = new Array();
-    this.getAllTvs();
-    this.chartData = this.tvs;
-    this.options = {
-      title: {
-        text: "TV-k száma márkánként",
-      },
-      data: this.chartData,
-      series: [
-        {type: 'column', xKey: 'year', yKey: 'samsung', yName: 'Samsung'},
-        {type: 'column', xKey: 'year', yKey: 'lg', yName: 'LG'},
-        {type: 'column', xKey: 'year', yKey: 'toshiba', yName: 'Toshiba'},
-        {type: 'column', xKey: 'year', yKey: 'philips', yName: 'Philips'},
-        {type: 'column', xKey: 'year', yKey: 'vox', yName: 'Vox'},
-      ],
-    };
+    //this.getAllTvs();
+    this.showChart = false;
 
   }
 
@@ -174,13 +187,81 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
+  public getChart(): void {
+    this.getAllTvs();
+    if (this.tvs.length != 0) {
+      this.showChart = true;
+
+      this.barChartData = [
+        {
+          data: [
+            this.samsung,
+            this.lg,
+            this.toshiba,
+            this.philips,
+            this.vox,
+            this.colossus,
+            this.fox,
+            this.vivax,
+            this.tesla,
+            this.telefunken,
+            this.egyeb
+          ], label: 'Márkák',
+          backgroundColor: '#6ea6d7',
+          hoverBackgroundColor: 'rgba(85,189,215,0.58)',
+        },
+      ];
+
+    }
+
+  }
+
   public getAllTvs(): void {
     this.subs.add(
       this.tvService.fetchAllTvs().subscribe(
         (response: Tv[]) => {
           this.tvs = response;
+          for (const responseElement of this.tvs) {
+            switch (responseElement.tvCategoryDescription.trim()) {
+              case 'Fox': {
+                this.fox++;
+                break;
+              }
+              case 'LG':
+                this.lg++;
+                break;
+              case 'Samsung':
+                this.samsung++;
+                break;
+              case 'Toshiba':
+                this.toshiba++;
+                break;
 
-          console.log(this.tvs);
+              case 'Philips':
+                this.philips++;
+                break;
+              case 'Vox':
+                this.vox++;
+                break;
+              case 'Colossus':
+                this.colossus++;
+                break;
+              case 'Vivax':
+                this.vivax++;
+                break;
+
+              case 'Tesla':
+                this.tesla++;
+                break;
+              case 'Telefunken':
+                this.telefunken++;
+                break;
+              default :
+                this.egyeb++;
+                break;
+            }
+
+          }
         }
       )
     );
@@ -245,13 +326,17 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
+  public onGridReady($event: GridReadyEvent) {
+    this.getAllTvs();
+  }
+
   public onEditTvByAdmin(tv: Tv): void {
     this.updateTv = tv;
     this.clickButton('openTvEdit');
   }
 
   public onUpdateTvByAdmin(): void {
-    //const formData = this.tvService.updateTvByAdminForm(this.updateTv, this.updateTv.repairedError, this.updateTv.price);
+
     this.subs.add(
       this.tvService.updateTvByAdmin(this.updateTv).subscribe(
         (response: Tv) => {
@@ -270,6 +355,7 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
     document.getElementById(buttonId).click();
   }
 
+
   private sendNotification(notificationType: NotificationType, message: string): void {
     if (message) {
       this.notifier.sendNotification(notificationType, message);
@@ -281,6 +367,4 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
-
-
 }

@@ -4,11 +4,19 @@
 </button>
 <!--Main container-->
 <div class="container">
+  <div class="row">
+    <div class="col-md-2">
+      <button (click)="getChart()" [disabled]="showChart" class="btn-outline-primary card_custom">
+        Grafikon kimutatása
+        <mat-icon>bar_chart</mat-icon>
+      </button>
+    </div>
+  </div>
+  <br>
   <!-- Main content -->
   <div class="row">
     <!--    Users    -->
     <div class="col-md-5">
-
       <div class="card card_custom">
         <div class="card-body text-dark">
           <h3 class="card-header">Felhasználók</h3>
@@ -23,8 +31,6 @@
           </ag-grid-angular>
         </div>
       </div>
-
-
     </div>
     <!--    Users end    -->
     <!--    TV list-->
@@ -42,15 +48,15 @@
           </div>
           <div class="card-text table-responsive">
             <ag-grid-angular
-            class="ag-theme-alpine"
-            style="height: 300px;"
-            [rowData] = "rowDataTv"
-            [columnDefs] = "colDefTv"
-            [animatedRows]="true"
-            [pagination]="true"
-
-            [paginationAutoPageSize]="true"
-            (cellClicked)="onTvGridCellClicked($event)"
+              class="ag-theme-alpine"
+              style="height: 300px;"
+              [rowData]="rowDataTv"
+              [columnDefs]="colDefTv"
+              [animatedRows]="true"
+              [pagination]="true"
+              (gridReady)="onGridReady($event)"
+              [paginationAutoPageSize]="true"
+              (cellClicked)="onTvGridCellClicked($event)"
             >
             </ag-grid-angular>
           </div>
@@ -62,7 +68,7 @@
   </div>
   <!-- User details -->
   <div *ngIf="selectedUser.firstName !== ''" style="margin-top: 1%;" class="row">
-    <div class="col" >
+    <div class="col">
       <div class="card card_custom">
         <h3 class="card-header text-dark text-center" id="exampleModalLongTitle">
           <b>{{selectedUser?.lastName}} {{selectedUser?.firstName}}</b> &nbsp;
@@ -80,7 +86,8 @@
             <li class="list-group-item user_list" title="Mobil telefon">
               <b>Mobiltelefon:</b> {{ selectedUser?.phoneMobile}}</li>
             <li class="list-group-item user_list"
-                title="Csatlakozas datuma"><b>Csatlakozás dátuma:</b> {{ selectedUser?.joinDate | date: 'yyyy-MM-dd HH:mm:ss'}}
+                title="Csatlakozas datuma"><b>Csatlakozás
+              dátuma:</b> {{ selectedUser?.joinDate | date: 'yyyy-MM-dd HH:mm:ss'}}
             </li>
             <li class="list-group-item user_list"
                 title="Legutobbi bejelentkezes"><b>Utolsó bejelentkezés
@@ -119,14 +126,18 @@
   </div>
   <!--  User details end-->
   <br>
-  <div class="row">
-    <div class="col-md-6 offset-3">
-      <ag-charts-angular
-        style="height: 50%; padding-top: 1%;"
-        [options]="options">
-      </ag-charts-angular>
+  <div [hidden]="!showChart" class="row">
+    <div class="col-md-8 offset-2">
+      <canvas style="background-color: white;"
+              baseChart
+              [type]="barChartType"
+              [labels]="barChartLabels"
+              [options]="barChartOptions"
+              [datasets]="barChartData"
+      ></canvas>
     </div>
   </div>
+  <br>
   <!-- Main content end -->
 
   <!-- Edit Tv Modal -->
@@ -181,16 +192,19 @@
               </div>
               <div *ngIf="updateTv?.dateOfCorrection" class="form-group">
                 <label>Javítás időpontja</label>
-                <input type="text" name="dateOfCorrection" readonly [(ngModel)]="updateTv.dateOfCorrection" class="form-control">
+                <input type="text" name="dateOfCorrection" readonly [(ngModel)]="updateTv.dateOfCorrection"
+                       class="form-control">
 
               </div>
             </form>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class=" btn-outline-secondary" data-bs-dismiss="modal" id="closeEditTvModalButton">Bezárás
+          <button type="button" class=" btn-outline-secondary" data-bs-dismiss="modal" id="closeEditTvModalButton">
+            Bezárás
           </button>
-          <button type="button" (click)="onUpdateTvByAdmin()" [disabled]="editTvForm.invalid" class="btn-outline-primary">
+          <button type="button" (click)="onUpdateTvByAdmin()" [disabled]="editTvForm.invalid"
+                  class="btn-outline-primary">
             Mentés
           </button>
         </div>
@@ -212,7 +226,7 @@
         </div>
         <div class="modal-body text-dark">
           <div class="">
-            <form #editUserForm="ngForm" >
+            <form #editUserForm="ngForm">
               <div class="form-group">
                 <label>Email</label>
                 <input type="text" name="email" required
@@ -282,7 +296,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class=" btn-outline-secondary" data-bs-dismiss="modal" id="closeEditUserModalButton">Mégse
+          <button type="button" class=" btn-outline-secondary" data-bs-dismiss="modal" id="closeEditUserModalButton">
+            Mégse
           </button>
           <button type="button" (click)="onUpdateUserByAdmin(editUserForm.value)" [disabled]="editUserForm.invalid"
                   class="btn-outline-primary">
