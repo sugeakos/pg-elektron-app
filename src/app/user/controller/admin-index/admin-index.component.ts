@@ -110,17 +110,17 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
   public gridOptions: GridOptions = null;
   //chart start
 
-  public lg: number = 0;
-  public samsung: number = 0;
-  public toshiba: number = 0;
-  public philips: number = 0;
-  public vox: number = 0;
-  public colossus: number = 0;
-  public vivax: number = 0;
-  public fox: number = 0;
-  public tesla: number = 0;
-  public telefunken: number = 0;
-  public egyeb: number = 0;
+  public lg: number ;
+  public samsung: number ;
+  public toshiba: number ;
+  public philips: number ;
+  public vox: number ;
+  public colossus: number ;
+  public vivax: number;
+  public fox: number;
+  public tesla: number ;
+  public telefunken: number;
+  public egyeb: number;
   private year: number = +new Date().getFullYear();
   public showChart: boolean;
 
@@ -188,9 +188,62 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public getChart(): void {
+    this.fox = 0;
+    this.lg = 0;
+    this.samsung = 0;
+    this.toshiba= 0;
+    this.philips = 0;
+    this.vox = 0;
+    this.colossus = 0;
+    this.vivax =0;
+    this.tesla = 0;
+    this.telefunken = 0;
+    this.egyeb = 0;
     this.getAllTvs();
     if (this.tvs.length != 0) {
       this.showChart = true;
+
+      for (const responseElement of this.tvs) {
+        switch (responseElement.tvCategoryDescription.trim()) {
+          case 'Fox': {
+            this.fox++;
+            break;
+          }
+          case 'LG':
+            this.lg++;
+            break;
+          case 'Samsung':
+            this.samsung++;
+            break;
+          case 'Toshiba':
+            this.toshiba++;
+            break;
+
+          case 'Philips':
+            this.philips++;
+            break;
+          case 'Vox':
+            this.vox++;
+            break;
+          case 'Colossus':
+            this.colossus++;
+            break;
+          case 'Vivax':
+            this.vivax++;
+            break;
+
+          case 'Tesla':
+            this.tesla++;
+            break;
+          case 'Telefunken':
+            this.telefunken++;
+            break;
+          default :
+            this.egyeb++;
+            break;
+        }
+
+      }
 
       this.barChartData = [
         {
@@ -221,47 +274,7 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
       this.tvService.fetchAllTvs().subscribe(
         (response: Tv[]) => {
           this.tvs = response;
-          for (const responseElement of this.tvs) {
-            switch (responseElement.tvCategoryDescription.trim()) {
-              case 'Fox': {
-                this.fox++;
-                break;
-              }
-              case 'LG':
-                this.lg++;
-                break;
-              case 'Samsung':
-                this.samsung++;
-                break;
-              case 'Toshiba':
-                this.toshiba++;
-                break;
 
-              case 'Philips':
-                this.philips++;
-                break;
-              case 'Vox':
-                this.vox++;
-                break;
-              case 'Colossus':
-                this.colossus++;
-                break;
-              case 'Vivax':
-                this.vivax++;
-                break;
-
-              case 'Tesla':
-                this.tesla++;
-                break;
-              case 'Telefunken':
-                this.telefunken++;
-                break;
-              default :
-                this.egyeb++;
-                break;
-            }
-
-          }
         }
       )
     );
