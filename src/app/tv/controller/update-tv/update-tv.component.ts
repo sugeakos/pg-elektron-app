@@ -91,7 +91,7 @@ export class UpdateTvComponent implements OnInit, OnDestroy {
           }
           if (response != null) {
             tvForm.resetForm();
-            //this.router.navigateByUrl('/user/index');
+            this.router.navigateByUrl('/user/index');
             this.sendNotification(NotificationType.SUCCESS, `Sikeresen lefoglalta az időpontot.`);
           }
         },
@@ -104,12 +104,22 @@ export class UpdateTvComponent implements OnInit, OnDestroy {
   }
   public addEvent($event: any) {
     this.selectedDateTime = $event.value.getHours();
-    if(+this.selectedDateTime >= this.maxTime || +this.selectedDateTime < this.minTime) {
+    if (+this.selectedDateTime >= this.maxTime || +this.selectedDateTime < this.minTime) {
       this.validDateTime = false;
       this.sendNotification(NotificationType.WARNING, `Válasszon időpontot ${this.minTime} és ${this.maxTime} között`);
     } else {
       this.validDateTime = true;
     }
+    if ((+this.selectedDateTime < new Date().getHours()) && ($event.value <= new Date())) {
+      this.validDateTime = false;
+      this.sendNotification(NotificationType.WARNING, `Olyan időpontot választhat ami nem a múltban van`);
+    } else {
+      this.validDateTime = true;
+    }
+    if ((+this.selectedDateTime < new Date().getHours()) && ($event.value > new Date())) {
+      this.validDateTime = true;
+      //this.sendNotification(NotificationType.WARNING, `Válasszon időpontot ${this.minTime} és ${this.maxTime} között`);
+    } 
 
   }
   private sendNotification(notificationType: NotificationType, message: string): void {

@@ -1,14 +1,14 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import {HttpErrorResponse} from '@angular/common/http';
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import { FormControl, NgForm, Validators } from '@angular/forms';
-import { ActivatedRoute, Params } from '@angular/router';
+import {FormControl, NgForm, Validators} from '@angular/forms';
+import {ActivatedRoute, Params} from '@angular/router';
 import {NotificationService} from 'src/app/custom-features/notification.service';
-import { NotificationType } from 'src/app/enumeration/notification.type';
-import { TvCategory } from 'src/app/tv-category/domain/tv-category';
+import {NotificationType} from 'src/app/enumeration/notification.type';
+import {TvCategory} from 'src/app/tv-category/domain/tv-category';
 import {TvCategoryService} from 'src/app/tv-category/service/tv-category.service';
 import {PersonService} from 'src/app/user/service/person.service';
 import {SubSink} from 'subsink';
-import { Tv } from '../../domain/tv';
+import {Tv} from '../../domain/tv';
 import {TvService} from '../../service/tv.service';
 
 @Component({
@@ -40,7 +40,7 @@ export class AddTvToUserComponent implements OnInit, OnDestroy {
     const currentMonth = new Date().getMonth();
     const currentDay = new Date().getDay();
 
-    this.minDate = new Date(currentYear - 0, currentMonth, new Date().getDate() + currentDay);
+    this.minDate = new Date(currentYear - 0, currentMonth, new Date().getDate());
     this.maxDate = new Date(currentYear + 0, currentMonth + 3, 31);
     this.stepMinute = 10;
     this.defaultTime = [9, 0, 0];
@@ -56,7 +56,7 @@ export class AddTvToUserComponent implements OnInit, OnDestroy {
       )
     );
     this.getAllCategories();
-    this.emailControl = new FormControl(this.selectedUsersEmail,[Validators.email, Validators.required]);
+    this.emailControl = new FormControl(this.selectedUsersEmail, [Validators.email, Validators.required]);
   }
 
   myFilter = (d: Date | null): boolean => {
@@ -78,6 +78,7 @@ export class AddTvToUserComponent implements OnInit, OnDestroy {
       )
     );
   }
+
   public saveNewTv(): void {
     this.clickButton('new-tv-save');
   }
@@ -85,12 +86,14 @@ export class AddTvToUserComponent implements OnInit, OnDestroy {
   private clickButton(buttonId: string): void {
     document.getElementById(buttonId).click();
   }
+
   public onAddNewTv(tvForm: NgForm): void {
     this.newTv = new Tv();
     this.newTv.personEmail = this.emailControl.value;
     this.newTv.tvCategoryDescription = this.tvCatControl.value;
     this.newTv.errorSeenByCustomer = this.errorTextControl.value;
     this.newTv.reservedDateToRepair = Date.parse(this.reservedDateToRepair.value);
+
     this.subs.add(
       this.tvService.addNewTv(this.newTv).subscribe(
         (response: Tv | null) => {
@@ -114,14 +117,25 @@ export class AddTvToUserComponent implements OnInit, OnDestroy {
 
   public addEvent($event: any) {
     this.selectedDateTime = $event.value.getHours();
-    if(+this.selectedDateTime >= this.maxTime || +this.selectedDateTime < this.minTime) {
+    if (+this.selectedDateTime >= this.maxTime || +this.selectedDateTime < this.minTime) {
       this.validDateTime = false;
       this.sendNotification(NotificationType.WARNING, `Válasszon időpontot ${this.minTime} és ${this.maxTime} között`);
     } else {
       this.validDateTime = true;
     }
+    if ((+this.selectedDateTime < new Date().getHours()) && ($event.value <= new Date())) {
+      this.validDateTime = false;
+      this.sendNotification(NotificationType.WARNING, `Olyan időpontot választhat ami nem a múltban van`);
+    } else {
+      this.validDateTime = true;
+    }
+    if ((+this.selectedDateTime < new Date().getHours()) && ($event.value > new Date())) {
+      this.validDateTime = true;
+      //this.sendNotification(NotificationType.WARNING, `Válasszon időpontot ${this.minTime} és ${this.maxTime} között`);
+    }
 
   }
+
   private sendNotification(notificationType: NotificationType, message: string): void {
     if (message) {
       this.notifier.sendNotification(notificationType, message);

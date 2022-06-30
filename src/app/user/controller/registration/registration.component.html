@@ -105,7 +105,7 @@
                       <mat-label>Jelszó</mat-label>
                       <input [type]="hide ? 'password' : 'text'" matInput [formControl]="passwordControl"
                              placeholder="Jelszó"
-                             class="form-control">
+                             class="form-control"  >
                       <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
                               [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -135,7 +135,7 @@
                       <mat-label>Jelszó újra</mat-label>
                       <input [type]="hide ? 'password' : 'text'" matInput [formControl]="passwordCheckControl"
                              placeholder="Jelszó újra"
-                             class="form-control">
+                             class="form-control" (focusout)="checkPasswords($event)" >
                       <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
                               [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -207,17 +207,17 @@
               </div>
               <div class="row">
                 <div class="col d-flex justify-content-center">
-                  <button type="submit" class=" btn-primary" name="button" [disabled]="registerForm.invalid ||
-                  showLoading || checkPasswords() || phoneMobileControl?.hasError('maxLenght')||
-                  phoneMobileControl?.hasError('required') || phoneMobileControl?.hasError('minLenght') ||
-                  phoneMobileControl?.hasError('required') || phoneMobileControl?.hasError('maxLength') ||
-                  phoneMobileControl?.hasError('minLength') || passwordCheckControl.hasError('required') ||
+                  <button type="submit" class=" btn-primary" name="button" [disabled]="
+                  showLoading || validPass || phoneMobileControl.hasError('maxLenght')||
+                  phoneMobileControl.hasError('required') || phoneMobileControl.hasError('minLenght') ||
+                  phoneMobileControl.hasError('required') || phoneMobileControl.hasError('maxLength') ||
+                  phoneMobileControl.hasError('minLength') || passwordCheckControl.hasError('required') ||
                   passwordCheckControl.hasError('pattern') || passwordControl.hasError('required') ||
-                  passwordControl.hasError('pattern') || emailControl?.hasError('email') ||
-                  emailControl?.hasError('required') || emailControl?.hasError('pattern')||
-                  addressControl?.hasError('required') || addressControl?.hasError('minLength') ||
-                  usernameControl?.hasError('required') || firstNameControl?.hasError('required')||
-                  lastNameControl?.hasError('required')">
+                  passwordControl.hasError('pattern') || emailControl.hasError('email') ||
+                  emailControl.hasError('required') || emailControl.hasError('pattern')||
+                  addressControl.hasError('required') || addressControl.hasError('minLength') ||
+                  usernameControl.hasError('required') || firstNameControl.hasError('required')||
+                  lastNameControl.hasError('required')">
                     <i *ngIf="showLoading" class="fas fa-spinner fa-spin"></i> &nbsp;&nbsp;
                     <span *ngIf="showLoading"> Pillanat...</span>
                     <span *ngIf="!showLoading">Regisztráció</span>

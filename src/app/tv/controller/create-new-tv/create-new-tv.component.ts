@@ -46,7 +46,7 @@ export class CreateNewTvComponent implements OnInit, OnDestroy {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
 
-    this.minDate = new Date(currentYear - 0, currentMonth, new Date().getDate() );
+    this.minDate = new Date(currentYear - 0, currentMonth, new Date().getDate());
     this.maxDate = new Date(currentYear + 0, currentMonth + 3, 31);
     this.stepMinute = 10;
     this.defaultTime = [9, 0, 0];
@@ -86,24 +86,24 @@ export class CreateNewTvComponent implements OnInit, OnDestroy {
     this.newTv.tvCategoryDescription = this.tvCatControl.value;
     this.newTv.errorSeenByCustomer = this.errorTextControl.value;
     this.newTv.reservedDateToRepair = Date.parse(this.reservedDateToRepair.value);
-      this.subs.add(
-        this.tvService.addNewTv(this.newTv).subscribe(
-          (response: Tv | null) => {
-            if (response == null) {
-              this.sendNotification(NotificationType.WARNING, `A választott időpont már foglalt. Kérem válasszon másikat.`)
-            }
-            if (response != null) {
-              tvForm.resetForm();
-              //this.router.navigateByUrl('/user/index');
-              this.sendNotification(NotificationType.SUCCESS, `Sikeresen lefoglalta az időpontot.`);
-            }
-          },
-          (err: HttpErrorResponse) => {
-            tvForm.reset();
-            this.sendNotification(NotificationType.ERROR, `Hiba történt, próbálja meg később`);
+    this.subs.add(
+      this.tvService.addNewTv(this.newTv).subscribe(
+        (response: Tv | null) => {
+          if (response == null) {
+            this.sendNotification(NotificationType.WARNING, `A választott időpont már foglalt. Kérem válasszon másikat.`)
           }
-        )
-      );
+          if (response != null) {
+            tvForm.resetForm();
+            //this.router.navigateByUrl('/user/index');
+            this.sendNotification(NotificationType.SUCCESS, `Sikeresen lefoglalta az időpontot.`);
+          }
+        },
+        (err: HttpErrorResponse) => {
+          tvForm.reset();
+          this.sendNotification(NotificationType.ERROR, `Hiba történt, próbálja meg később`);
+        }
+      )
+    );
 
   }
 
@@ -117,12 +117,22 @@ export class CreateNewTvComponent implements OnInit, OnDestroy {
 
   public addEvent($event: any) {
     this.selectedDateTime = $event.value.getHours();
-    if(+this.selectedDateTime >= this.maxTime || +this.selectedDateTime < this.minTime) {
+    if (+this.selectedDateTime >= this.maxTime || +this.selectedDateTime < this.minTime) {
       this.validDateTime = false;
       this.sendNotification(NotificationType.WARNING, `Válasszon időpontot ${this.minTime} és ${this.maxTime} között`);
     } else {
       this.validDateTime = true;
     }
+    if ((+this.selectedDateTime < new Date().getHours()) && ($event.value <= new Date())) {
+      this.validDateTime = false;
+      this.sendNotification(NotificationType.WARNING, `Olyan időpontot választhat ami nem a múltban van`);
+    } else {
+      this.validDateTime = true;
+    }
+    if ((+this.selectedDateTime < new Date().getHours()) && ($event.value > new Date())) {
+      this.validDateTime = true;
+      //this.sendNotification(NotificationType.WARNING, `Válasszon időpontot ${this.minTime} és ${this.maxTime} között`);
+    } 
 
   }
 

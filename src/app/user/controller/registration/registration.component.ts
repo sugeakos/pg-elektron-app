@@ -51,29 +51,35 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     this.registerPerson.password = this.passwordControl.value;
     this.registerPerson.phoneFix = this.phoneFixControl.value;
     this.registerPerson.phoneMobile = this.phoneMobileControl.value;
+    console.log(this.passwordControl.value);
+    if (this.passwordControl.value == this.passwordCheckControl){
+      this.subs.add(
+        this.authService.register(this.registerPerson).subscribe(
+          (response: Person) => {
+            this.showLoading = true;
+            this.router.navigateByUrl("/login");
+            this.sendNotification(NotificationType.SUCCESS, `A megerősítő email el lett küldve. \n Kérem ellenőrizze a SPAM mappát is.`);
+          },
+          (error: HttpErrorResponse) => {
+            console.log(error.error.message);
+            this.showLoading = false;
+            this.sendNotification(NotificationType.ERROR, `Hiba történk, kérem próbálja meg később.`);
+          }
+        )
+      );
+    } else {
+      this.sendNotification(NotificationType.WARNING,`A két jelszó nem egyezik.`);
+    }
 
-    this.subs.add(
-      this.authService.register(this.registerPerson).subscribe(
-        (response: Person) => {
-          this.showLoading = true;
-          this.router.navigateByUrl("/login");
-          this.sendNotification(NotificationType.SUCCESS, `A megerősítő email el lett küldve. \n Kérem ellenőrizze a SPAM mappát is.`);
-        },
-        (error: HttpErrorResponse) => {
-          console.log(error.error.message);
-          this.showLoading = false;
-          this.sendNotification(NotificationType.ERROR, `Hiba történk, kérem próbálja meg később.`);
-        }
-      )
-    );
   }
 
-  public checkPasswords(): boolean {
-    if (this.passwordControl.value === this.passwordCheckControl) {
-      return true;
+  public checkPasswords(event : any): boolean {
+    if (this.passwordControl.value === event.target.value.toString()) {
+      return this.validPass = true;
     } else {
-      return false;
+      return this.validPass = false;
     }
+    console.log(this.validPass);
   }
 
   private sendNotification(notificationType: NotificationType, message: string): void {

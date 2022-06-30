@@ -24,7 +24,7 @@ export class CreateNewUserComponent implements OnInit, OnDestroy {
 
   public firstNameControl: FormControl = new FormControl('', [Validators.required]);
   public lastNameControl: FormControl = new FormControl('', [Validators.required]);
-  public usernameControl: FormControl = new FormControl('', [Validators.required]);
+  public usernameControl: FormControl = new FormControl('');
   public addressControl: FormControl = new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(255)]);
   public emailControl: FormControl = new FormControl('', [Validators.required, Validators.email, Validators.pattern(this.emailRegex)]);
   public phoneFixControl: FormControl = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(12)]);
@@ -51,14 +51,15 @@ export class CreateNewUserComponent implements OnInit, OnDestroy {
     this.newUser.role = this.roleControl.value;
     this.newUser.phoneFix = this.phoneFixControl.value;
     this.newUser.phoneMobile = this.phoneMobileControl.value;
-
+    this.showLoading = true;
     this.subs.add(
       this.personService.addUser(this.newUser).subscribe(
         (response: Person) => {
-          this.showLoading = true;
-          this.sendNotification(NotificationType.SUCCESS, `A megerősítő email el lett küldve.`);
+
           userForm.reset();
+          this.showLoading = false;
           this.router.navigateByUrl('/user/index');
+          this.sendNotification(NotificationType.SUCCESS, `A megerősítő email el lett küldve. ${this.newUser.lastName} ${this.newUser.firstName} email címére`);
         },
         (error: HttpErrorResponse) => {
           this.showLoading = false;
