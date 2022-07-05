@@ -20,6 +20,9 @@ export class TvService {
   public getTvsByUsersEmail(email: string): Observable<Tv[]> {
     return this.http.get<Tv[]>(`${this.host}/tv/${email}`);
   }
+  public getNotRepairedTvsByUsersEmail(email: string): Observable<Tv[]> {
+    return this.http.get<Tv[]>(`${this.host}/tv/not-repaired-yet/${email}`);
+  }
 
   public addNewTv(tv: Tv): Observable<Tv | HttpErrorResponse | null> {
     return this.http.post<Tv>(`${this.host}/tv/new`, tv);

@@ -157,7 +157,7 @@ export class UserIndexComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public getUserTvs(): void {
     this.subs.add(
-      this.tvService.getTvsByUsersEmail(this.loggedInUser.email).subscribe(
+      this.tvService.getNotRepairedTvsByUsersEmail(this.loggedInUser.email).subscribe(
         (response: Tv[]) => {
           this.loggedInUsersTvs = response;
           this.rowData = response;
