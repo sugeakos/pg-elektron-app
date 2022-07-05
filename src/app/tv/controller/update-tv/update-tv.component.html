@@ -21,8 +21,12 @@
               <input type="text" name="errorSeenByCustomer" readonly required [(ngModel)]="selectedTv.errorSeenByCustomer" class="form-control">
             </div>
             <div class="form-group">
+              <mat-label>Előzőleg lefoglalt időpont:</mat-label>
+              <p> <b>{{currentReservedDate}}</b></p>
+            </div>
+            <div class="form-group">
               <label>Idopont:</label>
-              <mat-form-field class="form-control" appearance="fill">
+              <mat-form-field class="form-control" appearance="outline">
                 <mat-label>Válasszon dátumot</mat-label>
                 <input matInput [formControl]="reservedDateToRepair"
                        [ngxMatDatetimePickerFilter]="myFilter"
@@ -30,7 +34,7 @@
                        (dateChange)="addEvent($event)">
                 <mat-datepicker-toggle matSuffix
                                        [for]="picker"></mat-datepicker-toggle>
-                <ngx-mat-datetime-picker [defaultTime]="defaultTime" [stepMinute]="stepMinute" touchUi
+                <ngx-mat-datetime-picker [defaultTime]="defaultTime" [stepMinute]="stepMinute"  touchUi
                                          #picker></ngx-mat-datetime-picker>
 
                 <mat-error *ngIf="reservedDateToRepair.hasError('required')">

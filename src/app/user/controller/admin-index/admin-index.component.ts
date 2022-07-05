@@ -98,8 +98,8 @@ export class AdminIndexComponent implements OnInit, OnDestroy, AfterViewInit {
         defaultOption: 'contains',
       }
     },
-    {headerName: 'Javítás ára', field: 'price'},
-    {headerName: 'Javítás alatt áll', field: 'isItStillInProgress'}
+    {headerName: 'Javítás ára', field: 'price'}
+
   ];
   public defaultColDef: ColDef = {
     flex: 100,

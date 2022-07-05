@@ -22,7 +22,7 @@ export class UpdateTvComponent implements OnInit, OnDestroy {
   private selectedTvId: string;
   public selectedTv: Tv;
   public loggedInUser: Person;
-
+  public currentReservedDate: number;
   public minDate: Date;
   public maxDate: Date;
   public stepMinute;
@@ -54,6 +54,7 @@ export class UpdateTvComponent implements OnInit, OnDestroy {
     );
 
     this.getTv();
+
   }
 
   myFilter = (d: Date | null): boolean => {
@@ -69,6 +70,11 @@ export class UpdateTvComponent implements OnInit, OnDestroy {
       this.tvService.findATv(this.selectedTvId).subscribe(
         (response: Tv) => {
           this.selectedTv = response;
+          if(this.selectedTv.dateOfCorrection != null) {
+            this.router.navigateByUrl('/user/index');
+            this.sendNotification(NotificationType.WARNING,`A válsztott TV már meg lett javítva.`);
+          }
+          this.currentReservedDate = response.reservedDateToRepair;
           this.sendNotification(NotificationType.SUCCESS, 'Sikerült megtalálni a keresett TV-t.');
         },
         (error: HttpErrorResponse) => {
@@ -102,7 +108,9 @@ export class UpdateTvComponent implements OnInit, OnDestroy {
       )
     );
   }
+
   public addEvent($event: any) {
+
     this.selectedDateTime = $event.value.getHours();
     if (+this.selectedDateTime >= this.maxTime || +this.selectedDateTime < this.minTime) {
       this.validDateTime = false;
@@ -119,7 +127,7 @@ export class UpdateTvComponent implements OnInit, OnDestroy {
     if ((+this.selectedDateTime < new Date().getHours()) && ($event.value > new Date())) {
       this.validDateTime = true;
       //this.sendNotification(NotificationType.WARNING, `Válasszon időpontot ${this.minTime} és ${this.maxTime} között`);
-    } 
+    }
 
   }
   private sendNotification(notificationType: NotificationType, message: string): void {
