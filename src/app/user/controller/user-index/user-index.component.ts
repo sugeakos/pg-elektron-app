@@ -106,11 +106,15 @@ export class UserIndexComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   ngOnInit(): void {
+    if (!this.authService.isLoggedIn()){
+      this.router.navigateByUrl('/index');
+    }
     this.loggedInUsersTvs = [];
     this.loggedInUser = this.authService.getUserFromLocalCache();
     this.getAllCategories();
     this.getUserTvs();
     this.selectedTv = null;
+
   }
 
 
@@ -157,7 +161,7 @@ export class UserIndexComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public getUserTvs(): void {
     this.subs.add(
-      this.tvService.getNotRepairedTvsByUsersEmail(this.loggedInUser.email).subscribe(
+      this.tvService.getTvsByUsersEmail(this.loggedInUser.email).subscribe(
         (response: Tv[]) => {
           this.loggedInUsersTvs = response;
           this.rowData = response;

@@ -28,11 +28,11 @@ const routes: Routes = [
   {path:'tv/create/:email', component:AddTvToUserComponent, canActivate: [ AdminGuard]},
   {path:'tv/category/new', component:AddNewTvCategoryComponent, canActivate: [ AdminGuard]},
   {path:'tv/update/:id', component:UpdateTvComponent, canActivate: [AuthenticationGuard]},
-  
 
 
-  {path: '',redirectTo: 'index', pathMatch: 'full'},
-  {path: '**',redirectTo: 'index', pathMatch: 'full'}
+
+  {path: '',redirectTo: 'user/index', pathMatch: 'full'},
+  {path: '**',redirectTo: 'user/index', pathMatch: 'full'}
 
 ];
 
